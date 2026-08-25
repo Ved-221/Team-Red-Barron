@@ -1,0 +1,155 @@
+@import url('https://fonts.cdnfonts.com/css/abandon');
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Planet Kosmos';
+  src: url('/fonts/PlanetKosmos.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.homepage-title {
+  font-family: 'Planet Kosmos', sans-serif;
+}
+
+.homepage-title .depth-text__layer,
+.homepage-title .depth-text__face {
+  line-height: 0.9;
+  letter-spacing: 0;
+}
+
+.homepage-title .depth-text__face {
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.85), 0 6px 12px rgba(0, 0, 0, 0.55);
+}
+
+@layer base {
+  :root {
+    --background: #000000;
+    --foreground: #e2e2e2;
+    --primary-red: #de1615;
+    --primary-light: #ffb4a9;
+    --secondary-orange: #ff6534;
+    --surface-dark: #121414;
+    --surface-glass: rgba(37, 46, 57, 0.6);
+    --border-subtle: rgba(245, 245, 245, 0.1);
+    --on-surface: #e2e2e2;
+    --on-surface-variant: #e8bdb6;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-inter), sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Font Family Abandon */
+.font-abandon {
+  font-family: 'Abandon', var(--font-sora), sans-serif;
+}
+
+/* Typography Utility Classes */
+.font-sora {
+  font-family: var(--font-sora), sans-serif;
+}
+
+.font-inter {
+  font-family: var(--font-inter), sans-serif;
+}
+
+.font-mono-tech {
+  font-family: var(--font-mono), monospace;
+}
+
+/* Glassmorphism & Motorsport Aesthetics */
+.glass-card {
+  background: rgba(37, 46, 57, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glow-red {
+  box-shadow: 0 0 25px rgba(222, 22, 21, 0.45);
+}
+
+.glow-red-sm {
+  box-shadow: 0 0 12px rgba(222, 22, 21, 0.3);
+}
+
+.glow-orange {
+  box-shadow: 0 0 20px rgba(255, 101, 52, 0.4);
+}
+
+.bg-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #252e39;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #de1615;
+}
+
+/* Infinite Marquee Animation */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 55s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Hide Scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Atmospheric Shockwave Pressure Wave Animation (easeOutCubic curve) */
+@keyframes shockwave-pulse {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.85;
+  }
+  40% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.animate-shockwave-pulse {
+  animation: shockwave-pulse 950ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+
