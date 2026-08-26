@@ -5,18 +5,18 @@ import Link from "next/link";
 
 export function SponsorsMarquee() {
   const sponsors = [
-    { name: "VARROC", logo: "/media/sponsors/TITLE/VARROC.png" },
-    { name: "ALTIUM", logo: "/media/sponsors/TITLE/ALTIUM.png" },
-    { name: "MAHLE", logo: "/media/sponsors/TITLE/MAHLE.png" },
-    { name: "SKF", logo: "/media/sponsors/PLATINUM/SKF.png" },
-    { name: "FLUKE", logo: "/media/sponsors/PLATINUM/FLUKE.png" },
-    { name: "GEFRAN", logo: "/media/sponsors/TITLE/GEFRAN.png" },
-    { name: "STAR ENGINEERS", logo: "/media/sponsors/TITLE/STAR ENGINEERS.png" },
-    { name: "MITUTOYO", logo: "/media/sponsors/GOLD/MITUTOYO.png" },
-    { name: "MOLEX", logo: "/media/sponsors/SILVER/MOLEX.png" },
-    { name: "ROSENBERGER", logo: "/media/sponsors/TITLE/rosenberger.png" },
-    { name: "ESBEE", logo: "/media/sponsors/PLATINUM/ESBEE.png" },
-    { name: "BEICO", logo: "/media/sponsors/SILVER/BEICO.png" },
+    { name: "VARROC", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/VARROC.png" },
+    { name: "ALTIUM", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/ALTIUM.png" },
+    { name: "MAHLE", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/MAHLE.png" },
+    { name: "SKF", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/SKF.png" },
+    { name: "FLUKE", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/FLUKE.png" },
+    { name: "GEFRAN", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/GEFRAN.png" },
+    { name: "STAR ENGINEERS", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/STAR ENGINEERS.png" },
+    { name: "MITUTOYO", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/GOLD/MITUTOYO.png" },
+    { name: "MOLEX", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/MOLEX.png" },
+    { name: "ROSENBERGER", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/rosenberger.png" },
+    { name: "ESBEE", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/ESBEE.png" },
+    { name: "BEICO", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/BEICO.png" },
   ];
 
   return (
@@ -40,6 +40,7 @@ export function SponsorsMarquee() {
                 alt={`${s.name} Logo`}
                 width={150}
                 height={55}
+                unoptimized
                 className="object-contain max-h-12 filter brightness-125"
               />
             </div>

@@ -58,7 +58,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
     sponsors: [
       {
         name: "ALTIUM",
-        logo: "/media/sponsors/TITLE/ALTIUM.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/ALTIUM.png",
         website: "https://www.altium.com",
         description: "Leading provider of electronic design automation & printed circuit board (PCB) design software used for TRB's custom telemetry nodes.",
         contrib: "ECU & Telemetry PCB CAD Suite",
@@ -66,7 +66,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "GEFRAN",
-        logo: "/media/sponsors/TITLE/GEFRAN.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/GEFRAN.png",
         website: "https://www.gefran.com",
         description: "Global leader in design and production of industrial sensors, automation systems, and high-precision position transducers.",
         contrib: "Suspension Travel & Pressure Sensors",
@@ -74,7 +74,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "MAHLE",
-        logo: "/media/sponsors/TITLE/MAHLE.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/MAHLE.png",
         website: "https://www.mahle.com",
         description: "Premier automotive systems supplier pioneering powertrain engineering, thermal management, and lightweight engine solutions.",
         contrib: "Powertrain R&D & Thermal Tech",
@@ -82,7 +82,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "STAR ENGINEERS",
-        logo: "/media/sponsors/TITLE/STAR ENGINEERS.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/STAR ENGINEERS.png",
         website: "https://www.starengineers.com",
         description: "Global automotive electronics manufacturing leader specializing in ignition systems, regulators, and vehicle control modules.",
         contrib: "Ignition & Electrical Harness",
@@ -90,7 +90,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "TRIVIKARAM",
-        logo: "/media/sponsors/TITLE/TRIVIKARAM.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/TRIVIKARAM.png",
         website: "#",
         description: "Precision manufacturing and specialized machining partner delivering high-strength aluminum wheel hubs & uprights.",
         contrib: "Precision CNC Machining",
@@ -98,7 +98,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "VARROC",
-        logo: "/media/sponsors/TITLE/VARROC.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/VARROC.png",
         website: "https://varroc.com",
         description: "Global Tier-1 automotive component manufacturer supplying exterior lighting, powertrain components, and electrical systems.",
         contrib: "Chassis & Drivetrain Components",
@@ -106,7 +106,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "ROSENBERGER",
-        logo: "/media/sponsors/TITLE/rosenberger.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/rosenberger.png",
         website: "https://www.rosenberger.com",
         description: "High-frequency, high-voltage, and fiber-optic connectivity technology leader powering robust sensor harness networks.",
         contrib: "High-Speed Data & Coaxial Cabling",
@@ -121,7 +121,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
     sponsors: [
       {
         name: "SKF",
-        logo: "/media/sponsors/PLATINUM/SKF.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/SKF.png",
         website: "https://www.skf.com",
         description: "World's leading bearing and seal manufacturer enabling low-friction rotational efficiency in TRB's custom drivetrain.",
         contrib: "High-Performance Wheel & Differential Bearings",
@@ -129,7 +129,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "FLUKE",
-        logo: "/media/sponsors/PLATINUM/FLUKE.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/FLUKE.png",
         website: "https://www.fluke.com",
         description: "Global standard in electronic test tools, thermal imaging calibration, and pitwall diagnostic instruments.",
         contrib: "Pitwall Diagnostics & Multimeters",
@@ -137,7 +137,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "CASTAL DIES",
-        logo: "/media/sponsors/PLATINUM/CASTAL DIES.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/CASTAL DIES.png",
         website: "#",
         description: "Precision die casting and tooling specialist manufacturing custom transmission casing and steering components.",
         contrib: "Gearbox Die Casting & Mold Tooling",
@@ -145,7 +145,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "ESBEE",
-        logo: "/media/sponsors/PLATINUM/ESBEE.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/ESBEE.png",
         website: "https://esbee-electrotech.com",
         description: "Electrotechnical solutions provider delivering heavy-duty switches, relays, and emergency power cut-off safety modules.",
         contrib: "High-Amperage Safety Cut-Off Switches",
@@ -153,7 +153,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "ANUCOOL",
-        logo: "/media/sponsors/PLATINUM/ANUCOOL.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/ANUCOOL.png",
         website: "#",
         description: "Thermal engineering and cooling solutions company providing high-flow radiators and CVT cooling ducting.",
         contrib: "CVT & Engine Cooling System",
@@ -161,7 +161,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "C2M",
-        logo: "/media/sponsors/PLATINUM/C2M.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/C2M.png",
         website: "#",
         description: "Concept-to-Manufacturing partner supporting composite fabrication and CAD prototyping.",
         contrib: "Prototyping & CAD Design",
@@ -176,7 +176,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
     sponsors: [
       {
         name: "MITUTOYO",
-        logo: "/media/sponsors/GOLD/MITUTOYO.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/GOLD/MITUTOYO.png",
         website: "https://www.mitutoyo.co.jp/global/",
         description: "World leader in precision measuring instruments, vernier calipers, micrometers, and dimensional metrology.",
         contrib: "Precision Quality Control Metrology",
@@ -184,7 +184,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "BALAJI WIRES",
-        logo: "/media/sponsors/GOLD/BALAJI WIRES.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/GOLD/BALAJI WIRES.png",
         website: "#",
         description: "High-grade automotive wire and wiring harness manufacturer delivering fire-retardant electrical conduits.",
         contrib: "Custom Wiring Harness & Conduits",
@@ -192,7 +192,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "COMPOSITE TOMORROW",
-        logo: "/media/sponsors/GOLD/COMPOSITE TOMORROW.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/GOLD/COMPOSITE TOMORROW.png",
         website: "#",
         description: "Carbon fiber and glass fiber raw material supplier powering TRB's ultra-lightweight body paneling.",
         contrib: "Carbon Fiber & Vacuum Infusion Resin",
@@ -200,7 +200,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "BHARAT MECHATRONICS",
-        logo: "/media/sponsors/GOLD/BHARAT MECHATRONICS.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/GOLD/BHARAT MECHATRONICS.png",
         website: "#",
         description: "Mechatronic systems and actuator developer assisting in electronic throttle and CVT tuning.",
         contrib: "Actuator & Servo Control Systems",
@@ -208,7 +208,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "ELECTRO CATALYST",
-        logo: "/media/sponsors/GOLD/ELECTRO CATALYST.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/GOLD/ELECTRO CATALYST.png",
         website: "#",
         description: "Specialized electro-chemical coatings and surface plating partner protecting chromoly tubing against corrosion.",
         contrib: "Frame Surface Coating & Plating",
@@ -216,7 +216,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "VR COATING",
-        logo: "/media/sponsors/GOLD/VR COATING.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/GOLD/VR COATING.png",
         website: "#",
         description: "Industrial powder coating and paint equipment company providing high-durability TRB Crimson livery finishes.",
         contrib: "Powder Coating & Livery Finish",
@@ -231,7 +231,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
     sponsors: [
       {
         name: "MOLEX",
-        logo: "/media/sponsors/SILVER/MOLEX.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/MOLEX.png",
         website: "https://www.molex.com",
         description: "Global electronics leader delivering IP67 waterproof connector solutions for extreme offroad environments.",
         contrib: "IP67 Weatherproof Connectors",
@@ -239,7 +239,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "BEICO",
-        logo: "/media/sponsors/SILVER/BEICO.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/BEICO.png",
         website: "#",
         description: "Heavy engineering and tube bending specialists providing CNC notched Chromoly 4130 spaceframe tubes.",
         contrib: "Precision Tube Bending & Laser Notching",
@@ -247,7 +247,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "METADEK",
-        logo: "/media/sponsors/SILVER/METADEK.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/METADEK.png",
         website: "#",
         description: "Structural metal sheet decking and laser cutting partner supporting chassis floorpan and skidplate fabrication.",
         contrib: "Skid Plate & Sheet Metal Fabrication",
@@ -255,7 +255,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "SHOGINI",
-        logo: "/media/sponsors/SILVER/SHOGINI.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/SHOGINI.png",
         website: "#",
         description: "Multi-layer PCB manufacturer producing high-density circuit boards for TRB's pitwall telemetry sender units.",
         contrib: "Telemetry Printed Circuit Board Production",
@@ -263,7 +263,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "SHITAL PLASMA",
-        logo: "/media/sponsors/SILVER/SHITAL PLASMA.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/SHITAL PLASMA.png",
         website: "#",
         description: "High-precision CNC plasma cutting and profiling unit enabling rapid chassis gusset plate fabrication.",
         contrib: "CNC Plasma Profiling & Cutting",
@@ -271,7 +271,7 @@ const SPONSOR_TIERS: SponsorTier[] = [
       },
       {
         name: "CHINTAMANI",
-        logo: "/media/sponsors/SILVER/CHINTAMANI.png",
+        logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/SILVER/CHINTAMANI.png",
         website: "#",
         description: "Raw material stockist delivering certified aircraft-grade 6061-T6 and 7075-T6 aluminum billets.",
         contrib: "Aerospace Grade Aluminum Billet Stock",
@@ -286,9 +286,9 @@ const FEATURED_PARTNERS = [
   {
     name: "VARROC ENGINEERING",
     tier: "TITLE PARTNER",
-    logo: "/media/sponsors/TITLE/VARROC.png",
-    image: "/media/sponsors/TITLE/VARROC.png",
-    bgImage: "/media/hero/IMG_4588.png",
+    logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/VARROC.png",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/VARROC.png",
+    bgImage: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png",
     description: "Varroc has been instrumental in backing Team Red Baron's structural and powertrain development. Through their Tier-1 automotive manufacturing resources, TRB engineers gain access to advanced metallurgy, component heat-treatment, and automotive lighting technology.",
     contribution: "Chassis Components, Powertrain Support & Technical Mentorship",
     website: "https://varroc.com"
@@ -296,9 +296,9 @@ const FEATURED_PARTNERS = [
   {
     name: "ALTIUM LLC",
     tier: "TITLE ELECTRONICS PARTNER",
-    logo: "/media/sponsors/TITLE/ALTIUM.png",
-    image: "/media/sponsors/TITLE/ALTIUM.png",
-    bgImage: "/media/images_timeline/2023.png",
+    logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/ALTIUM.png",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/ALTIUM.png",
+    bgImage: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2023.png",
     description: "Altium empowers our Electronics & Telemetry sub-team with full enterprise PCB design licenses. Using Altium Designer, TRB student engineers synthesize custom telemetry sender boards, wheel-speed sensor nodes, and live pitwall telemetry feeds.",
     contribution: "Altium Designer PCB EDA Suite & Cloud Collaboration",
     website: "https://www.altium.com"
@@ -306,9 +306,9 @@ const FEATURED_PARTNERS = [
   {
     name: "SKF GROUP",
     tier: "PLATINUM ROTATIONAL PARTNER",
-    logo: "/media/sponsors/PLATINUM/SKF.png",
-    image: "/media/sponsors/PLATINUM/SKF.png",
-    bgImage: "/media/images_timeline/2022.avif",
+    logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/SKF.png",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/SKF.png",
+    bgImage: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2022.avif",
     description: "SKF provides TRB with ultra-low friction ceramic hybrid and deep-groove ball bearings for our custom 4WD transfer case and wheel hubs, reducing parasitic drivetrain power loss by over 8%.",
     contribution: "High-Precision Drivetrain & Wheel Hub Bearings",
     website: "https://www.skf.com"
@@ -316,9 +316,9 @@ const FEATURED_PARTNERS = [
   {
     name: "FLUKE CORPORATION",
     tier: "PLATINUM MEASUREMENT PARTNER",
-    logo: "/media/sponsors/PLATINUM/FLUKE.png",
-    image: "/media/sponsors/PLATINUM/FLUKE.png",
-    bgImage: "/media/images_timeline/2025.jpg",
+    logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/FLUKE.png",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/FLUKE.png",
+    bgImage: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2025.jpg",
     description: "Fluke equips Team Red Baron with thermal imaging cameras and precision digital multimeters to diagnose engine heat dissipation, CVT belt thermals, and battery pack telemetry during 4-hour endurance runs.",
     contrib: "Thermal Diagnostics & Pitwall Multimeter Suite",
     contribution: "Thermal Imaging & Diagnostic Metrology Hardware",
@@ -452,9 +452,10 @@ export default function SponsorsPage() {
         {/* Full-width Background Hero Imagery with 80% Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/media/hero/IMG_4588.png"
+            src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"
             alt="Team Red Baron Championship ATV Hero Shot"
             fill
+            unoptimized
             priority
             className="object-cover object-center scale-105"
             sizes="100vw"
@@ -597,6 +598,7 @@ export default function SponsorsPage() {
                           alt={`${sp.name} Logo`}
                           width={160}
                           height={60}
+                          unoptimized
                           className="object-contain max-h-14"
                         />
                       </div>
@@ -644,6 +646,7 @@ export default function SponsorsPage() {
                       src={partner.bgImage}
                       alt={partner.name}
                       fill
+                      unoptimized
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
@@ -655,6 +658,7 @@ export default function SponsorsPage() {
                         alt={partner.name}
                         width={140}
                         height={50}
+                        unoptimized
                         className="object-contain max-h-10 filter brightness-125"
                       />
                     </div>
@@ -805,10 +809,11 @@ export default function SponsorsPage() {
           {/* Background Hero Image Vignette */}
           <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
             <Image
-              src="/media/hero/IMG_4588.png"
+              src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"
               alt="TRB ATV Hero Background"
               fill
-              className="object-cover"
+              unoptimized
+              className="object-cover object-center"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
           </div>

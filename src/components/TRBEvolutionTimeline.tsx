@@ -406,14 +406,13 @@ export function TRBEvolutionTimeline() {
             >
               <div className="relative w-full aspect-[4/3] drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)]">
                 <Image
-                  src="/media/buggyy.png"
-                  alt="Team Red Baron Baja Vehicle Navigator"
+                  src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"
+                  alt="Team Red Baron Buggy"
                   fill
+                  unoptimized
                   priority
                   className="object-contain"
-                />
-
-                {/* Rear Tire Smoke & Dust */}
+                />{/* Rear Tire Smoke & Dust */}
                 <AnimatePresence>
                   {isDriving && (
                     <>

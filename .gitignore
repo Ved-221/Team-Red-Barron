@@ -41,11 +41,12 @@ yarn-error.log*
 next-env.d.ts
 
 /public/media/
-*.mp4
-*.glb
 VEHICLE PHOTOS FOR WEBSITE/
 TRB SPONSOR LOGO/
 photos:vids/
-*.png
-*.jpg
-*.jpeg
+
+# Large Media Assets
+*.mp4
+*.glb
+*.mov
+*.zip

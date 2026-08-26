@@ -61,9 +61,10 @@ export function SupportCTA() {
               <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.07] overflow-hidden">
                 <div className="relative w-[700px] h-[500px]">
                   <Image
-                    src="/media/buggyy.png"
+                    src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"
                     alt="Formula Student Vehicle Background Silhouette"
                     fill
+                    unoptimized
                     className="object-contain"
                   />
                 </div>

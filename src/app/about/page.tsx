@@ -152,7 +152,7 @@ export default function AboutPage() {
               <div className="relative group rounded-3xl overflow-hidden glass-card border border-white/15 bg-[#12151b] p-2.5 aspect-[4/3] shadow-[0_10px_40px_rgba(222,22,21,0.25)] hover:border-[#de1615]/70 transition-all duration-500">
                 <div className="relative w-full h-full rounded-2xl overflow-hidden">
                   <img
-                    src="/media/team/IMG_9368.jpg"
+                    src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG_9368.jpg"
                     alt="Team Red Baron Group Photo"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />

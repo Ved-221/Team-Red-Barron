@@ -79,7 +79,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Captain",
       department: "Management",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -87,7 +87,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "CFO & COO",
       department: "Management",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -95,7 +95,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Mechanical CTO",
       department: "Management",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -103,7 +103,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Electrical CTO",
       department: "Management",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
 
@@ -113,7 +113,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Suspension Lead",
       department: "Vehicle Dynamics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -121,7 +121,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Brakes & Steering Lead",
       department: "Vehicle Dynamics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -129,7 +129,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Vehicle Dynamics Member",
       department: "Vehicle Dynamics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -137,7 +137,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Jr. Vehicle Dynamics Member",
       department: "Vehicle Dynamics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
 
@@ -147,7 +147,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "High Voltage Lead",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -155,7 +155,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Low Voltage Lead",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -163,7 +163,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "B-Plan Lead & High Voltage Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -171,7 +171,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Low Voltage Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -179,7 +179,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Low Voltage Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -187,7 +187,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Low Voltage Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -195,7 +195,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Jr. Low Voltage Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -203,7 +203,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Jr. Low Voltage Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -211,7 +211,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Jr. Low Voltage Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
 
@@ -221,7 +221,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Chassis Lead",
       department: "Structures",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -229,7 +229,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Aerodynamics Lead",
       department: "Structures",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -237,7 +237,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Structures Member",
       department: "Structures",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -245,7 +245,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Structures Member",
       department: "Structures",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -253,7 +253,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Structures Member",
       department: "Structures",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
 
@@ -263,7 +263,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Drivetrain Lead",
       department: "Drivetrain",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -271,7 +271,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Drivetrain Member",
       department: "Drivetrain",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -279,7 +279,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Jr. Drivetrain Member",
       department: "Drivetrain",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
   ],
@@ -289,7 +289,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Vice Captain & Dynamics Lead",
       department: "Management",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -297,7 +297,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Treasury & Finance Head",
       department: "Management",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -305,7 +305,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Sr. Suspension Engineer",
       department: "Vehicle Dynamics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -313,7 +313,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Telemetry & DAQ Lead",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -321,7 +321,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "FEA & Chassis Engineer",
       department: "Structures",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
   ],
@@ -331,7 +331,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Junior Vehicle Engineer",
       department: "Vehicle Dynamics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
     {
@@ -339,7 +339,7 @@ const TEAM_DATA: Record<string, TeamMember[]> = {
       name: "Untitled",
       role: "Wiring & Harness Member",
       department: "Electronics",
-      image: "/media/team_person.png",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png",
       linkedin: "https://linkedin.com",
     },
   ],

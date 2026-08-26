@@ -6,27 +6,27 @@ import MorphSlider from "@/components/ui/MorphSlider";
 export function GalleryPreview() {
   const teamItems = [
     {
-      image: "/media/team/IMG_0293.JPG",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG_0293.JPG",
       caption: "Team Red Baron — Official Lineup",
     },
     {
-      image: "/media/team/IMG20260111135725.jpg",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG20260111135725.jpg",
       caption: "Off-Road Championship Crew",
     },
     {
-      image: "/media/team/IMG-20260111-WA0014.jpg",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG-20260111-WA0014.jpg",
       caption: "Team Red Baron Engineers",
     },
     {
-      image: "/media/team/20260220_161730.jpg",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/20260220_161730.jpg",
       caption: "BAJA Expedition & Field Testing",
     },
     {
-      image: "/media/team/IMG-20250219-WA0027.jpg",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG-20250219-WA0027.jpg",
       caption: "Paddock Prep & Pit Operations",
     },
     {
-      image: "/media/team/IMG_9368.jpg",
+      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG_9368.jpg",
       caption: "Technical Scrutineering & Strategy",
     },
   ];

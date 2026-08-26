@@ -25,7 +25,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "AIR 3 Overall Podium & AIR 1 Statics",
     badge: "AIR 3 PODIUM",
     icon: ShieldCheck,
-    imageSrc: "/media/images_timeline/2025.jpg",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2025.jpg",
     description:
       "Achieved AIR 3 Overall National Rank at BAJA SAE India 2025 in Hyderabad. Secured AIR 1 Overall Statics, AIR 3 Sled Pull, and AIR 2 in CAE & Cost Evaluations among 100+ national universities.",
     specs: [
@@ -42,7 +42,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "National Overall Runner-Up — Electric Era",
     badge: "ELECTRIC PODIUM",
     icon: Zap,
-    imageSrc: "/media/images_timeline/2024.jpg",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2024.jpg",
     description:
       "Achieved National Overall Runner-Up at e-BAJA SAE India 2024. Won prestigious awards including Green Efficient Vehicle, Engineering Design Champion, and Technical Innovation Award.",
     specs: [
@@ -59,7 +59,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "Advanced IoT Telemetry & Dynamic Rigidity",
     badge: "TELEMETRY ERA",
     icon: Cpu,
-    imageSrc: "/media/images_timeline/2023.png",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2023.png",
     description:
       "Integrated real-time wireless IoT pitwall telemetry streaming wheel speeds, CVT temperatures, and suspension travel metrics live. Optimized chassis weight reduction by 14% with enhanced torsional stiffness.",
     specs: [
@@ -76,7 +76,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "Best 4WD ATV & 1st Overall Statics",
     badge: "BEST 4WD ATV",
     icon: Trophy,
-    imageSrc: "/media/images_timeline/2022.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2022.avif",
     description:
       "Awarded 'Best 4WD ATV' & 1st Rank in Overall Statics at BAJA SAE India 2022. First collegiate team to clear complete Technical Inspection on the very first attempt without callbacks.",
     specs: [
@@ -93,7 +93,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "First Four-Wheel-Drive (4WD) ATV",
     badge: "4WD INNOVATION",
     icon: Zap,
-    imageSrc: "/media/images_timeline/2021.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2021.avif",
     description:
       "Pioneered Team Red Baron's first custom 4WD transfer case and custom front differential setup. Dominated BAJA SAE India 2021 Overall Design Standings and earned 2nd Runner-Up Cost internationally.",
     specs: [
@@ -110,7 +110,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "Custom In-House CVT S1 & ESI Runner-Up",
     badge: "CVT INNOVATION",
     icon: Cpu,
-    imageSrc: "/media/images_timeline/2020.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2020.avif",
     description:
       "Engineered the team's first custom in-house CVT calibration and reduction gearbox. Won ESI 2020 Overall Runner-Up (1st Design, 1st Cost, 2nd Endurance, Fastest Lap) and 3rd Design at BAJA SAE India.",
     specs: [
@@ -127,7 +127,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "BAJA USA Rochester NY & Triple Competition",
     badge: "TRIPLE COMPETITION",
     icon: Sparkles,
-    imageSrc: "/media/images_timeline/2019.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2019.avif",
     description:
       "Competed simultaneously across 3 premier championships: BAJA SAE India (Top 5), ESI (1st Design, 2nd Cost, 3rd Endurance), and BAJA SAE USA in Rochester, New York.",
     specs: [
@@ -144,7 +144,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "Runner-Up Durability Award",
     badge: "NATIONAL PODIUM",
     icon: Trophy,
-    imageSrc: "/media/images_timeline/2018.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2018.avif",
     description:
       "Secured 2nd Place in the 4-Hour Endurance Race at BAJA SAE India along with the Runner-Up Durability Award. Followed up with an Overall 2nd Runner-Up finish at Enduro Student India (ESI) 2018.",
     specs: [
@@ -161,7 +161,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "BAJA USA Illinois Debut & ESI Runner-Up",
     badge: "INTERNATIONAL USA",
     icon: Flag,
-    imageSrc: "/media/images_timeline/2017.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2017.avif",
     description:
       "Expanded onto the international stage at BAJA SAE Illinois USA (7th fastest lap overall). Claimed ESI 2017 Overall Runner-Up (1st in Design) and MegaATV Overall Runner-Up titles.",
     specs: [
@@ -178,7 +178,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "Tech Innovation Composite Steering",
     badge: "COMPOSITE TECH",
     icon: Zap,
-    imageSrc: "/media/images_timeline/2016.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2016.avif",
     description:
       "Won 2nd Prize in Technical Innovation for lightweight composite steering linkage design. Secured 5th in Engineering Design, 6th Lightest Vehicle overall, and 7th in Acceleration.",
     specs: [
@@ -195,7 +195,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "4-Hour Endurance Landmark",
     badge: "ENDURANCE PROVEN",
     icon: ShieldCheck,
-    imageSrc: "/media/images_timeline/2015.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2015.avif",
     description:
       "Became the team's first ATV to complete the brutal 4-hour BAJA SAE endurance race without a single mechanical breakdown. Tested structural longevity and thermal endurance under extreme track heat.",
     specs: [
@@ -212,7 +212,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "Best Engineering Design Winner",
     badge: "DESIGN CHAMPION",
     icon: Trophy,
-    imageSrc: "/media/images_timeline/2014.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2014.avif",
     description:
       "Captured the coveted 'Best Engineering Design' national award. Cleared the steep hill-climb challenge in a record 13 seconds with flawless maneuverability, elevating TRB into the national top 10.",
     specs: [
@@ -229,7 +229,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "Suspension Tech — Top 5 Innovation Award",
     badge: "INNOVATION NOMINEE",
     icon: Cpu,
-    imageSrc: "/media/images_timeline/2013.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2013.avif",
     description:
       "Pioneered an independent leaf spring front suspension mechanism that earned a nomination in the Top 5 Innovations at BAJA SAE India 2013. Climbed 4 ranks nationally against 125 collegiate teams.",
     specs: [
@@ -246,7 +246,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "The Genesis — PCCOE BAJA Foundation",
     badge: "FOUNDING ERA",
     icon: Flag,
-    imageSrc: "/media/images_timeline/2012.avif",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/images_timeline/2012.avif",
     description:
       "Founded by 25 passionate undergraduates at PCCOE Pune inspired by Capt. Manfred von Richthofen 'The Red Baron'. Albatros 1.0 successfully completed its maiden national dynamic events and established the engineering foundation for Team Red Baron.",
     specs: [
@@ -275,6 +275,7 @@ export function AboutTimeline() {
             src={m.imageSrc}
             alt={`Team Red Baron ATV (${m.year})`}
             fill
+            unoptimized
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, 40vw"
           />

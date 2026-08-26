@@ -46,7 +46,7 @@ const LEADERS: Member[] = [
     experience: "3+ BAJA Seasons",
     tags: ["Leadership", "Strategy", "Driving"],
     icon: Trophy,
-    image: "/media/team/leader1.jpg",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/leader1.jpg",
     fallbackGradient: "from-[#de1615]/30 to-[#121414]",
   },
   {
@@ -61,7 +61,7 @@ const LEADERS: Member[] = [
     experience: "3 BAJA Seasons",
     tags: ["Drivetrain", "FEA", "Tuning"],
     icon: Zap,
-    image: "/media/team/leader2.jpg",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/leader2.jpg",
     fallbackGradient: "from-[#ff6534]/30 to-[#121414]",
   },
   {
@@ -76,7 +76,7 @@ const LEADERS: Member[] = [
     experience: "2 BAJA Seasons",
     tags: ["IoT Hub", "Sensors", "Telemetry"],
     icon: Cpu,
-    image: "/media/team/leader3.jpg",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/leader3.jpg",
     fallbackGradient: "from-[#de1615]/30 to-[#121414]",
   },
   {
@@ -91,7 +91,7 @@ const LEADERS: Member[] = [
     experience: "3 BAJA Seasons",
     tags: ["3D CAD", "Roll Cage", "Ergonomics"],
     icon: ShieldCheck,
-    image: "/media/team/leader4.jpg",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/leader4.jpg",
     fallbackGradient: "from-[#ff6534]/30 to-[#121414]",
   },
   {
@@ -106,7 +106,7 @@ const LEADERS: Member[] = [
     experience: "3 BAJA Seasons",
     tags: ["TIG Welding", "CNC Machining", "Assembly"],
     icon: Wrench,
-    image: "/media/team/leader5.jpg",
+    image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/leader5.jpg",
     fallbackGradient: "from-[#de1615]/30 to-[#121414]",
   },
 ];

@@ -5,8 +5,8 @@ import Image from "next/image";
 import { Gauge, Zap, Timer, CheckCircle2 } from "lucide-react";
 
 // Configurable media paths for ALBATROS XIII section
-const VEHICLE_BACKGROUND_VIDEO = "/media/assets/videos/albatros-background.mp4";
-const VEHICLE_IMAGE_PATH = "/media/assets/images/albatros-xiii.png";
+const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/albatros-background.mp4";
+const VEHICLE_IMAGE_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png";
 
 export function VehicleSpotlight() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -105,8 +105,10 @@ export function VehicleSpotlight() {
                   src={VEHICLE_IMAGE_PATH}
                   alt="Albatros XIII Flagship Offroad Vehicle"
                   fill
+                  unoptimized
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   priority
+                  unoptimized
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none z-10" />
