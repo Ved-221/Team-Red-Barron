@@ -66,14 +66,14 @@ const YouTubeIcon = ({ className, style }: { className?: string; style?: React.C
   </svg>
 );
 
-const GitHubIcon = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
+const FacebookIcon = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
   <svg
     viewBox="0 0 24 24"
     fill="currentColor"
     className={className}
     style={style}
   >
-    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
   </svg>
 );
 
@@ -81,36 +81,36 @@ const socials = [
   {
     name: "Instagram",
     handle: "@team_red_baron",
-    href: "https://www.instagram.com/team_red_baron?igsh=dTEzOHQ0aWZid3A=",
+    href: "https://www.instagram.com/team_red_baron?igsh=MWFwcnl6Y2ZlZzlwdA==",
     icon: InstagramIcon,
     color: "#E4405F",
   },
   {
     name: "LinkedIn",
     handle: "Team Red Baron",
-    href: "https://www.linkedin.com/company/team-red-baron",
+    href: "https://www.linkedin.com/company/team-red-baron/posts/?feedView=all",
     icon: LinkedInIcon,
     color: "#0A66C2",
   },
   {
     name: "YouTube",
     handle: "@teamredbaron4316",
-    href: "https://www.youtube.com/@teamredbaron4316",
+    href: "https://youtube.com/@teamredbaron4316?feature=shared",
     icon: YouTubeIcon,
     color: "#FF0000",
   },
   {
-    name: "GitHub",
-    handle: "teamredbaron",
-    href: "https://github.com/teamredbaron",
-    icon: GitHubIcon,
-    color: "#FFFFFF",
+    name: "Facebook",
+    handle: "Team Red Baron",
+    href: "https://www.facebook.com/goteamredbaron/",
+    icon: FacebookIcon,
+    color: "#1877F2",
   },
 ];
 
 export default function ContactPage() {
   const [selectedType, setSelectedType] = useState("sponsorship");
-  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -120,10 +120,10 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("info@teamredbaron.com");
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
+  const handleCopyEmail = (email: string) => {
+    navigator.clipboard.writeText(email);
+    setCopiedEmail(email);
+    setTimeout(() => setCopiedEmail(null), 2000);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -167,21 +167,44 @@ export default function ContactPage() {
           {/* Left Column: Transmission Hub (Info Cards) */}
           <div className="lg:col-span-5 flex flex-col justify-between gap-6">
             {/* Official Email Card */}
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl hover:border-[#de1615]/50 transition-all">
-              <h3 className="font-sora font-bold text-lg text-white mb-1">Email Pitwall</h3>
-              <p className="font-inter text-xs text-[#ae8882] mb-4">Direct inbox for sponsorship, technical docs, and press inquiries.</p>
+            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl hover:border-[#de1615]/50 transition-all flex flex-col gap-4">
+              <div>
+                <h3 className="font-sora font-bold text-lg text-white mb-1">Team Leadership</h3>
+                <p className="font-inter text-xs text-[#ae8882]">Direct inbox for sponsorship, technical docs, and press inquiries.</p>
+              </div>
 
-              <div className="flex items-center justify-between p-3.5 rounded-xl bg-[#121414] border border-white/10">
-                <span className="font-mono text-xs sm:text-sm text-[#ffb4a9] font-medium truncate">
-                  teamredbaron@pccoepune.org
-                </span>
-                <button
-                  onClick={handleCopyEmail}
-                  className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0"
-                  title="Copy email to clipboard"
-                >
-                  {copiedEmail ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                </button>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col p-3.5 rounded-xl bg-[#121414] border border-white/10 gap-1">
+                  <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest">Managing Director - Tanmay Chaskar</span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs sm:text-sm text-[#ffb4a9] font-medium truncate">
+                      teamredbaron07@gmail.com
+                    </span>
+                    <button
+                      onClick={() => handleCopyEmail("teamredbaron07@gmail.com")}
+                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0"
+                      title="Copy email to clipboard"
+                    >
+                      {copiedEmail === "teamredbaron07@gmail.com" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-col p-3.5 rounded-xl bg-[#121414] border border-white/10 gap-1">
+                  <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest">Marketing Director - Atharva Patil</span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs sm:text-sm text-[#ffb4a9] font-medium truncate">
+                      marketingteamredbaron@gmail.com
+                    </span>
+                    <button
+                      onClick={() => handleCopyEmail("marketingteamredbaron@gmail.com")}
+                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0"
+                      title="Copy email to clipboard"
+                    >
+                      {copiedEmail === "marketingteamredbaron@gmail.com" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 

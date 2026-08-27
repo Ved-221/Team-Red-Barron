@@ -36,21 +36,27 @@ export function VehicleSpotlight() {
   const specs = [
     {
       label: "CURB WEIGHT",
-      value: "1,840 KG",
-      detail: "OPT-SPEC COMPOSITE",
+      value: "191 KG",
+      detail: "LIGHTWEIGHT COMPOSITE",
       icon: Gauge,
     },
     {
-      label: "HORSEPOWER",
-      value: "850 HP",
-      detail: "V8 TWIN TURBO INTERCOOLED",
+      label: "TOP SPEED",
+      value: "58 KM/H",
+      detail: "ALL-TERRAIN",
       icon: Zap,
     },
     {
-      label: "0-100 KM/H ACCELERATION",
-      value: "2.9 SEC",
-      detail: "UNPAVED DIRT LAUNCH",
+      label: "DRIVETRAIN",
+      value: "2WD/4WD",
+      detail: "SWITCHABLE SYSTEM",
       icon: Timer,
+    },
+    {
+      label: "NATIONAL RANK",
+      value: "AIR 3",
+      detail: "BAJA SAE INDIA",
+      icon: CheckCircle2,
     },
   ];
 
@@ -91,11 +97,11 @@ export function VehicleSpotlight() {
           </div>
 
           <h2 className="font-sora font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white mb-6 tracking-tight uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-            ALBATROS <span className="text-[#de1615]">XIII</span>
+            ALBATROX <span className="text-[#de1615]">XIV</span>
           </h2>
 
           <p className="font-inter text-base sm:text-lg text-white/90 mb-8 leading-relaxed max-w-xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-            The Albatros XIII is a masterwork of lightweight composite construction, telemetry integration, and extreme-travel suspension. Engineered specifically for high-speed desert endurance and ruthless terrain conquering.
+            The Albatrox XIV is a masterwork of lightweight composite construction, telemetry integration, and extreme-travel suspension. Engineered specifically for high-speed desert endurance and ruthless terrain conquering.
           </p>
 
           {/* Vehicle Card - Positioned Prominently Above / Beside Stats */}
@@ -107,7 +113,7 @@ export function VehicleSpotlight() {
               <div className="relative w-full h-full overflow-hidden">
                 <Image
                   src={VEHICLE_IMAGE_PATH}
-                  alt="Albatros XIII Flagship Offroad Vehicle"
+                  alt="Albatrox XIV Flagship Offroad Vehicle"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   unoptimized
@@ -123,7 +129,7 @@ export function VehicleSpotlight() {
                     CHASSIS SERIAL
                   </span>
                   <span className="font-sora font-extrabold text-lg sm:text-xl text-white">
-                    TRB-2024-X13
+                    TRB-2026-X14
                   </span>
                 </div>
                 <span className="font-mono-tech text-xs font-bold text-white bg-[#de1615] px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl glow-red">

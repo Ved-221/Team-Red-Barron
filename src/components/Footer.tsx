@@ -60,25 +60,7 @@ export function Footer() {
 
             <div className="flex items-center gap-3">
               <a
-                href="https://www.linkedin.com/company/team-red-baron"
-                target="_blank"
-                rel="noreferrer"
-                className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Globe className="w-5 h-5" />
-              </a>
-              <a
-                href="https://github.com/teamredbaron"
-                target="_blank"
-                rel="noreferrer"
-                className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
-                aria-label="GitHub"
-              >
-                <GithubIcon className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.instagram.com/team_red_baron?igsh=dTEzOHQ0aWZid3A="
+                href="https://www.instagram.com/team_red_baron?igsh=MWFwcnl6Y2ZlZzlwdA=="
                 target="_blank"
                 rel="noreferrer"
                 className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
@@ -87,11 +69,31 @@ export function Footer() {
                 <Globe className="w-5 h-5" />
               </a>
               <a
-                href="mailto:info@teamredbaron.com"
+                href="https://youtube.com/@teamredbaron4316?feature=shared"
+                target="_blank"
+                rel="noreferrer"
                 className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
-                aria-label="Email"
+                aria-label="YouTube"
               >
-                <Mail className="w-5 h-5" />
+                <Globe className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/team-red-baron/posts/?feedView=all"
+                target="_blank"
+                rel="noreferrer"
+                className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Globe className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.facebook.com/goteamredbaron/"
+                target="_blank"
+                rel="noreferrer"
+                className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
+                aria-label="Facebook"
+              >
+                <Globe className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -145,7 +147,20 @@ export function Footer() {
               <p>Pimpri Chinchwad College of Engineering (PCCOE)</p>
               <p>Near Akurdi Railway Station, Nigdi</p>
               <p>Pune – 411044, Maharashtra, India</p>
-              <p className="pt-2 font-mono text-[#de1615]">Email: info@teamredbaron.com</p>
+              <div className="pt-4 space-y-3">
+                <div>
+                  <p className="font-bold text-white uppercase text-[10px] tracking-wider">Managing Director</p>
+                  <p className="font-bold text-white text-sm">Tanmay Chaskar</p>
+                  <p>+91 84829 88462</p>
+                  <p className="font-mono text-[#de1615] text-[10px]">teamredbaron07@gmail.com</p>
+                </div>
+                <div>
+                  <p className="font-bold text-white uppercase text-[10px] tracking-wider">Marketing Director</p>
+                  <p className="font-bold text-white text-sm">Atharva Patil</p>
+                  <p>+91 88301 34073</p>
+                  <p className="font-mono text-[#de1615] text-[10px]">marketingteamredbaron@gmail.com</p>
+                </div>
+              </div>
             </div>
           </div>
 

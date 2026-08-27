@@ -5,8 +5,8 @@ import Link from "next/link";
 
 export function SponsorsMarquee() {
   const sponsors = [
-    { name: "VARROC", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/VARROC.png" },
-    { name: "ALTIUM", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/ALTIUM.png" },
+    { name: "VARROC", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/VARROC.png", url: "https://www.instagram.com/p/DZB2W0oEhQW/" },
+    { name: "ALTIUM", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/ALTIUM.png", url: "https://www.altium.com/education/sponsorships/team-stories/team-red-baron" },
     { name: "MAHLE", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/TITLE/MAHLE.png" },
     { name: "SKF", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/SKF.png" },
     { name: "FLUKE", logo: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/sponsors/PLATINUM/FLUKE.png" },
@@ -31,7 +31,9 @@ export function SponsorsMarquee() {
         {[...sponsors, ...sponsors, ...sponsors].map((s, idx) => (
           <Link
             key={idx}
-            href="/sponsors"
+            href={s.url || "/sponsors"}
+            target={s.url ? "_blank" : undefined}
+            rel={s.url ? "noreferrer" : undefined}
             className="flex items-center justify-center shrink-0 group filter grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-110 transition-all duration-300"
           >
             <div className="relative w-36 h-14 flex items-center justify-center">
