@@ -80,37 +80,6 @@ export function Hero() {
           Team Red Baron is a high-performance motorsports team from PCCOE Pune — a legacy of innovation, precision, and relentless pursuit of victory. We design and build All-Terrain Vehicles to compete on the toughest terrains in national & international competitions.
         </p>
 
-        {/* Hero Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto justify-center">
-          <button className="bg-[#de1615] text-white px-8 py-4 rounded-xl font-sora font-bold text-lg glow-red hover:bg-[#c00009] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
-            <Flame className="w-5 h-5 text-white animate-bounce" />
-            Explore the Hangar
-          </button>
-          <button className="glass-card text-white px-8 py-4 rounded-xl font-sora font-bold text-lg border border-white/20 hover:bg-white/10 hover:border-[#de1615] transition-all flex items-center justify-center gap-3">
-            <Cpu className="w-5 h-5 text-[#ff6534]" />
-            Technical Docs
-          </button>
-        </div>
-
-        {/* Sub-Technical Spec Telemetry Chips */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl">
-          <div className="glass-card p-4 rounded-xl border border-white/10 text-left">
-            <span className="font-mono-tech text-xs text-[#de1615] block mb-1">CHASSIS FRAME</span>
-            <span className="font-sora font-bold text-lg text-white">Chromoly 4130</span>
-          </div>
-          <div className="glass-card p-4 rounded-xl border border-white/10 text-left">
-            <span className="font-mono-tech text-xs text-[#de1615] block mb-1">POWER PLANT</span>
-            <span className="font-sora font-bold text-lg text-white">305cc Custom</span>
-          </div>
-          <div className="glass-card p-4 rounded-xl border border-white/10 text-left">
-            <span className="font-mono-tech text-xs text-[#de1615] block mb-1">SUSPENSION TRAVEL</span>
-            <span className="font-sora font-bold text-lg text-white">16 Inch Dual-A</span>
-          </div>
-          <div className="glass-card p-4 rounded-xl border border-white/10 text-left">
-            <span className="font-mono-tech text-xs text-[#de1615] block mb-1">TELEMETRY LINK</span>
-            <span className="font-sora font-bold text-lg text-white">Real-Time IoT</span>
-          </div>
-        </div>
 
       </div>
     </section>
