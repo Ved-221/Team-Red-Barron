@@ -592,7 +592,7 @@ export default function SponsorsPage() {
                   return (
                     <CardTag key={sp.name} {...cardLinkProps}>
                       {/* Logo Image — Retains original color on hover */}
-                      <div className="relative w-full h-16 flex items-center justify-center filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
+                      <div className="relative w-full h-16 flex items-center justify-center filter group-hover:scale-105 transition-all duration-300">
                         <Image
                           src={sp.logo}
                           alt={`${sp.name} Logo`}

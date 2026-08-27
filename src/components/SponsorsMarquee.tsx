@@ -34,7 +34,7 @@ export function SponsorsMarquee() {
             href={s.url || "/sponsors"}
             target={s.url ? "_blank" : undefined}
             rel={s.url ? "noreferrer" : undefined}
-            className="flex items-center justify-center shrink-0 group filter grayscale opacity-75 hover:grayscale-0 hover:opacity-100 hover:scale-110 transition-all duration-300"
+            className="flex items-center justify-center shrink-0 group filter hover:scale-110 transition-all duration-300"
           >
             <div className="relative w-36 h-14 flex items-center justify-center">
               <Image
