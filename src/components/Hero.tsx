@@ -4,7 +4,13 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Flame, ShieldAlert, Cpu } from "lucide-react";
 import { TitleTeamRedBaron } from "@/components/TitleTeamRedBaron";
-import { Hero3DLogo } from "@/components/Hero3DLogo";
+import dynamic from "next/dynamic";
+const Hero3DLogo = dynamic(() => import("@/components/Hero3DLogo").then((mod) => mod.Hero3DLogo), {
+  ssr: false,
+  loading: () => (
+    <div className="w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[340px] md:h-[340px] rounded-full border border-white/5 bg-black/40 shadow-[0_0_30px_rgba(222,22,21,0.2)] animate-pulse" />
+  ),
+});
 import { LogoRadialDistortion, type LogoRadialDistortionRef } from "@/components/LogoRadialDistortion";
 import GradientWaves from "@/components/ui/GradientWaves";
 

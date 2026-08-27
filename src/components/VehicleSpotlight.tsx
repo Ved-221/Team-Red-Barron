@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Gauge, Zap, Timer, CheckCircle2 } from "lucide-react";
+import { useInView } from "framer-motion";
 
 // Configurable media paths for ALBATROS XIII section
 const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/albatros-background.mp4";
@@ -10,6 +11,8 @@ const VEHICLE_IMAGE_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/
 
 export function VehicleSpotlight() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "300px" });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -19,14 +22,16 @@ export function VehicleSpotlight() {
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
     mediaQuery.addEventListener("change", handleChange);
 
-    if (videoRef.current && !mediaQuery.matches) {
-      videoRef.current.play().catch(() => {
-        // Autoplay policy fallback if browser restricts immediate playback
-      });
-    }
-
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
+
+  useEffect(() => {
+    if (videoRef.current && !prefersReducedMotion && isInView) {
+      videoRef.current.play().catch(() => {
+        // Autoplay policy fallback
+      });
+    }
+  }, [isInView, prefersReducedMotion]);
 
   const specs = [
     {
@@ -50,16 +55,15 @@ export function VehicleSpotlight() {
   ];
 
   return (
-    <section className="py-28 relative bg-[#0a0c0e] overflow-hidden min-h-[750px] flex items-center">
+    <section ref={containerRef} className="py-28 relative bg-[#0a0c0e] overflow-hidden min-h-[750px] flex items-center">
       {/* Layer 0: Background Video (Decorative, Full Bleed) */}
       {!prefersReducedMotion && (
         <video
           ref={videoRef}
-          autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden="true"
           tabIndex={-1}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0"
@@ -106,7 +110,6 @@ export function VehicleSpotlight() {
                   alt="Albatros XIII Flagship Offroad Vehicle"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority
                   unoptimized
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />

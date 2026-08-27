@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora, Inter, JetBrains_Mono } from "next/font/google";
 import { AgentationDevTools } from "@/components/AgentationDevTools";
 import { NavigationProgress } from "@/components/NavigationProgress";
+import { TRBLoadingScreen } from "@/components/TRBLoadingScreen";
 import "./globals.css";
 
 const sora = Sora({
@@ -41,6 +42,7 @@ export default function RootLayout({
     >
       <body className="bg-black text-[#e2e2e2] min-h-screen flex flex-col font-inter selection:bg-[#de1615] selection:text-white">
         <NavigationProgress />
+        <TRBLoadingScreen />
         {children}
         <AgentationDevTools />
       </body>

@@ -410,7 +410,6 @@ export function TRBEvolutionTimeline() {
                   alt="Team Red Baron Buggy"
                   fill
                   unoptimized
-                  priority
                   className="object-contain"
                 />{/* Rear Tire Smoke & Dust */}
                 <AnimatePresence>
