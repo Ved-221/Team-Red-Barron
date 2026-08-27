@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import Masonry, { MasonryItem } from "@/components/ui/Masonry";
@@ -145,6 +145,58 @@ const GALLERY_ITEMS: MasonryItem[] = [
 
 export default function GalleryPage() {
   const [selectedItem, setSelectedItem] = useState<MasonryItem | null>(null);
+  const [loadedImagesCount, setLoadedImagesCount] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    let loadedCount = 0;
+    const totalImages = GALLERY_ITEMS.length;
+
+    GALLERY_ITEMS.forEach((item) => {
+      const img = new window.Image();
+      img.src = item.img;
+      const handleLoadOrError = () => {
+        loadedCount++;
+        setLoadedImagesCount(loadedCount);
+        if (loadedCount === totalImages) {
+          setIsReady(true);
+        }
+      };
+      img.onload = handleLoadOrError;
+      img.onerror = handleLoadOrError;
+    });
+  }, []);
+
+  if (!isReady) {
+    return (
+      <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
+        <Navbar />
+        <div className="flex flex-col items-center justify-center flex-1 px-5 text-center mt-20">
+          <div className="flex items-center gap-3 glass-card px-6 py-3 rounded-full border border-white/10 mb-6 glow-red-sm">
+            <span className="flex h-3 w-3 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#de1615] opacity-75" />
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-[#de1615]" />
+            </span>
+            <span className="font-mono-tech text-sm tracking-widest text-[#ffb59f] uppercase font-bold animate-pulse">
+              DOWNLOADING ASSETS...
+            </span>
+          </div>
+          
+          {/* Progress Bar Container */}
+          <div className="w-full max-w-md h-2 bg-white/10 rounded-full overflow-hidden mb-3 border border-white/5">
+            <div 
+              className="h-full bg-gradient-to-r from-[#de1615] to-[#ff6534] transition-all duration-300 ease-out shadow-[0_0_10px_#de1615]"
+              style={{ width: `${(loadedImagesCount / GALLERY_ITEMS.length) * 100}%` }}
+            />
+          </div>
+          
+          <div className="font-mono-tech text-[#e2e2e2]/60 text-xs uppercase tracking-widest">
+            {Math.round((loadedImagesCount / GALLERY_ITEMS.length) * 100)}% ({loadedImagesCount} / {GALLERY_ITEMS.length})
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
