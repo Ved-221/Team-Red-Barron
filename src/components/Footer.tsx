@@ -38,7 +38,7 @@ export function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-black border border-white/10 p-1">
                 <Image
-                  src="/media/logo.png"
+                  src="/logo.png"
                   alt="Team Red Baron Logo"
                   width={40}
                   height={40}

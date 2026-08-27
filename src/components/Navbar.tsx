@@ -45,7 +45,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-10 h-10 overflow-hidden rounded-lg bg-black/40 border border-white/10 p-1 group-hover:border-[#de1615] transition-colors">
               <Image
-                src="/media/logo.png"
+                src="/logo.png"
                 alt="Team Red Baron Logo"
                 width={40}
                 height={40}
