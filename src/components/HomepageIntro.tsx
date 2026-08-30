@@ -36,7 +36,7 @@ interface DustParticle {
 }
 
 export function HomepageIntro() {
-  const [shouldPlay, setShouldPlay] = useState(false);
+  const [shouldPlay, setShouldPlay] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [isFading, setIsFading] = useState(false);
   
