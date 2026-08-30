@@ -8,10 +8,12 @@ import { GalleryPreview } from "@/components/GalleryPreview";
 import { SupportCTA } from "@/components/SupportCTA";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { HomepageIntro } from "@/components/HomepageIntro";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
+      <HomepageIntro />
       <Navbar />
 
       <Hero />
