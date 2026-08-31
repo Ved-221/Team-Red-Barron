@@ -468,8 +468,9 @@ export function HomepageIntro() {
                   transition:
                     "opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                   textShadow: isRevealed ? item.glow : "none",
+                  marginRight: index < characters.length - 1 && characters[index + 1].char !== " " && item.char !== " " ? "0.08em" : "0",
                 }}
-                className="uppercase tracking-wider inline-block leading-none select-none"
+                className="uppercase inline-block leading-none select-none"
               >
                 {item.char}
               </span>

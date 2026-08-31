@@ -53,17 +53,6 @@ export function Hero() {
       {/* Content Container */}
       <div className="relative z-20 max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 w-full flex flex-col items-center text-center">
 
-        {/* Technical Status Badge */}
-        <div className="inline-flex items-center gap-2 glass-card px-4 py-1.5 rounded-full mb-8 border border-white/10 glow-red-sm">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#de1615] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#de1615]" />
-          </span>
-          <span className="font-mono-tech text-xs tracking-widest text-[#ffb59f] uppercase font-bold">
-            INSPIRED TO BUILD, DETERMINED TO WIN.
-          </span>
-        </div>
-
         {/* Interactive 3D Team Logo Emblem with Localized Radial Distortion */}
         <div className="relative mb-6 flex items-center justify-center">
           <LogoRadialDistortion ref={distortionRef} />
@@ -73,6 +62,13 @@ export function Hero() {
         {/* 3D Extruded Title using React Bits DepthText */}
         <div className="mb-6">
           <TitleTeamRedBaron />
+        </div>
+
+        {/* Hero Tagline */}
+        <div className="mb-8 mt-2 relative">
+          <p className="font-mono text-xs sm:text-sm text-[#ff6534] font-semibold tracking-wider uppercase">
+            &quot;Inspired To Build, Determined To Win.&quot;
+          </p>
         </div>
 
         {/* Hero Copy */}

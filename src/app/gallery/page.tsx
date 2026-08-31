@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import Masonry, { MasonryItem } from "@/components/ui/Masonry";
 import { FoldText } from "@/components/ui/FoldText";
 import { Camera, X } from "lucide-react";
+import Image from "next/image";
 
 const GALLERY_ITEMS: MasonryItem[] = [
   {
@@ -145,6 +146,60 @@ const GALLERY_ITEMS: MasonryItem[] = [
 
 export default function GalleryPage() {
   const [selectedItem, setSelectedItem] = useState<MasonryItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      const urls = GALLERY_ITEMS.map((item) => item.img);
+      await Promise.all(
+        urls.map((src) => {
+          return new Promise<void>((resolve) => {
+            const img = new window.Image();
+            img.src = src;
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+          });
+        })
+      );
+      setIsLoading(false);
+    };
+
+    loadImages();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <main className="fixed inset-0 z-[100] bg-[#050608] flex flex-col items-center justify-center pointer-events-auto">
+        {/* Subtle grid and gradient background for premium feel */}
+        <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(222,22,21,0.08)_0%,transparent_60%)] pointer-events-none" />
+        
+        <div className="relative z-10 flex flex-col items-center">
+          {/* TRB Logo */}
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 mb-8">
+            <Image
+              src="/logo.png"
+              alt="Team Red Baron Logo"
+              fill
+              priority
+              className="object-contain drop-shadow-[0_0_20px_rgba(222,22,21,0.4)]"
+            />
+          </div>
+          
+          {/* Loading Indicator */}
+          <div className="flex items-center gap-3 glass-card px-5 py-2 rounded-full border border-white/10">
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#de1615] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#de1615]" />
+            </span>
+            <span className="font-mono-tech text-[10px] sm:text-xs tracking-widest text-[#ffb59f] uppercase font-bold animate-pulse">
+              LOADING HIGH RESOLUTION ARCHIVE...
+            </span>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">

@@ -20,6 +20,7 @@ export function TitleTeamRedBaron() {
         tilt={5}
         autoOrbit={true}
         orbitSpeed={0.3}
+        className="tracking-[0.25em]"
       />
       <DepthText
         text="RED"
@@ -33,6 +34,7 @@ export function TitleTeamRedBaron() {
         tilt={5}
         autoOrbit={true}
         orbitSpeed={0.3}
+        className="tracking-[0.25em]"
       />
       <DepthText
         text="BARON"
@@ -46,6 +48,7 @@ export function TitleTeamRedBaron() {
         tilt={5}
         autoOrbit={true}
         orbitSpeed={0.3}
+        className="tracking-[0.25em]"
       />
     </div>
   );

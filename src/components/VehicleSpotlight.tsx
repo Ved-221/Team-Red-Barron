@@ -33,28 +33,59 @@ export function VehicleSpotlight() {
     }
   }, [isInView, prefersReducedMotion]);
 
+function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { value: number, prefix?: string, suffix?: string, inView?: boolean }) {
+  const [displayValue, setDisplayValue] = useState(0);
+  
+  useEffect(() => {
+    if (!inView) return;
+    let startTimestamp: number | null = null;
+    const duration = 2000; // 2 seconds
+    
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      // easeOutExpo
+      const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setDisplayValue(Math.floor(easeOut * value));
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [value, inView]);
+
+  return <>{prefix}{displayValue}{suffix}</>;
+}
+
   const specs = [
     {
       label: "CURB WEIGHT",
       value: "191 KG",
+      num: 191,
+      suffix: " KG",
       detail: "LIGHTWEIGHT COMPOSITE",
       icon: Gauge,
     },
     {
       label: "TOP SPEED",
       value: "58 KM/H",
+      num: 58,
+      suffix: " KM/H",
       detail: "ALL-TERRAIN",
       icon: Zap,
     },
     {
       label: "DRIVETRAIN",
       value: "2WD/4WD",
+      num: null,
       detail: "SWITCHABLE SYSTEM",
       icon: Timer,
     },
     {
       label: "NATIONAL RANK",
       value: "AIR 3",
+      num: 3,
+      prefix: "AIR ",
       detail: "BAJA SAE INDIA",
       icon: CheckCircle2,
     },
@@ -162,7 +193,11 @@ export function VehicleSpotlight() {
                       {spec.label}
                     </span>
                     <span className="font-sora font-extrabold text-2xl sm:text-3xl text-white">
-                      {spec.value}
+                      {spec.num !== null ? (
+                        <AnimatedNumber value={spec.num} prefix={spec.prefix} suffix={spec.suffix} inView={isInView} />
+                      ) : (
+                        spec.value
+                      )}
                     </span>
                   </div>
                 </div>
