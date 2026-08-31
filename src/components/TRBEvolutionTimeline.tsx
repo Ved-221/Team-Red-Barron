@@ -364,12 +364,23 @@ export function TRBEvolutionTimeline() {
                   {activeMilestone.subtitle}
                 </span>
 
-                <p className="font-inter text-base text-[#e2e2e2]/90 leading-relaxed">
+                <p className="font-inter text-base text-[#e2e2e2]/90 leading-relaxed mb-6">
                   {activeMilestone.description}
-                  <span className="block mt-3 text-sm text-[#ff6534] font-mono-tech tracking-wide uppercase font-semibold">
-                    {activeMilestone.specs.map(sp => `${sp.label}: ${sp.val}`).join(" • ")}
-                  </span>
                 </p>
+
+                {/* Specs */}
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
+                  {activeMilestone.specs.map((sp, idx) => (
+                    <div key={idx} className="bg-white/5 p-3.5 rounded-xl border border-white/5">
+                      <span className="font-mono-tech text-[10px] text-[#e8bdb6] block uppercase tracking-wider mb-0.5">
+                        {sp.label}
+                      </span>
+                      <span className="font-sora font-bold text-sm sm:text-base text-white">
+                        {sp.val}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
