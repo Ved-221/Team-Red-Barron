@@ -7,7 +7,7 @@ import { useInView } from "framer-motion";
 
 // Configurable media paths for ALBATROS XIV section
 const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/albatros-background.mp4";
-const VEHICLE_IMAGE_PATH = "/final_photo_vehicle.png";
+const VEHICLE_IMAGE_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png";
 
 export function VehicleSpotlight() {
   const videoRef = useRef<HTMLVideoElement>(null);

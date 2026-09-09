@@ -25,7 +25,7 @@ const milestones: VehicleMilestone[] = [
     subtitle: "AIR 3 Overall Podium & BEST 4WD",
     badge: "BEST 4WD",
     icon: ShieldCheck,
-    imageSrc: "/final_photo_vehicle.png",
+    imageSrc: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png",
     description:
       "Secured AIR 3 overall and AIR 4 in both Statics and Dynamics, emerging as the best-performing 4WD vehicle and continuing the team’s engineering evolution.",
     specs: [
