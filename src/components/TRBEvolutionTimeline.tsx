@@ -418,11 +418,11 @@ export function TRBEvolutionTimeline() {
                 rotate: { duration: 0.3 },
                 y: { repeat: isDriving ? Infinity : 0, duration: 0.2 },
               }}
-              className="absolute bottom-0 -translate-x-1/2 w-28 sm:w-36 md:w-44 h-auto pointer-events-none z-30 flex flex-col items-center"
+              className="absolute bottom-0 -translate-x-1/2 w-36 sm:w-48 md:w-60 h-auto pointer-events-none z-30 flex flex-col items-center"
             >
               <div className="relative w-full aspect-[4/3] drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)]">
                 <Image
-                  src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"
+                  src="/final_photo_vehicle.png"
                   alt="Team Red Baron Buggy"
                   fill
                   unoptimized

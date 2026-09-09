@@ -6,7 +6,7 @@ import { Gauge, Zap, Timer, CheckCircle2 } from "lucide-react";
 import { useInView } from "framer-motion";
 
 // Configurable media paths for ALBATROS XIV section
-const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/albatros-background.mp4";
+const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/trb_bg_optimized.mp4";
 const VEHICLE_IMAGE_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png";
 
 export function VehicleSpotlight() {
