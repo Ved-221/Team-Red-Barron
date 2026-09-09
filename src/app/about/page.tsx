@@ -23,10 +23,10 @@ export const metadata = {
 };
 
 const stats = [
-  { label: "Years Active", value: "12+", icon: Trophy, note: "Est. 2012 at PCCOE" },
-  { label: "Vehicles Built", value: "13", icon: Wrench, note: "Albatros I to XIII" },
-  { label: "National Podiums", value: "10+", icon: Award, note: "BAJA SAE India" },
-  { label: "In-House Engineering", value: "100%", icon: Cpu, note: "Chassis & Telemetry" },
+  { label: "Years Active", value: "14+", icon: Trophy, note: "Estd. In 2011" },
+  { label: "Vehicles Built", value: "14", icon: Wrench, note: "Albatross 1 to 14" },
+  { label: "ICE Era", value: "2012-2022", icon: Award, note: "Combustion Engine" },
+  { label: "Electric Era", value: "2023-Present", icon: Cpu, note: "EV Powertrain" },
 ];
 
 export default function AboutPage() {
@@ -61,7 +61,7 @@ export default function AboutPage() {
             {/* Status Badge Pill */}
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#252e39]/60 border border-[#de1615]/40 text-[#ffb4a9] text-xs font-mono tracking-widest uppercase mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(222,22,21,0.2)]">
               <span className="w-2 h-2 rounded-full bg-[#de1615] animate-ping" />
-              PCCOE MOTORSPORT / EST. 2012
+              PCCOE MOTORSPORT / EST. 2011
             </div>
 
             <h1 className="font-sora font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white mb-6 leading-tight">
@@ -114,23 +114,20 @@ export default function AboutPage() {
               </div>
 
               <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-tight">
-                Driven by Passion, <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#ffb59f] to-[#de1615]">
-                  Engineered for Podium Victory
-                </span>
+                Innovate. Engineer. Evolve.
               </h2>
 
               <p className="font-inter text-[#e8bdb6] text-base sm:text-lg leading-relaxed font-normal">
-                Team Red Baron is the premier collegiate offroad racing team from Pimpri Chinchwad College of Engineering (PCCOE), Pune. Established in 2012, our team brings together ambitious student engineers who design, fabricate, and race custom All-Terrain Vehicles (ATVs) for national BAJA SAE competitions.
+                Team Red Baron is the first and official motorsports team of Pimpri Chinchwad College of Engineering (PCCOE), Pune. Founded in 2011 from a vision conceived by a group of 25 student engineers, the team began its journey by building its first Albatros ATV for BAJA SAE India. What started as a student-built off-road racing project has evolved into a decade-long legacy of engineering innovation, from combustion-powered ATVs to advanced electric and 4WD platforms. Today, Team Red Baron continues to design, manufacture, test, and race high-performance ATVs on national and international stage.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
                 <div className="p-5 rounded-2xl glass-card border border-white/10 bg-[#1e2020]/60 flex items-start gap-3.5 hover:border-[#de1615]/40 transition-all">
                   <Target className="w-5 h-5 text-[#de1615] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-sora font-bold text-sm text-white">Our Mission</h4>
+                    <h4 className="font-sora font-bold text-sm text-white">Our Vision</h4>
                     <p className="text-xs text-[#ae8882] mt-1 leading-relaxed">
-                      To push the frontiers of automotive engineering through student-led innovation and domain mastery.
+                      To become a leading student motorsports team recognized for innovation, technical excellence, and teamwork in designing and developing high-performance electric All-Terrain Vehicles, while representing the institution successfully at national and international competitions such as eBAJA SAE India and Baja SAE International.
                     </p>
                   </div>
                 </div>
@@ -138,9 +135,9 @@ export default function AboutPage() {
                 <div className="p-5 rounded-2xl glass-card border border-white/10 bg-[#1e2020]/60 flex items-start gap-3.5 hover:border-[#ff6534]/40 transition-all">
                   <ShieldCheck className="w-5 h-5 text-[#ff6534] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-sora font-bold text-sm text-white">Our Values</h4>
+                    <h4 className="font-sora font-bold text-sm text-white">Our Mission</h4>
                     <p className="text-xs text-[#ae8882] mt-1 leading-relaxed">
-                      Safety without compromise, mechanical precision, and an unyielding spirit on the track.
+                      To design and manufacture reliable, competitive electric ATVs through innovative engineering, while developing technical, leadership, and teamwork skills through hands-on learning, representing our institution with excellence, and advancing sustainable automotive technologies.
                     </p>
                   </div>
                 </div>

@@ -5,9 +5,9 @@ import Image from "next/image";
 import { Gauge, Zap, Timer, CheckCircle2 } from "lucide-react";
 import { useInView } from "framer-motion";
 
-// Configurable media paths for ALBATROS XIII section
+// Configurable media paths for ALBATROS XIV section
 const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/albatros-background.mp4";
-const VEHICLE_IMAGE_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png";
+const VEHICLE_IMAGE_PATH = "/final_photo_vehicle.png";
 
 export function VehicleSpotlight() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -78,7 +78,7 @@ function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { v
       label: "DRIVETRAIN",
       value: "2WD/4WD",
       num: null,
-      detail: "SWITCHABLE SYSTEM",
+      detail: "DYNAMIC SHIFTING",
       icon: Timer,
     },
     {
@@ -132,7 +132,7 @@ function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { v
           </h2>
 
           <p className="font-inter text-base sm:text-lg text-white/90 mb-8 leading-relaxed max-w-xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-            The Albatrox XIV is a masterwork of lightweight composite construction, telemetry integration, and extreme-travel suspension. Engineered specifically for high-speed desert endurance and ruthless terrain conquering.
+            This is the vehicle engineered for the eBAJA India 2026 season, built with a focus on innovation, adaptability, and performance. It features a Dynamic Shifting System, allowing the driver to switch between 2WD and 4WD on demand. Equipped with an in-house manufactured battery pack for peak efficiency.
           </p>
 
           {/* Vehicle Card - Positioned Prominently Above / Beside Stats */}

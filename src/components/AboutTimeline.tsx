@@ -19,6 +19,23 @@ interface VehicleMilestone {
 
 const milestones: VehicleMilestone[] = [
   {
+    year: "2026",
+    vehicleName: "Albatros XIV",
+    rank: "AIR 3 National",
+    subtitle: "AIR 3 Overall Podium & BEST 4WD",
+    badge: "BEST 4WD",
+    icon: ShieldCheck,
+    imageSrc: "/final_photo_vehicle.png",
+    description:
+      "Secured AIR 3 overall and AIR 4 in both Statics and Dynamics, emerging as the best-performing 4WD vehicle and continuing the team’s engineering evolution.",
+    specs: [
+      { label: "OVERALL RANK", val: "AIR 3 National" },
+      { label: "STATICS RANK", val: "AIR 4 Overall" },
+      { label: "DYNAMICS RANK", val: "AIR 4 Overall" },
+      { label: "AWARD", val: "Best 4WD Vehicle" },
+    ],
+  },
+  {
     year: "2025",
     vehicleName: "Albatros XIII",
     rank: "AIR 3 National",

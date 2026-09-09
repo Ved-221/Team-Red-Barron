@@ -236,6 +236,22 @@ const MILESTONES: Milestone[] = [
     ],
     eraLabel: "2025 — ALBATROS XIII",
   },
+  {
+    id: "m2026",
+    year: "2026",
+    title: "Albatros XIV",
+    subtitle: "AIR 3 OVERALL & BEST 4WD",
+    rank: "AIR 3 National",
+    description:
+      "Secured AIR 3 overall and AIR 4 in both Statics and Dynamics, emerging as the best-performing 4WD vehicle and continuing the team’s engineering evolution.",
+    badge: "BEST 4WD",
+    icon: ShieldCheck,
+    specs: [
+      { label: "OVERALL RANK", val: "AIR 3" },
+      { label: "STATICS & DYNAMICS", val: "AIR 4" },
+    ],
+    eraLabel: "2026 — ALBATROS XIV",
+  },
 ];
 
 const WINDOW_SIZE = 5; // Display max 5 nodes at a time for optimal spacing
@@ -406,7 +422,7 @@ export function TRBEvolutionTimeline() {
             >
               <div className="relative w-full aspect-[4/3] drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)]">
                 <Image
-                  src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"
+                  src="/final_photo_vehicle.png"
                   alt="Team Red Baron Buggy"
                   fill
                   unoptimized

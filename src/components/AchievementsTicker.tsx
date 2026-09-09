@@ -4,12 +4,14 @@ import { Trophy, Award, History, Car, ShieldCheck, Zap } from "lucide-react";
 
 export function AchievementsTicker() {
   const stats = [
-    { label: "BAJA SAE 2025", value: "AIR 3", icon: Trophy, detail: "Overall National Rank" },
-    { label: "e-BAJA SAE 2024", value: "RUNNER-UP", icon: Award, detail: "Overall National Standing" },
-    { label: "Years of Legacy", value: "14 YEARS", icon: History, detail: "Active 2012 – 2025" },
-    { label: "Vehicles Built", value: "13 ATVs", icon: Car, detail: "Albatros 1.0 to XIII" },
-    { label: "Overall Statics 2022", value: "1ST RANK", icon: ShieldCheck, detail: "Best 4WD ATV Award" },
-    { label: "BAJA SAE USA 2021", value: "TOP 10", icon: Zap, detail: "Only Indian Team in Top 10" },
+    { label: "Years of Legacy", value: "15 YEARS", icon: History, detail: "Active 2011 – Present" },
+    { label: "Vehicles Built", value: "14 ATVs", icon: Car, detail: "Albatros 1.0 to XIV" },
+    { label: "E-BAJA INDIA 2025", value: "1ST RANK", icon: ShieldCheck, detail: "Overall Statics" },
+    { label: "E-BAJA INDIA 2024", value: "AIR 1", icon: Trophy, detail: "Engineering Design" },
+    { label: "E-BAJA INDIA 2024", value: "AIR 2", icon: Award, detail: "Overall National Rank" },
+    { label: "E-BAJA INDIA", value: "BEST 4WD", icon: Zap, detail: "Performance Award" },
+    { label: "Baja SAE Illinois 2017", value: "9TH RANK", icon: Car, detail: "Overall Dynamics (USA)" },
+    { label: "Baja SAE Rochester 2019", value: "7TH RANK", icon: History, detail: "Hill Climbing (USA)" },
   ];
 
   return (

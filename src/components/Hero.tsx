@@ -67,7 +67,7 @@ export function Hero() {
         {/* Hero Tagline */}
         <div className="mb-8 mt-2 relative">
           <p className="font-mono text-xs sm:text-sm text-[#ff6534] font-semibold tracking-wider uppercase">
-            &quot;Inspired To Build, Determined To Win.&quot;
+            Innovate. Engineer. Evolve.
           </p>
         </div>
 
