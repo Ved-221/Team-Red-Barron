@@ -2,6 +2,7 @@
 
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import Image from 'next/image';
 
 import './Masonry.css';
 
@@ -64,18 +65,6 @@ const useMeasure = (): [React.RefObject<HTMLDivElement | null>, { width: number;
   return [ref, size];
 };
 
-const preloadImages = async (urls: string[]) => {
-  await Promise.all(
-    urls.map(
-      src =>
-        new Promise<void>(resolve => {
-          const img = new Image();
-          img.src = src;
-          img.onload = img.onerror = () => resolve();
-        })
-    )
-  );
-};
 
 export default function Masonry({
   items,
@@ -97,7 +86,6 @@ export default function Masonry({
   );
 
   const [containerRef, { width }] = useMeasure();
-  const [imagesReady, setImagesReady] = useState(false);
   const revealedIds = useRef<Set<string>>(new Set());
 
   const getInitialPosition = (item: { x: number; y: number; w: number; h: number }) => {
@@ -122,9 +110,6 @@ export default function Masonry({
     }
   };
 
-  useEffect(() => {
-    preloadImages(items.map(i => i.img)).then(() => setImagesReady(true));
-  }, [items]);
 
   const { grid, totalHeight } = useMemo(() => {
     if (!width) return { grid: [], totalHeight: 0 };
@@ -151,7 +136,7 @@ export default function Masonry({
   const hasMounted = useRef(false);
 
   useLayoutEffect(() => {
-    if (!imagesReady || !containerRef.current) return;
+    if (!containerRef.current) return;
 
     if (!hasMounted.current) {
       grid.forEach((item) => {
@@ -229,7 +214,7 @@ export default function Masonry({
         }
       });
     }
-  }, [grid, imagesReady, duration, ease, blurToFocus]);
+  }, [grid, duration, ease, blurToFocus]);
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>, item: MasonryItem) => {
     if (!scaleOnHover) return;
@@ -269,7 +254,8 @@ export default function Masonry({
             onMouseEnter={e => handleMouseEnter(e, item)}
             onMouseLeave={e => handleMouseLeave(e, item)}
           >
-            <div className="item-img" style={{ backgroundImage: `url(${item.img})` }}>
+            <div className="item-img">
+              <Image src={item.img} alt={item.title || "Gallery item"} fill className="object-cover" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" />
               {colorShiftOnHover && (
                 <div
                   className="color-overlay"
