@@ -5,11 +5,9 @@ import Image from "next/image";
 import { Gauge, Zap, Timer, CheckCircle2 } from "lucide-react";
 import { useInView } from "framer-motion";
 
-// Configurable media paths for ALBATROS XIV section
 const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/trb_bg_optimized.mp4";
-const VEHICLE_IMAGE_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png";
 
-export function VehicleSpotlight() {
+export function VehicleSpotlight({ vehicleData }: { vehicleData: any }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "300px" });
@@ -33,63 +31,7 @@ export function VehicleSpotlight() {
     }
   }, [isInView, prefersReducedMotion]);
 
-function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { value: number, prefix?: string, suffix?: string, inView?: boolean }) {
-  const [displayValue, setDisplayValue] = useState(0);
-  
-  useEffect(() => {
-    if (!inView) return;
-    let startTimestamp: number | null = null;
-    const duration = 2000; // 2 seconds
-    
-    const step = (timestamp: number) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      // easeOutExpo
-      const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      setDisplayValue(Math.floor(easeOut * value));
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      }
-    };
-    window.requestAnimationFrame(step);
-  }, [value, inView]);
-
-  return <>{prefix}{displayValue}{suffix}</>;
-}
-
-  const specs = [
-    {
-      label: "CURB WEIGHT",
-      value: "191 KG",
-      num: 191,
-      suffix: " KG",
-      detail: "LIGHTWEIGHT COMPOSITE",
-      icon: Gauge,
-    },
-    {
-      label: "TOP SPEED",
-      value: "58 KM/H",
-      num: 58,
-      suffix: " KM/H",
-      detail: "ALL-TERRAIN",
-      icon: Zap,
-    },
-    {
-      label: "DRIVETRAIN",
-      value: "2WD/4WD",
-      num: null,
-      detail: "DYNAMIC SHIFTING",
-      icon: Timer,
-    },
-    {
-      label: "NATIONAL RANK",
-      value: "AIR 3",
-      num: 3,
-      prefix: "AIR ",
-      detail: "BAJA SAE INDIA",
-      icon: CheckCircle2,
-    },
-  ];
+  if (!vehicleData) return null;
 
   return (
     <section ref={containerRef} className="py-28 relative bg-[#0a0c0e] overflow-hidden min-h-[750px] flex items-center">
@@ -119,7 +61,7 @@ function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { v
 
       {/* Layer 3: Section Content */}
       <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-[3] w-full">
-        
+
         {/* Left / Top Column: Vehicle Spotlight Header & Photo */}
         <div className="lg:col-span-6 flex flex-col">
           <div className="inline-flex items-center gap-2 font-mono-tech text-xs text-[#de1615] tracking-widest uppercase mb-4 drop-shadow">
@@ -128,23 +70,23 @@ function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { v
           </div>
 
           <h2 className="font-sora font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white mb-6 tracking-tight uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-            ALBATROX <span className="text-[#de1615]">XIV</span>
+            {vehicleData.vehicle_name || "ALBATROX XIV"}
           </h2>
 
           <p className="font-inter text-base sm:text-lg text-white/90 mb-8 leading-relaxed max-w-xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-            This is the vehicle engineered for the eBAJA India 2026 season, built with a focus on innovation, adaptability, and performance. It features a Dynamic Shifting System, allowing the driver to switch between 2WD and 4WD on demand. Equipped with an in-house manufactured battery pack for peak efficiency.
+            {vehicleData.description || "This is the vehicle engineered for the eBAJA India season, built with a focus on innovation, adaptability, and performance."}
           </p>
 
           {/* Vehicle Card - Positioned Prominently Above / Beside Stats */}
           <div className="relative group w-full">
             <div className="absolute -inset-2 bg-gradient-to-r from-[#de1615] via-[#ff6534] to-[#de1615] rounded-[2.5rem] blur-xl opacity-25 group-hover:opacity-60 transition duration-700" />
-            
+
             <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden glass-card border border-white/20 shadow-2xl">
               {/* Vehicle Card Image */}
               <div className="relative w-full h-full overflow-hidden">
                 <Image
-                  src={VEHICLE_IMAGE_PATH}
-                  alt="Albatrox XIV Flagship Offroad Vehicle"
+                  src={vehicleData.image_url || "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png"}
+                  alt={vehicleData.vehicle_name || "Flagship Offroad Vehicle"}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   unoptimized
@@ -160,7 +102,7 @@ function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { v
                     CHASSIS SERIAL
                   </span>
                   <span className="font-sora font-extrabold text-lg sm:text-xl text-white">
-                    TRB-2026-X14
+                    {`TRB-${vehicleData.year || "2026"}`}
                   </span>
                 </div>
                 <span className="font-mono-tech text-xs font-bold text-white bg-[#de1615] px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl glow-red">
@@ -177,8 +119,9 @@ function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { v
             TELEMETRY & TECHNICAL SPECIFICATIONS
           </span>
 
-          {specs.map((spec, idx) => {
-            const Icon = spec.icon;
+          {(vehicleData.vehicle_specs || []).map((spec: any, idx: number) => {
+            const icons = [Gauge, Zap, Timer, CheckCircle2];
+            const Icon = icons[idx % icons.length];
             return (
               <div
                 key={idx}
@@ -193,17 +136,30 @@ function AnimatedNumber({ value, prefix = "", suffix = "", inView = false }: { v
                       {spec.label}
                     </span>
                     <span className="font-sora font-extrabold text-2xl sm:text-3xl text-white">
-                      {spec.num !== null ? (
-                        <AnimatedNumber value={spec.num} prefix={spec.prefix} suffix={spec.suffix} inView={isInView} />
-                      ) : (
-                        spec.value
-                      )}
+                      {spec.value}
                     </span>
                   </div>
                 </div>
-                <span className="font-mono-tech text-[10px] sm:text-xs text-[#de1615] bg-[#de1615]/20 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-[#de1615]/40 font-medium shadow-sm shrink-0">
-                  {spec.detail}
-                </span>
+                {(() => {
+                  const getBadge = (label: string) => {
+                    if (label.toUpperCase() === 'CURB WEIGHT') return 'LIGHTWEIGHT COMPOSITE';
+                    if (label.toUpperCase() === 'TOP SPEED') return 'ALL-TERRAIN';
+                    if (label.toUpperCase() === 'DRIVETRAIN') return 'DYNAMIC SHIFTING';
+                    if (label.toUpperCase() === 'NATIONAL RANK') return 'BAJA SAE INDIA';
+                    return null;
+                  };
+                  const badgeText = getBadge(spec.label);
+                  if (badgeText) {
+                    return (
+                      <div className="hidden sm:block">
+                        <span className="font-mono-tech text-[10px] sm:text-xs font-bold text-[#de1615] bg-[#de1615]/10 border border-[#de1615]/30 px-3 py-1.5 rounded-full uppercase tracking-wider">
+                          {badgeText}
+                        </span>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
               </div>
             );
           })}

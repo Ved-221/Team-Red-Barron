@@ -22,246 +22,28 @@ interface Milestone {
   rank?: string;
   description: string;
   badge: string;
-  icon: React.ElementType;
+  icon: string;
   specs: { label: string; val: string }[];
   eraLabel: string;
 }
 
-const MILESTONES: Milestone[] = [
-  {
-    id: "m2012",
-    year: "2012",
-    title: "Albatros 1.0",
-    subtitle: "PCCOE BAJA FOUNDATION",
-    rank: "34th AIR",
-    description:
-      "Founded by 25 undergraduates inspired by Capt. Richthofen 'The Red Baron'. Albatros 1.0 ranked 34th nationally in BAJA SAE India 2012.",
-    badge: "FOUNDING ERA",
-    icon: Flag,
-    specs: [
-      { label: "FRAME", val: "Tubular Spaceframe" },
-      { label: "RANK", val: "34th AIR" },
-    ],
-    eraLabel: "2012 — ALBATROS 1.0",
-  },
-  {
-    id: "m2013",
-    year: "2013",
-    title: "Albatros 2.0",
-    subtitle: "TOP 5 INNOVATION AWARD",
-    rank: "30th AIR",
-    description:
-      "Pioneered independent leaf spring front suspension (nominated in Top 5 Innovations). Ranked 30th out of 125 teams.",
-    badge: "INNOVATION NOMINEE",
-    icon: Cpu,
-    specs: [
-      { label: "SUSPENSION", val: "Leaf Spring Front" },
-      { label: "RANK", val: "30th / 125 Teams" },
-    ],
-    eraLabel: "2013 — ALBATROS 2.0",
-  },
-  {
-    id: "m2014",
-    year: "2014",
-    title: "Albatros 3.0",
-    subtitle: "ENGINEERING DESIGN WINNER",
-    rank: "8th AIR Podium",
-    description:
-      "Won 'Best Engineering Design' award. Cleared Hill-climb in 13s and zero penalty maneuverability. Ranked 8th overall.",
-    badge: "DESIGN CHAMPION",
-    icon: Trophy,
-    specs: [
-      { label: "AWARD", val: "Best Design" },
-      { label: "OVERALL", val: "8th Rank AIR" },
-    ],
-    eraLabel: "2014 — ALBATROS 3.0",
-  },
-  {
-    id: "m2015",
-    year: "2015",
-    title: "Albatros 4.0",
-    subtitle: "4-HOUR ENDURANCE MILESTONE",
-    rank: "12th AIR",
-    description:
-      "First vehicle to complete the grueling 4-hour BAJA SAE endurance race without mechanical failure. Ranked 12th overall.",
-    badge: "ENDURANCE PROVEN",
-    icon: ShieldCheck,
-    specs: [
-      { label: "ENDURANCE", val: "4-Hour Finished" },
-      { label: "RANK", val: "12th AIR" },
-    ],
-    eraLabel: "2015 — ALBATROS 4.0",
-  },
-  {
-    id: "m2016",
-    year: "2016",
-    title: "Albatros 5.0",
-    subtitle: "COMPOSITE STEERING PRIZE",
-    rank: "5th AIR Design",
-    description:
-      "Won 2nd Prize in Tech Innovation for composite steering. 5th in Design, 6th Lightest Vehicle, 7th in Acceleration.",
-    badge: "COMPOSITE TECH",
-    icon: Zap,
-    specs: [
-      { label: "TECH AWARD", val: "2nd Prize Composite" },
-      { label: "WEIGHT", val: "6th Lightest" },
-    ],
-    eraLabel: "2016 — ALBATROS 5.0",
-  },
-  {
-    id: "m2017",
-    year: "2017",
-    title: "Albatros 6.0",
-    subtitle: "USA ILLINOIS & ESI RUNNER-UP",
-    rank: "Overall Runner-Up",
-    description:
-      "First international entry (BAJA SAE Illinois USA: 7th fastest). ESI 2017 Overall Runner-Up (1st Design). MegaATV Overall Runner-Up.",
-    badge: "INTERNATIONAL USA",
-    icon: Flag,
-    specs: [
-      { label: "ESI 2017", val: "Overall Runner-Up" },
-      { label: "USA DEBUT", val: "BAJA Illinois" },
-    ],
-    eraLabel: "2017 — ALBATROS 6.0",
-  },
-  {
-    id: "m2018",
-    year: "2018",
-    title: "Albatros 7.0",
-    subtitle: "RUNNER-UP DURABILITY AWARD",
-    rank: "2nd AIR Endurance",
-    description:
-      "BAJA SAE India 2nd in 4-hour Endurance Race, Runner-up Durability Award. ESI 2018 Overall 2nd Runner-up.",
-    badge: "NATIONAL PODIUM",
-    icon: Trophy,
-    specs: [
-      { label: "ENDURANCE", val: "2nd Place AIR" },
-      { label: "ESI 2018", val: "2nd Runner-up" },
-    ],
-    eraLabel: "2018 — ALBATROS 7.0",
-  },
-  {
-    id: "m2019",
-    year: "2019",
-    title: "Albatros 8.0",
-    subtitle: "BAJA USA ROCHESTER & ESI CHAMP",
-    rank: "Top 5 AIR",
-    description:
-      "Competed in BAJA SAE India (Top 5), ESI (1st Design, 2nd Cost, 3rd Endurance), and BAJA SAE USA at Rochester NY.",
-    badge: "TRIPLE COMPETITION",
-    icon: Sparkles,
-    specs: [
-      { label: "ESI DESIGN", val: "1st Rank" },
-      { label: "USA VENUE", val: "Rochester NY" },
-    ],
-    eraLabel: "2019 — ALBATROS 8.0",
-  },
-  {
-    id: "m2020",
-    year: "2020",
-    title: "Albatros 9.0",
-    subtitle: "ESI RUNNER-UP & CVT RE-ENGINEER",
-    rank: "Overall Runner-Up",
-    description:
-      "ESI 2020 Overall Runners-up (1st Design, 1st Cost, 2nd Endurance, Fastest Lap Award). BAJA SAE India 3rd Design, 2nd Rock Crawl.",
-    badge: "ESI RUNNER-UP",
-    icon: Cpu,
-    specs: [
-      { label: "ESI OVERALL", val: "2nd Rank" },
-      { label: "CVT DYNAMICS", val: "In-House S1" },
-    ],
-    eraLabel: "2020 — ALBATROS 9.0",
-  },
-  {
-    id: "m2021",
-    year: "2021",
-    title: "Albatros X",
-    subtitle: "FOUR-WHEEL-DRIVE PIONEER",
-    rank: "1st AIR Design",
-    description:
-      "Pioneered team's first 4WD powertrain. Led BAJA SAE India 2021 Design Standings & 2nd Runner-Up Cost in BAJA International.",
-    badge: "4WD INNOVATION",
-    icon: Zap,
-    specs: [
-      { label: "DRIVETRAIN", val: "First 4WD Spec" },
-      { label: "DESIGN", val: "1st Standings AIR" },
-    ],
-    eraLabel: "2021 — ALBATROS X (4WD)",
-  },
-  {
-    id: "m2022",
-    year: "2022",
-    title: "Albatros XR",
-    subtitle: "BEST 4WD ATV & 1ST STATICS",
-    rank: "1st AIR Statics",
-    description:
-      "Won Best 4WD ATV Award & 1st Rank in Overall Statics at BAJA SAE India 2022. First team to clear Technical Inspection on 1st attempt.",
-    badge: "BEST 4WD ATV",
-    icon: Trophy,
-    specs: [
-      { label: "STATICS", val: "1st Rank AIR" },
-      { label: "TECH INSPECTION", val: "1st Attempt" },
-    ],
-    eraLabel: "2022 — ALBATROS XR",
-  },
-  {
-    id: "m2024",
-    year: "2024",
-    title: "e-BAJA SAE 2024",
-    subtitle: "NATIONAL OVERALL RUNNER-UP",
-    rank: "National Runner-Up",
-    description:
-      "Overall Runner-Up at e-BAJA SAE 2024. Winner of Green Efficient Vehicle, Engineering Design, and Engineering Innovation awards.",
-    badge: "ELECTRIC ERA",
-    icon: Zap,
-    specs: [
-      { label: "OVERALL", val: "Runner-Up" },
-      { label: "DESIGN & TECH", val: "Winner" },
-    ],
-    eraLabel: "2024 — e-BAJA ELECTRIC",
-  },
-  {
-    id: "m2025",
-    year: "2025",
-    title: "Albatros XIII",
-    subtitle: "AIR 3 OVERALL & AIR 1 STATICS",
-    rank: "AIR 3 National",
-    description:
-      "Achieved AIR 3 Overall National Rank at BAJA SAE India 2025 in Hyderabad. AIR 1 Overall Statics, AIR 3 Sled Pull, AIR 2 CAE & Cost.",
-    badge: "AIR 3 PODIUM",
-    icon: ShieldCheck,
-    specs: [
-      { label: "OVERALL RANK", val: "AIR 3" },
-      { label: "STATICS RANK", val: "AIR 1" },
-    ],
-    eraLabel: "2025 — ALBATROS XIII",
-  },
-  {
-    id: "m2026",
-    year: "2026",
-    title: "Albatros XIV",
-    subtitle: "AIR 3 OVERALL & BEST 4WD",
-    rank: "AIR 3 National",
-    description:
-      "Secured AIR 3 overall and AIR 4 in both Statics and Dynamics, emerging as the best-performing 4WD vehicle and continuing the team’s engineering evolution.",
-    badge: "BEST 4WD",
-    icon: ShieldCheck,
-    specs: [
-      { label: "OVERALL RANK", val: "AIR 3" },
-      { label: "STATICS & DYNAMICS", val: "AIR 4" },
-    ],
-    eraLabel: "2026 — ALBATROS XIV",
-  },
-];
-
 const WINDOW_SIZE = 5; // Display max 5 nodes at a time for optimal spacing
 
-export function TRBEvolutionTimeline() {
-  const [activeIdx, setActiveIdx] = useState<number>(7); // Default to 2019
+const iconMap: Record<string, any> = {
+  "Flag": Flag,
+  "Cpu": Cpu,
+  "Trophy": Trophy,
+  "ShieldCheck": ShieldCheck,
+  "Zap": Zap,
+  "Sparkles": Sparkles,
+};
+
+export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }) {
+  const [activeIdx, setActiveIdx] = useState<number>(0);
   const [isDriving, setIsDriving] = useState<boolean>(false);
 
   const handleNodeSelect = (index: number) => {
-    if (index === activeIdx || index < 0 || index >= MILESTONES.length) return;
+    if (index === activeIdx || index < 0 || index >= milestones.length) return;
     setIsDriving(true);
     setActiveIdx(index);
     setTimeout(() => setIsDriving(false), 500);
@@ -274,12 +56,13 @@ export function TRBEvolutionTimeline() {
   };
 
   const handleNext = () => {
-    if (activeIdx < MILESTONES.length - 1) {
+    if (activeIdx < milestones.length - 1) {
       handleNodeSelect(activeIdx + 1);
     }
   };
 
-  const activeMilestone = MILESTONES[activeIdx];
+  const activeMilestone = milestones[activeIdx];
+  if (!activeMilestone) return null;
 
   // Calculate sliding window indices
   const halfWindow = Math.floor(WINDOW_SIZE / 2);
@@ -288,20 +71,21 @@ export function TRBEvolutionTimeline() {
 
   if (startIdx < 0) {
     startIdx = 0;
-    endIdx = Math.min(MILESTONES.length - 1, WINDOW_SIZE - 1);
-  } else if (endIdx >= MILESTONES.length) {
-    endIdx = MILESTONES.length - 1;
-    startIdx = Math.max(0, MILESTONES.length - WINDOW_SIZE);
+    endIdx = Math.min(milestones.length - 1, WINDOW_SIZE - 1);
+  } else if (endIdx >= milestones.length) {
+    endIdx = milestones.length - 1;
+    startIdx = Math.max(0, milestones.length - WINDOW_SIZE);
   }
 
-  const visibleCount = endIdx - startIdx + 1;
+  const visibleMilestones = milestones.slice(startIdx, endIdx + 1);
+  const visibleCount = visibleMilestones.length;
   const activeRelIdx = activeIdx - startIdx;
   const rawPercent = visibleCount > 1 ? (activeRelIdx / (visibleCount - 1)) * 100 : 50;
   const vehiclePercent = 10 + rawPercent * 0.8;
 
   return (
     <section id="journey" className="py-24 bg-[#050608] text-white relative overflow-hidden select-none border-t border-white/10">
-      
+
       {/* Background CAD Pattern */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]">
         <div className="w-full h-full bg-grid" />
@@ -355,7 +139,7 @@ export function TRBEvolutionTimeline() {
                 {/* Header Badge & Year */}
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-mono-tech text-xs text-[#de1615] bg-[#de1615]/15 px-3 py-1.5 rounded-full border border-[#de1615]/40 font-bold uppercase tracking-wider flex items-center gap-2">
-                    {React.createElement(activeMilestone.icon, { className: "w-4 h-4" })}
+                    {React.createElement(iconMap[activeMilestone.icon] || Trophy, { className: "w-4 h-4" })}
                     {activeMilestone.badge}
                   </span>
                   <div className="bg-black/85 border border-white/20 backdrop-blur-md px-3.5 py-1 rounded-xl">
@@ -404,7 +188,7 @@ export function TRBEvolutionTimeline() {
 
         {/* TIMELINE SLIDING TRACK CONTROLS & VEHICLE */}
         <div className="max-w-4xl mx-auto w-full relative pt-14 pb-4">
-          
+
           {/* VEHICLE ANIMATION LAYER */}
           <div className="relative h-20 w-full mb-1">
             <motion.div
@@ -451,11 +235,11 @@ export function TRBEvolutionTimeline() {
                         <motion.div
                           key={`dust-rear-${i}`}
                           initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-                          animate={{ 
-                            opacity: [0, 1, 0], 
-                            scale: [0, 1.5, 0], 
-                            x: -15 - (Math.random() * 25), 
-                            y: -5 - (Math.random() * 20) 
+                          animate={{
+                            opacity: [0, 1, 0],
+                            scale: [0, 1.5, 0],
+                            x: -15 - (Math.random() * 25),
+                            y: -5 - (Math.random() * 20)
                           }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.3 + (Math.random() * 0.3), ease: "easeOut" }}
@@ -491,11 +275,11 @@ export function TRBEvolutionTimeline() {
                         <motion.div
                           key={`dust-front-${i}`}
                           initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-                          animate={{ 
-                            opacity: [0, 1, 0], 
-                            scale: [0, 1.2, 0], 
-                            x: -10 - (Math.random() * 20), 
-                            y: -5 - (Math.random() * 15) 
+                          animate={{
+                            opacity: [0, 1, 0],
+                            scale: [0, 1.2, 0],
+                            x: -10 - (Math.random() * 20),
+                            y: -5 - (Math.random() * 15)
                           }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.3 + (Math.random() * 0.3), delay: 0.05, ease: "easeOut" }}
@@ -533,7 +317,7 @@ export function TRBEvolutionTimeline() {
             <AnimatePresence mode="popLayout">
               {Array.from({ length: visibleCount }).map((_, i) => {
                 const realIndex = startIdx + i;
-                const m = MILESTONES[realIndex];
+                const m = milestones[realIndex];
                 const isActive = realIndex === activeIdx;
                 const isPast = realIndex < activeIdx;
                 const rawNodePercent = visibleCount > 1 ? (i / (visibleCount - 1)) * 100 : 50;
@@ -553,29 +337,26 @@ export function TRBEvolutionTimeline() {
                     <motion.div
                       whileHover={{ scale: 1.35 }}
                       whileTap={{ scale: 0.9 }}
-                      className={`w-6 h-6 rounded-full border-2 transition-all duration-300 flex items-center justify-center shadow-lg ${
-                        isActive
+                      className={`w-6 h-6 rounded-full border-2 transition-all duration-300 flex items-center justify-center shadow-lg ${isActive
                           ? "bg-[#de1615] border-white shadow-[0_0_20px_#de1615] scale-125"
                           : isPast
-                          ? "bg-[#de1615]/80 border-white/80 group-hover:bg-[#de1615] group-hover:scale-125"
-                          : "bg-[#181f26] border-white/30 group-hover:border-white group-hover:bg-[#de1615]/60 group-hover:scale-125"
-                      }`}
+                            ? "bg-[#de1615]/80 border-white/80 group-hover:bg-[#de1615] group-hover:scale-125"
+                            : "bg-[#181f26] border-white/30 group-hover:border-white group-hover:bg-[#de1615]/60 group-hover:scale-125"
+                        }`}
                     >
                       <div
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          isActive || isPast ? "bg-white" : "bg-white/40 group-hover:bg-white"
-                        }`}
+                        className={`w-2 h-2 rounded-full transition-colors ${isActive || isPast ? "bg-white" : "bg-white/40 group-hover:bg-white"
+                          }`}
                       />
                     </motion.div>
 
                     <span
-                      className={`font-sora font-extrabold text-xs sm:text-sm mt-2 tracking-tight transition-all duration-300 ${
-                        isActive
+                      className={`font-sora font-extrabold text-xs sm:text-sm mt-2 tracking-tight transition-all duration-300 ${isActive
                           ? "text-[#de1615] scale-110 drop-shadow-[0_0_8px_rgba(222,22,21,0.6)]"
                           : isPast
-                          ? "text-white group-hover:text-[#de1615] group-hover:scale-110"
-                          : "text-white/40 group-hover:text-white group-hover:scale-110"
-                      }`}
+                            ? "text-white group-hover:text-[#de1615] group-hover:scale-110"
+                            : "text-white/40 group-hover:text-white group-hover:scale-110"
+                        }`}
                     >
                       {m.year}
                     </span>
@@ -590,11 +371,10 @@ export function TRBEvolutionTimeline() {
             <button
               onClick={handlePrev}
               disabled={activeIdx === 0}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
-                activeIdx === 0
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === 0
                   ? "opacity-30 border-white/10 text-gray-500 cursor-not-allowed"
                   : "bg-white/10 hover:bg-[#de1615] border-white/20 text-white hover:border-[#de1615] shadow-lg hover:scale-105 active:scale-95"
-              }`}
+                }`}
             >
               <ChevronLeft className="w-4 h-4" />
               <span>PREV YEAR</span>
@@ -602,17 +382,16 @@ export function TRBEvolutionTimeline() {
 
             {/* Current Step Counter Indicator */}
             <div className="font-mono-tech text-xs text-[#e8bdb6] tracking-widest uppercase font-bold">
-              ERA {activeIdx + 1}/{MILESTONES.length}
+              ERA {activeIdx + 1}/{milestones.length}
             </div>
 
             <button
               onClick={handleNext}
-              disabled={activeIdx === MILESTONES.length - 1}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
-                activeIdx === MILESTONES.length - 1
+              disabled={activeIdx === milestones.length - 1}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === milestones.length - 1
                   ? "opacity-30 border-white/10 text-gray-500 cursor-not-allowed"
                   : "bg-[#de1615] hover:bg-[#b81211] border-[#de1615] text-white shadow-[0_0_15px_rgba(222,22,21,0.4)] hover:scale-105 active:scale-95"
-              }`}
+                }`}
             >
               <span>NEXT YEAR</span>
               <ChevronRight className="w-4 h-4" />

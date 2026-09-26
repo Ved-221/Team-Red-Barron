@@ -12,10 +12,10 @@ export const INTRO_TIMELINE = {
   MOVING_RIGHT: 3200,     // 3.2s: Vehicle transitions right
   EXIT_START: 4200,       // 4.2s: Vehicle accelerates
   VEHICLE_EXITED: 4900,   // 4.9s: Vehicle completely exits right side
-  
+
   // ONLY after vehicle exits (4.95s+), FLY HIGH appears
   FLY_HIGH_START: 4950,   // 4.95s: Rapid sequential letter reveal
-  
+
   FADE_START: 6600,       // 6.6s: Smooth transition to homepage
   UNMOUNT: 7400,          // 7.4s: Component unmounts
 };
@@ -39,7 +39,7 @@ export function HomepageIntro() {
   const [shouldPlay, setShouldPlay] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
   const [isFading, setIsFading] = useState(false);
-  
+
   // Real-time animation coordinates
   const [vehicleXFrac, setVehicleXFrac] = useState<number>(-1.6); // Starts completely out of frame (-1.6 to +1.6)
   const [vehicleOpacity, setVehicleOpacity] = useState<number>(0);
@@ -197,7 +197,7 @@ export function HomepageIntro() {
       // Calculate distance travelled for proportional wheel rotation
       const deltaX = currentXFrac - prevVehicleXRef.current;
       prevVehicleXRef.current = currentXFrac;
-      
+
       if (deltaX > 0) {
         const deltaPixels = deltaX * 1000;
         const deltaDegrees = (deltaPixels / (220 * Math.PI)) * 360 * 1.6;
@@ -423,9 +423,8 @@ export function HomepageIntro() {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#000000] flex items-center justify-center overflow-hidden select-none transition-opacity duration-700 ease-in-out ${
-        isFading ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+      className={`fixed inset-0 z-[9999] bg-[#000000] flex items-center justify-center overflow-hidden select-none transition-opacity duration-700 ease-in-out ${isFading ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
     >
       {/* 1. CLEAN MINIMAL STATIC BACKGROUND */}
       <div className="absolute inset-0 bg-[#000000] pointer-events-none">
@@ -490,7 +489,7 @@ export function HomepageIntro() {
       >
         {/* Relative 1:1 Vehicle Master Box (Reduced size for cinematic scale) */}
         <div className="relative w-[62vw] max-w-[290px] sm:max-w-[390px] md:max-w-[480px] lg:max-w-[580px] xl:max-w-[660px] aspect-square flex items-center justify-center">
-          
+
           {/* 4a. Ground Contact Shadow (Soft grounded anchor) */}
           <div className="absolute bottom-[16%] left-[10%] right-[8%] h-[12%] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.45)_50%,_transparent_75%)] blur-[4px] pointer-events-none z-0" />
 

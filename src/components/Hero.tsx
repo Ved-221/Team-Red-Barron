@@ -14,7 +14,7 @@ const Hero3DLogo = dynamic(() => import("@/components/Hero3DLogo").then((mod) =>
 import { LogoRadialDistortion, type LogoRadialDistortionRef } from "@/components/LogoRadialDistortion";
 import GradientWaves from "@/components/ui/GradientWaves";
 
-export function Hero() {
+export function Hero({ tagline }: { tagline?: string }) {
   const distortionRef = useRef<LogoRadialDistortionRef>(null);
 
   return (
@@ -67,7 +67,7 @@ export function Hero() {
         {/* Hero Tagline */}
         <div className="mb-8 mt-2 relative">
           <p className="font-mono text-xs sm:text-sm text-[#ff6534] font-semibold tracking-wider uppercase">
-            Innovate. Engineer. Evolve.
+            {tagline || "Innovate. Engineer. Evolve."}
           </p>
         </div>
 

@@ -62,15 +62,38 @@ function FluidDropdownInner({ onItemSelect, className = "" }: FluidDropdownProps
   const searchParams = useSearchParams();
   const currentYear = searchParams.get("year");
 
+  const [teamYears, setTeamYears] = useState<{ id: string; year_label: string }[]>([]);
+
+  useEffect(() => {
+    async function fetchYears() {
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      const { data } = await supabase
+        .from("team_years")
+        .select("id, year_label")
+        .is("deleted_at", null)
+        .order("sort_order", { ascending: true });
+      if (data) {
+        setTeamYears(data);
+      }
+    }
+    fetchYears();
+  }, []);
+
   useClickAway(dropdownRef, () => setIsOpen(false));
 
   // Determine active route label and ID
   const getActiveState = () => {
     if (pathname === "/about") return { label: "ABOUT", id: "about", icon: Info, color: "#ff6534" };
     if (pathname === "/team") {
-      if (currentYear === "2024-25") return { label: "TEAM 2024-25", id: "team-2024", icon: Users, color: "#ff6534" };
-      if (currentYear === "2023-24") return { label: "TEAM 2023-24", id: "team-2023", icon: Users, color: "#de1615" };
-      return { label: "TEAM 2025-26", id: "team-2025", icon: Users, color: "#de1615" };
+      const activeYear = teamYears.find((y) => y.year_label === currentYear);
+      if (activeYear) {
+        return { label: `TEAM ${activeYear.year_label}`, id: `team-${activeYear.year_label}`, icon: Users, color: "#de1615" };
+      }
+      return { label: "TEAM", id: "team", icon: Users, color: "#de1615" };
     }
     if (pathname === "/gallery") return { label: "GALLERY", id: "gallery", icon: Camera, color: "#ff6534" };
     if (pathname === "/sponsors") return { label: "SPONSORS", id: "sponsors", icon: Award, color: "#de1615" };
@@ -80,21 +103,23 @@ function FluidDropdownInner({ onItemSelect, className = "" }: FluidDropdownProps
 
   const activeState = getActiveState();
 
+  const defaultYearHref = teamYears.length > 0 ? `/team?year=${teamYears[0].year_label}` : "/team";
+
   const categories: NavCategory[] = [
     { id: "home", label: "HOME", href: "/", icon: Home, color: "#ffffff" },
     { id: "about", label: "ABOUT", href: "/about", icon: Info, color: "#ff6534" },
     {
       id: "team",
       label: "TEAM",
-      href: "/team?year=2025-26",
+      href: defaultYearHref,
       icon: Users,
       color: "#de1615",
       isTeamMaster: true,
-      subItems: [
-        { id: "team-2025", label: "TEAM 2025-26", href: "/team?year=2025-26" },
-        { id: "team-2024", label: "TEAM 2024-25", href: "/team?year=2024-25" },
-        { id: "team-2023", label: "TEAM 2023-24", href: "/team?year=2023-24" },
-      ],
+      subItems: teamYears.map(y => ({
+        id: `team-${y.year_label}`,
+        label: `TEAM ${y.year_label}`,
+        href: `/team?year=${y.year_label}`
+      })),
     },
     { id: "gallery", label: "GALLERY", href: "/gallery", icon: Camera, color: "#ff6534" },
     { id: "sponsors", label: "SPONSORS", href: "/sponsors", icon: Award, color: "#de1615" },

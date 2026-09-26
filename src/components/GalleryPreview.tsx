@@ -1,35 +1,15 @@
 "use client";
 
-import { Camera, Layers } from "lucide-react";
+import { Camera } from "lucide-react";
 import MorphSlider from "@/components/ui/MorphSlider";
 
-export function GalleryPreview() {
-  const teamItems = [
-    {
-      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG_0293.JPG",
-      caption: "Team Red Baron — Official Lineup",
-    },
-    {
-      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG20260111135725.jpg",
-      caption: "Off-Road Championship Crew",
-    },
-    {
-      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG-20260111-WA0014.jpg",
-      caption: "Team Red Baron Engineers",
-    },
-    {
-      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/20260220_161730.jpg",
-      caption: "BAJA Expedition & Field Testing",
-    },
-    {
-      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG-20250219-WA0027.jpg",
-      caption: "Paddock Prep & Pit Operations",
-    },
-    {
-      image: "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team/IMG_9368.jpg",
-      caption: "Technical Scrutineering & Strategy",
-    },
-  ];
+export function GalleryPreview({ teamPhotos }: { teamPhotos: any[] }) {
+  if (!teamPhotos || teamPhotos.length === 0) return null;
+
+  const teamItems = teamPhotos.map(p => ({
+    image: p.image_url,
+    caption: p.caption || "",
+  }));
 
   return (
     <section className="py-24 sm:py-28 bg-black relative overflow-hidden">
@@ -76,4 +56,3 @@ export function GalleryPreview() {
     </section>
   );
 }
-

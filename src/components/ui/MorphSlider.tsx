@@ -398,7 +398,7 @@ class MorphEngine {
           this.program.uniforms.uCurrentSize.value = this.sizes[index];
         }
       };
-      img.onerror = () => {};
+      img.onerror = () => { };
     });
   }
 
@@ -680,7 +680,7 @@ export default function MorphSlider({
       if (active && el.setPointerCapture) {
         try {
           el.setPointerCapture(e.pointerId);
-        } catch {}
+        } catch { }
       }
     };
     const onMove = (e: PointerEvent) => {
