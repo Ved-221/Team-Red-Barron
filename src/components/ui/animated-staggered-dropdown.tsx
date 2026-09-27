@@ -21,8 +21,8 @@ function DropDownInner({ onSelectSeason }: StaggeredDropDownProps) {
     async function fetchYears() {
       const { createClient } = await import("@supabase/supabase-js");
       const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        process.env.NEXT_PUBLIC_SUPABASE_URL || "https://axzwucvnrjtenvvrxfew.supabase.co",
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_NiQbDrVQMUxczmaARuIXjA_t4EFY14P"
       );
       const { data } = await supabase
         .from("team_years")
