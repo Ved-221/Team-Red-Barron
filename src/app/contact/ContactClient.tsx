@@ -77,6 +77,10 @@ interface ContactInfo {
   linkedin_url: string | null;
   youtube_url: string | null;
   twitter_url: string | null;
+  managing_director_name?: string | null;
+  managing_director_email?: string | null;
+  marketing_director_name?: string | null;
+  marketing_director_email?: string | null;
 }
 
 export default function ContactClient({ contactData }: { contactData: ContactInfo | null }) {

@@ -236,7 +236,7 @@ const buildTextCanvas = ({ container, width, height, dpr, props }: BuildCanvasPr
   return canvas;
 };
 
-const syncUniforms = (program: unknown, props: WarpTextProps) => {
+const syncUniforms = (program: any, props: WarpTextProps) => {
   const uniforms = program.uniforms;
   uniforms.uWarpStrength.value = props.warpStrength ?? 0.08;
   uniforms.uWarpScale.value = props.warpScale ?? 1.7;
@@ -346,12 +346,12 @@ export function WarpText({
     const container = containerRef.current;
     if (!container || typeof window === 'undefined') return undefined;
 
-    let renderer: unknown;
-    let gl: unknown;
-    let program: unknown;
-    let geometry: unknown;
-    let mesh: unknown;
-    let texture: unknown;
+    let renderer: any;
+    let gl: any;
+    let program: any;
+    let geometry: any;
+    let mesh: any;
+    let texture: any;
     let resizeObserver: ResizeObserver;
     let intersectionObserver: IntersectionObserver;
     let raf = 0;
