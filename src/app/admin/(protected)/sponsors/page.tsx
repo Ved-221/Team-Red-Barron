@@ -87,7 +87,7 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {sponsors.map(sponsor => (
-                    <form key={sponsor.id} action={updateSponsor.bind(null, sponsor.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
+                    <form encType="multipart/form-data" key={sponsor.id} action={updateSponsor.bind(null, sponsor.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
                       <ImageUploadField name="logo" label="Sponsor Logo" defaultValue={sponsor.logo_url} className="mb-4" />
                       <div className="space-y-3 flex-1">
                         <input type="text" name="name" defaultValue={sponsor.name} required placeholder="Sponsor Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
@@ -107,7 +107,7 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
 
               <div className="bg-[#12151b] border border-white/10 rounded-2xl p-6">
                 <h2 className="font-sora font-bold text-xl text-white mb-6">Add New Sponsor</h2>
-                <form action={addSponsor} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form encType="multipart/form-data" action={addSponsor} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input type="hidden" name="tier_id" value={selectedTierId} />
                   <div>
                     <ImageUploadField name="logo" label="Sponsor Logo" />

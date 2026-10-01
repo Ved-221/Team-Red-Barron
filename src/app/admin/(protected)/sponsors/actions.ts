@@ -61,7 +61,8 @@ export async function addSponsor(formData: FormData) {
   const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
   
   const file = formData.get("logo") as File;
-  let logo_url = "";
+  const directUrl = ((formData.get("logo_direct_url") as string) || "").trim();
+  let logo_url = directUrl;
 
   if (file && file.size > 0) {
     const newUrl = await uploadImage(file, "sponsors");
@@ -85,7 +86,8 @@ export async function updateSponsor(id: string, formData: FormData) {
   const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
   
   const file = formData.get("logo") as File;
-  const existingLogoUrl = formData.get("logo_existing") as string;
+  const directUrl = ((formData.get("logo_direct_url") as string) || "").trim();
+  const existingLogoUrl = (formData.get("logo_existing") as string) || "";
   const logoRemoved = formData.get("logo_removed") === "true";
 
   let finalLogoUrl = existingLogoUrl;
@@ -94,8 +96,10 @@ export async function updateSponsor(id: string, formData: FormData) {
     const newUrl = await uploadImage(file, "sponsors");
     if (newUrl) {
       finalLogoUrl = newUrl;
-      if (existingLogoUrl) await deleteImage(existingLogoUrl);
+      if (existingLogoUrl && existingLogoUrl !== newUrl) await deleteImage(existingLogoUrl);
     }
+  } else if (directUrl && directUrl !== existingLogoUrl) {
+    finalLogoUrl = directUrl;
   } else if (logoRemoved) {
     finalLogoUrl = "";
     if (existingLogoUrl) await deleteImage(existingLogoUrl);

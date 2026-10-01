@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { uploadImage, deleteImage } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function addVehicle(formData: FormData) {
   const supabase = await createClient();
@@ -21,23 +22,29 @@ export async function addVehicle(formData: FormData) {
   const timeline_order = parseInt(formData.get("timeline_order") as string || "0", 10);
 
   const file = formData.get("image") as File;
-  let image_url = "";
+  const directUrl = ((formData.get("image_direct_url") as string) || "").trim();
+  let image_url = directUrl;
+
   if (file && file.size > 0) {
     const newUrl = await uploadImage(file, "vehicles");
     if (newUrl) image_url = newUrl;
   }
 
-  const { data: vehicle } = await supabase.from("vehicles").insert({
+  const { error } = await supabase.from("vehicles").insert({
     year, vehicle_name, chassis_serial, subtitle, rank_text, badge_text,
     icon_key, description, status_badge, background_video_url, era_label, timeline_order,
     image_url
-  }).select("id").single();
+  });
+
+  if (error) {
+    console.error("Error creating vehicle:", error);
+    throw new Error(error.message);
+  }
 
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/admin/timeline");
-
-  return vehicle?.id;
+  redirect("/admin/timeline");
 }
 
 export async function updateVehicle(id: string, formData: FormData) {
@@ -57,7 +64,8 @@ export async function updateVehicle(id: string, formData: FormData) {
   const timeline_order = parseInt(formData.get("timeline_order") as string || "0", 10);
 
   const file = formData.get("image") as File;
-  const existingImageUrl = formData.get("image_existing") as string;
+  const directUrl = ((formData.get("image_direct_url") as string) || "").trim();
+  const existingImageUrl = (formData.get("image_existing") as string) || "";
   const imageRemoved = formData.get("image_removed") === "true";
 
   let finalImageUrl = existingImageUrl;
@@ -65,22 +73,30 @@ export async function updateVehicle(id: string, formData: FormData) {
     const newUrl = await uploadImage(file, "vehicles");
     if (newUrl) {
       finalImageUrl = newUrl;
-      if (existingImageUrl) await deleteImage(existingImageUrl);
+      if (existingImageUrl && existingImageUrl !== newUrl) await deleteImage(existingImageUrl);
     }
+  } else if (directUrl && directUrl !== existingImageUrl) {
+    finalImageUrl = directUrl;
   } else if (imageRemoved) {
     finalImageUrl = "";
     if (existingImageUrl) await deleteImage(existingImageUrl);
   }
 
-  await supabase.from("vehicles").update({
+  const { error } = await supabase.from("vehicles").update({
     year, vehicle_name, chassis_serial, subtitle, rank_text, badge_text,
     icon_key, description, status_badge, background_video_url, era_label, timeline_order,
     image_url: finalImageUrl
   }).eq("id", id);
 
+  if (error) {
+    console.error("Error updating vehicle:", error);
+    throw new Error(error.message);
+  }
+
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/admin/timeline");
+  redirect("/admin/timeline");
 }
 
 export async function deleteVehicle(id: string, imageUrl: string) {

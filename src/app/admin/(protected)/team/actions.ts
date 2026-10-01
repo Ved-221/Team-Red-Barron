@@ -89,7 +89,8 @@ export async function addTeamMember(formData: FormData) {
   const sort_order = parseInt(formData.get("sort_order") as string || "1", 10);
   
   const file = formData.get("image") as File;
-  let image_url = "";
+  const directUrl = ((formData.get("image_direct_url") as string) || "").trim();
+  let image_url = directUrl;
 
   if (file && file.size > 0) {
     const newUrl = await uploadImage(file, "team");
@@ -130,7 +131,8 @@ export async function updateTeamMember(id: string, formData: FormData) {
   const sort_order = parseInt(formData.get("sort_order") as string || "1", 10);
   
   const file = formData.get("image") as File;
-  const existingImageUrl = formData.get("image_existing") as string;
+  const directUrl = ((formData.get("image_direct_url") as string) || "").trim();
+  const existingImageUrl = (formData.get("image_existing") as string) || "";
   const imageRemoved = formData.get("image_removed") === "true";
 
   let finalImageUrl = existingImageUrl;
@@ -139,8 +141,10 @@ export async function updateTeamMember(id: string, formData: FormData) {
     const newUrl = await uploadImage(file, "team");
     if (newUrl) {
       finalImageUrl = newUrl;
-      if (existingImageUrl) await deleteImage(existingImageUrl);
+      if (existingImageUrl && existingImageUrl !== newUrl) await deleteImage(existingImageUrl);
     }
+  } else if (directUrl && directUrl !== existingImageUrl) {
+    finalImageUrl = directUrl;
   } else if (imageRemoved) {
     finalImageUrl = "";
     if (existingImageUrl) await deleteImage(existingImageUrl);

@@ -18,7 +18,7 @@ export default async function AdminGalleryPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {images?.map(image => (
-          <form key={image.id} action={updateGalleryImage.bind(null, image.id)} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] flex flex-col">
+          <form encType="multipart/form-data" key={image.id} action={updateGalleryImage.bind(null, image.id)} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] flex flex-col">
             <ImageUploadField name="image" defaultValue={image.image_url} />
             <div className="mt-4 space-y-4 flex-1">
               <div>
@@ -62,7 +62,7 @@ export default async function AdminGalleryPage() {
 
       <div className="pt-8 mt-8 border-t border-white/10">
         <h2 className="font-sora font-bold text-xl text-white mb-6">Add New Image</h2>
-        <form action={addGalleryImage} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] max-w-md">
+        <form encType="multipart/form-data" action={addGalleryImage} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] max-w-md">
           <ImageUploadField name="image" />
           <div className="mt-4 space-y-4">
             <div>

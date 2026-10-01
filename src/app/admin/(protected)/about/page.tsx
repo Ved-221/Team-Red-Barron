@@ -14,7 +14,7 @@ export default async function AdminAboutPage() {
         <p className="text-[#ae8882] text-sm mt-2">Manage the main text, vision, mission, and the team photo.</p>
       </div>
 
-      <form action={updateAboutContent} className="space-y-8 glass-card p-8 rounded-2xl border border-white/10 relative overflow-hidden bg-[#12151b]">
+      <form encType="multipart/form-data" action={updateAboutContent} className="space-y-8 glass-card p-8 rounded-2xl border border-white/10 relative overflow-hidden bg-[#12151b]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div>

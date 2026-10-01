@@ -35,7 +35,7 @@ export default async function AdminTimelineFormPage(props: { params: Promise<{ i
         </div>
       </div>
 
-      <form action={isNew ? addVehicle : updateVehicle.bind(null, params.id)} className="space-y-8 glass-card p-8 rounded-2xl border border-white/10 relative overflow-hidden bg-[#12151b]">
+      <form encType="multipart/form-data" action={isNew ? addVehicle : updateVehicle.bind(null, params.id)} className="space-y-8 glass-card p-8 rounded-2xl border border-white/10 relative overflow-hidden bg-[#12151b]">
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>

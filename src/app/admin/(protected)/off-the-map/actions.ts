@@ -7,18 +7,22 @@ import { revalidatePath } from "next/cache";
 export async function addTeamPhoto(formData: FormData) {
   const supabase = await createClient();
   const file = formData.get("image") as File;
+  const directUrl = ((formData.get("image_direct_url") as string) || "").trim();
   const caption = formData.get("caption") as string;
   const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
 
+  let imageUrl = directUrl;
   if (file && file.size > 0) {
-    const imageUrl = await uploadImage(file, "team-photos");
-    if (imageUrl) {
-      await supabase.from("team_photos").insert({
-        image_url: imageUrl,
-        caption,
-        sort_order
-      });
-    }
+    const uploadedUrl = await uploadImage(file, "team-photos");
+    if (uploadedUrl) imageUrl = uploadedUrl;
+  }
+
+  if (imageUrl) {
+    await supabase.from("team_photos").insert({
+      image_url: imageUrl,
+      caption,
+      sort_order
+    });
   }
   
   revalidatePath("/");
@@ -28,9 +32,10 @@ export async function addTeamPhoto(formData: FormData) {
 export async function updateTeamPhoto(id: string, formData: FormData) {
   const supabase = await createClient();
   const file = formData.get("image") as File;
+  const directUrl = ((formData.get("image_direct_url") as string) || "").trim();
   const caption = formData.get("caption") as string;
   const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
-  const existingImageUrl = formData.get("image_existing") as string;
+  const existingImageUrl = (formData.get("image_existing") as string) || "";
   const imageRemoved = formData.get("image_removed") === "true";
 
   let finalImageUrl = existingImageUrl;
@@ -40,8 +45,10 @@ export async function updateTeamPhoto(id: string, formData: FormData) {
     if (newUrl) {
       finalImageUrl = newUrl;
       // Delete old image
-      if (existingImageUrl) await deleteImage(existingImageUrl);
+      if (existingImageUrl && existingImageUrl !== newUrl) await deleteImage(existingImageUrl);
     }
+  } else if (directUrl && directUrl !== existingImageUrl) {
+    finalImageUrl = directUrl;
   } else if (imageRemoved) {
     finalImageUrl = "";
     if (existingImageUrl) await deleteImage(existingImageUrl);

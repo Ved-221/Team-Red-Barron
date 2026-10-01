@@ -16,7 +16,7 @@ export default async function OffTheMapPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {photos?.map(photo => (
-          <form key={photo.id} action={updateTeamPhoto.bind(null, photo.id)} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] flex flex-col">
+          <form encType="multipart/form-data" key={photo.id} action={updateTeamPhoto.bind(null, photo.id)} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] flex flex-col">
             <ImageUploadField name="image" defaultValue={photo.image_url} />
             <div className="mt-4 space-y-4 flex-1">
               <div>
@@ -52,7 +52,7 @@ export default async function OffTheMapPage() {
 
       <div className="pt-8 mt-8 border-t border-white/10">
         <h2 className="font-sora font-bold text-xl text-white mb-6">Add New Photo</h2>
-        <form action={addTeamPhoto} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] max-w-md">
+        <form encType="multipart/form-data" action={addTeamPhoto} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] max-w-md">
           <ImageUploadField name="image" />
           <div className="mt-4 space-y-4">
             <div>

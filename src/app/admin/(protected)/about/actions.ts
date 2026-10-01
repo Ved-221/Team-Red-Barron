@@ -15,7 +15,8 @@ export async function updateAboutContent(formData: FormData) {
   const team_photo_caption = formData.get("team_photo_caption") as string;
 
   const file = formData.get("team_photo") as File;
-  const existingImageUrl = formData.get("team_photo_existing") as string;
+  const directUrl = ((formData.get("team_photo_direct_url") as string) || "").trim();
+  const existingImageUrl = (formData.get("team_photo_existing") as string) || "";
   const imageRemoved = formData.get("team_photo_removed") === "true";
 
   let finalImageUrl = existingImageUrl;
@@ -25,8 +26,10 @@ export async function updateAboutContent(formData: FormData) {
     if (newUrl) {
       finalImageUrl = newUrl;
       // Delete old image
-      if (existingImageUrl) await deleteImage(existingImageUrl);
+      if (existingImageUrl && existingImageUrl !== newUrl) await deleteImage(existingImageUrl);
     }
+  } else if (directUrl && directUrl !== existingImageUrl) {
+    finalImageUrl = directUrl;
   } else if (imageRemoved) {
     finalImageUrl = "";
     if (existingImageUrl) await deleteImage(existingImageUrl);
