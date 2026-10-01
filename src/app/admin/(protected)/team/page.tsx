@@ -107,7 +107,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                         <h3 className="font-sora font-bold text-lg text-[#de1615] border-b border-white/10 pb-2">{dept}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           {deptMembers.map(member => (
-                            <form encType="multipart/form-data" key={member.id} action={updateTeamMember.bind(null, member.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
+                            <form key={member.id} action={updateTeamMember.bind(null, member.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
                               <ImageUploadField name="image" defaultValue={member.image_url} />
                               <div className="mt-4 space-y-3 flex-1">
                                 <input type="text" name="name" defaultValue={member.name} required placeholder="Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
@@ -139,7 +139,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                         <h3 className="font-sora font-bold text-lg text-gray-400 border-b border-white/10 pb-2">UNASSIGNED</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           {unassigned.map(member => (
-                            <form encType="multipart/form-data" key={member.id} action={updateTeamMember.bind(null, member.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
+                            <form key={member.id} action={updateTeamMember.bind(null, member.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
                               <ImageUploadField name="image" defaultValue={member.image_url} />
                               <div className="mt-4 space-y-3 flex-1">
                                 <input type="text" name="name" defaultValue={member.name} required placeholder="Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
@@ -166,7 +166,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
 
               <div className="bg-[#12151b] border border-white/10 rounded-2xl p-6">
                 <h2 className="font-sora font-bold text-xl text-white mb-6">Add New Member</h2>
-                <form encType="multipart/form-data" action={addTeamMember} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form action={addTeamMember} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input type="hidden" name="team_year_id" value={selectedYearId} />
                   <div>
                     <ImageUploadField name="image" />
