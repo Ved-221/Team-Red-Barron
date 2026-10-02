@@ -67,7 +67,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
                   SUPPORT MOTORSPORT EXCELLENCE
                 </span>
                 <h3 className="font-sora font-extrabold text-2xl text-white uppercase tracking-tight">
-                  DONATE TO <span className="text-[#de1615]">TEAM RED BARON</span>
+                  SUPPORT <span className="text-[#de1615]">TEAM RED BARON</span>
                 </h3>
               </div>
             </div>
@@ -113,7 +113,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="font-mono-tech text-xs text-[#e8bdb6] block mb-1.5 uppercase">Donor Name / Organization</label>
+                  <label className="font-mono-tech text-xs text-[#e8bdb6] block mb-1.5 uppercase">Supporter Name / Organization</label>
                   <input
                     type="text"
                     required
@@ -125,7 +125,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
                 </div>
 
                 <div>
-                  <label className="font-mono-tech text-xs text-[#e8bdb6] block mb-1.5 uppercase">Donation Amount (INR)</label>
+                  <label className="font-mono-tech text-xs text-[#e8bdb6] block mb-1.5 uppercase">Support Amount (INR)</label>
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-sora font-bold">₹</span>
                     <input
@@ -160,7 +160,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
                     className="flex-1 bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3.5 rounded-xl font-sora font-extrabold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(222,22,21,0.3)] relative overflow-hidden group"
                   >
                     <Heart className="w-4 h-4 fill-white" />
-                    Proceed to Donate
+                    Proceed to Support
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
                   </button>
                   <a

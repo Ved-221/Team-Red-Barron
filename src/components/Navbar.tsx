@@ -67,14 +67,14 @@ export function Navbar() {
             <SlideTabs items={navLinks} />
           </div>
 
-          {/* Desktop Right Side Action CTAs: Donate Us */}
+          {/* Desktop Right Side Action CTAs: Support Us */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Primary Red Donate Us Button */}
+            {/* Primary Red Support Us Button */}
             <button
               onClick={() => setDonateOpen(true)}
               className="group relative overflow-hidden bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white px-6 py-2.5 rounded-full font-sora font-bold text-sm hover:scale-105 active:scale-95 transition-all shadow-[0_0_15px_rgba(222,22,21,0.4)] hover:shadow-[0_0_25px_rgba(222,22,21,0.6)] border border-white/20"
             >
-              <span className="relative z-10">Donate Us</span>
+              <span className="relative z-10">Support Us</span>
               {/* Shine Sweep */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
             </button>
@@ -104,7 +104,7 @@ export function Navbar() {
                 }}
                 className="group relative overflow-hidden w-full bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3.5 rounded-xl font-sora font-bold text-center transition-all shadow-[0_0_15px_rgba(222,22,21,0.4)] border border-white/20"
               >
-                <span className="relative z-10">Donate Us</span>
+                <span className="relative z-10">Support Us</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
               </button>
             </div>

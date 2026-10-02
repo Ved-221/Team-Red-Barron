@@ -122,7 +122,7 @@ export function SupportCTA() {
                       onClick={() => setDonateOpen(true)}
                       className="group relative overflow-hidden w-full sm:w-auto bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white px-9 py-4 rounded-full font-sora font-extrabold text-lg hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(222,22,21,0.4)] hover:shadow-[0_0_40px_rgba(222,22,21,0.6)] flex items-center justify-center gap-3 border border-white/20"
                     >
-                      <span className="relative z-10">Donate Us</span>
+                      <span className="relative z-10">Support Us</span>
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform relative z-10" />
                       {/* Shine Sweep */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
