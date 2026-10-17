@@ -105,10 +105,6 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
         {/* SECTION HEADER */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 font-mono-tech text-xs text-[#de1615] tracking-widest uppercase mb-2">
-              <Sparkles className="w-4 h-4 text-[#ff6534] animate-pulse" />
-              15+ YEARS OF EVOLUTION
-            </div>
             <h2 className="font-sora font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white uppercase tracking-tight">
               EVOLUTIONARY <span className="text-[#de1615]">TIMELINE</span>
             </h2>

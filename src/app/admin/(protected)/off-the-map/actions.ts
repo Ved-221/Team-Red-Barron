@@ -42,23 +42,27 @@ export async function updateTeamPhoto(id: string, formData: FormData) {
 
   if (file && file.size > 0) {
     const newUrl = await uploadImage(file, "team-photos");
-    if (newUrl) {
-      finalImageUrl = newUrl;
-      // Delete old image
-      if (existingImageUrl && existingImageUrl !== newUrl) await deleteImage(existingImageUrl);
-    }
+    if (newUrl) finalImageUrl = newUrl;
   } else if (directUrl && directUrl !== existingImageUrl) {
     finalImageUrl = directUrl;
   } else if (imageRemoved) {
     finalImageUrl = "";
-    if (existingImageUrl) await deleteImage(existingImageUrl);
   }
 
-  await supabase.from("team_photos").update({
+  const { error } = await supabase.from("team_photos").update({
     image_url: finalImageUrl,
     caption,
     sort_order
   }).eq("id", id);
+
+  if (error) {
+    console.error("Failed to update team photo:", error);
+    throw new Error(error.message);
+  }
+
+  if (existingImageUrl && existingImageUrl !== finalImageUrl) {
+    await deleteImage(existingImageUrl);
+  }
 
   revalidatePath("/");
   revalidatePath("/admin/off-the-map");

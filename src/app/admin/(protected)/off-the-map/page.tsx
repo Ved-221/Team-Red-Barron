@@ -3,9 +3,15 @@ import { addTeamPhoto, deleteTeamPhoto, updateTeamPhoto } from "./actions";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { Trash2 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function OffTheMapPage() {
   const supabase = await createClient();
-  const { data: photos } = await supabase.from("team_photos").select("*").order("sort_order", { ascending: true });
+  const { data: photos } = await supabase
+    .from("team_photos")
+    .select("*")
+    .is("deleted_at", null)
+    .order("sort_order", { ascending: true });
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">

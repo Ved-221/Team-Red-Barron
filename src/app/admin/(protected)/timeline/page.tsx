@@ -3,9 +3,15 @@ import Link from "next/link";
 import { Plus, Edit2, Trash2 } from "lucide-react";
 import { deleteVehicle } from "./actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminTimelinePage() {
   const supabase = await createClient();
-  const { data: vehicles } = await supabase.from("vehicles").select("*").order("timeline_order", { ascending: true });
+  const { data: vehicles } = await supabase
+    .from("vehicles")
+    .select("*")
+    .is("deleted_at", null)
+    .order("timeline_order", { ascending: true });
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">

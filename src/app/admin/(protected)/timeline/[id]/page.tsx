@@ -6,6 +6,8 @@ import { ArrowLeft } from "lucide-react";
 import SpecsManager from "./SpecsManager";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminTimelineFormPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const isNew = params.id === "new";

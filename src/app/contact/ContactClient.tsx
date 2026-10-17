@@ -418,10 +418,7 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
         <div className="glass-card p-8 sm:p-10 rounded-3xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
             <div>
-              <span className="font-mono text-xs text-[#ff6534] tracking-widest uppercase font-semibold">
-                SOCIAL TELEMETRY CHANNELS
-              </span>
-              <h3 className="font-sora font-extrabold text-2xl text-white mt-1 uppercase">
+              <h3 className="font-sora font-extrabold text-2xl text-white uppercase">
                 Connect Across Platforms
               </h3>
             </div>

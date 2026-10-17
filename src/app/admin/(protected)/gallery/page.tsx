@@ -3,9 +3,15 @@ import { addGalleryImage, updateGalleryImage, deleteGalleryImage } from "./actio
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { Trash2 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminGalleryPage() {
   const supabase = await createClient();
-  const { data: images } = await supabase.from("gallery_images").select("*").order("sort_order", { ascending: true });
+  const { data: images } = await supabase
+    .from("gallery_images")
+    .select("*")
+    .is("deleted_at", null)
+    .order("sort_order", { ascending: true });
 
   const CATEGORIES = ["ALL", "COMPETITION", "WORKSHOP", "VEHICLE", "EVENTS"];
 

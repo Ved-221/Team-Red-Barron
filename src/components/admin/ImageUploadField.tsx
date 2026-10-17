@@ -101,14 +101,15 @@ export function ImageUploadField({
   const handleDirectUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value;
     setDirectUrl(url);
-    if (url.trim()) {
-      setPreview(url.trim());
+    const trimmed = url.trim();
+    if (/^https?:\/\/\S+$/i.test(trimmed)) {
+      setPreview(trimmed);
       setIsRemoved(false);
       setSelectedFileMeta(null);
       if (inputRef.current) {
         inputRef.current.value = "";
       }
-    } else {
+    } else if (!trimmed) {
       setPreview(null);
       setIsRemoved(true);
     }

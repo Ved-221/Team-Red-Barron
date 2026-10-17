@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import Masonry, { MasonryItem } from "@/components/ui/Masonry";
 import { FoldText } from "@/components/ui/FoldText";
-import { Camera, X } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
 
 const HEIGHTS = [750, 520, 850, 600, 700, 550, 480, 800, 520, 680, 560, 720, 580, 760, 490, 640, 700, 540, 780];
@@ -33,11 +33,6 @@ export default function GalleryClient({ galleryData }: { galleryData: any[] }) {
         <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 relative z-10">
           
           <div className="flex flex-col items-start gap-4 max-w-3xl">
-            <div className="inline-flex items-center gap-2 font-mono-tech text-xs text-[#de1615] tracking-widest uppercase bg-[#1a0505] px-4 py-1.5 rounded-full border border-[#de1615]/30">
-              <Camera className="w-3.5 h-3.5 text-[#de1615]" />
-              <span>HIGH RESOLUTION ARCHIVE</span>
-            </div>
-
             <div className="py-2">
               <FoldText
                 text="Action Gallery"

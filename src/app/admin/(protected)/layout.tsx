@@ -4,6 +4,8 @@ import { LogOut, Home, Users, Image as ImageIcon, Briefcase, Phone, Anchor, Tras
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
+import { AdminActionFeedback } from "@/components/admin/AdminActionFeedback";
+
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -14,6 +16,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="min-h-screen bg-[#0a0c0e] text-[#e2e2e2] flex font-inter">
+      <AdminActionFeedback />
       {/* Sidebar */}
       <aside className="w-64 border-r border-white/10 bg-[#12151b] flex flex-col hidden md:flex">
         <div className="p-6 border-b border-white/10 flex items-center justify-between">

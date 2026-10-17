@@ -23,16 +23,11 @@ export async function updateAboutContent(formData: FormData) {
 
   if (file && file.size > 0) {
     const newUrl = await uploadImage(file, "team");
-    if (newUrl) {
-      finalImageUrl = newUrl;
-      // Delete old image
-      if (existingImageUrl && existingImageUrl !== newUrl) await deleteImage(existingImageUrl);
-    }
+    if (newUrl) finalImageUrl = newUrl;
   } else if (directUrl && directUrl !== existingImageUrl) {
     finalImageUrl = directUrl;
   } else if (imageRemoved) {
     finalImageUrl = "";
-    if (existingImageUrl) await deleteImage(existingImageUrl);
   }
 
   const stats_cards = Array.from({ length: 4 }).map((_, i) => ({
@@ -41,7 +36,7 @@ export async function updateAboutContent(formData: FormData) {
     note: formData.get(`stat${i + 1}_note`) as string,
   }));
 
-  await supabase.from("about_content").update({
+  const { error } = await supabase.from("about_content").update({
     intro_headline,
     intro_summary,
     main_body_text,
@@ -52,6 +47,16 @@ export async function updateAboutContent(formData: FormData) {
     stats_cards
   }).eq("id", 1);
 
+  if (error) {
+    console.error("Failed to update about content:", error);
+    throw new Error(error.message);
+  }
+
+  if (existingImageUrl && existingImageUrl !== finalImageUrl) {
+    await deleteImage(existingImageUrl);
+  }
+
+  revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/admin/about");
 }

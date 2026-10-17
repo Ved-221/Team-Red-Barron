@@ -45,10 +45,6 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     >
       {/* Header section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16 relative z-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#de1615]/20 border border-[#de1615]/50 text-[#de1615] font-mono-tech text-xs tracking-widest uppercase mb-4 shadow-[0_0_20px_rgba(222,22,21,0.3)]">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#de1615] animate-ping" />
-          CHASSIS EVOLUTION MATRIX
-        </div>
         <h2 className="font-sora font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight max-w-4xl mx-auto">
           EVOLUTIONARY <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#de1615] via-[#ff6534] to-white">TIMELINE</span>
         </h2>

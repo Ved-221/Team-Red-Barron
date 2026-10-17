@@ -14,7 +14,6 @@ import {
   Award,
   Users,
   Target,
-  Compass,
   Wrench,
 } from "lucide-react";
 
@@ -57,11 +56,6 @@ export default function AboutClient({
           <div className="absolute top-32 right-1/4 w-80 h-80 bg-[#ff6534]/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#252e39]/60 border border-[#de1615]/40 text-[#ffb4a9] text-xs font-mono tracking-widest uppercase mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(222,22,21,0.2)]">
-              <span className="w-2 h-2 rounded-full bg-[#de1615] animate-ping" />
-              PCCOE MOTORSPORT / EST. 2011
-            </div>
-
             <h1 className="font-sora font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white mb-6 leading-tight uppercase" dangerouslySetInnerHTML={{ __html: aboutData?.intro_headline || "THE LEGACY OF <br /><span class=\"text-transparent bg-clip-text bg-gradient-to-r from-white via-[#ffb59f] to-[#de1615]\">UNTAMED ENDURANCE</span>" }} />
 
             <p className="font-inter text-lg sm:text-xl text-[#e8bdb6] max-w-2xl font-normal leading-relaxed mb-10">
@@ -96,11 +90,6 @@ export default function AboutClient({
         <section className="py-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full border-t border-white/5">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7 flex flex-col gap-6">
-              <div className="inline-flex items-center gap-2 text-[#de1615] font-mono text-xs tracking-widest uppercase font-semibold">
-                <Compass className="w-4 h-4" />
-                ABOUT TEAM RED BARON
-              </div>
-
               <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-tight">
                 Innovate. Engineer. Evolve.
               </h2>
@@ -163,9 +152,6 @@ export default function AboutClient({
         <section className="py-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full">
           <div className="glass-card p-10 sm:p-14 rounded-3xl border border-[#de1615]/40 bg-gradient-to-r from-[#1e2020] via-[#252e39] to-[#121414] relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-[0_0_40px_rgba(222,22,21,0.2)]">
             <div className="max-w-xl text-center md:text-left">
-              <span className="font-mono text-xs text-[#ff6534] tracking-widest uppercase font-semibold">
-                JOIN THE HANGAR / SEASON 2024-25
-              </span>
               <h2 className="font-sora font-extrabold text-3xl sm:text-4xl text-white mt-2">
                 Ready to Build the Next Albatros?
               </h2>

@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import SponsorsClient from "./SponsorsClient";
+import { getTestimonials } from "@/lib/testimonials";
 import { Metadata } from "next";
 
 export const revalidate = 60; // Revalidate cache every 60 seconds
@@ -16,18 +17,30 @@ export default async function SponsorsPage() {
       *,
       sponsors (*)
     `)
+    .is("deleted_at", null)
+    .is("sponsors.deleted_at", null)
     .order("sort_order", { ascending: true })
     .order("sort_order", { foreignTable: "sponsors", ascending: true });
 
-  const { data: featuredPartnersData } = await supabase
-    .from("featured_partners")
-    .select("*")
-    .order("sort_order", { ascending: true });
+  const cleanedTiers = (sponsorTiersData || []).map((tier: any) => ({
+    ...tier,
+    sponsors: (tier.sponsors || []).filter((s: any) => !s.deleted_at),
+  }));
+
+  const testimonials = await getTestimonials();
+
+  const { data: settings } = await supabase
+    .from("site_settings")
+    .select("sponsors_bg_url")
+    .eq("id", 1)
+    .single();
 
   return (
     <SponsorsClient
-      sponsorTiers={sponsorTiersData || []}
-      featuredPartners={featuredPartnersData || []}
+      sponsorTiers={cleanedTiers}
+      testimonials={testimonials}
+      heroBgUrl={settings?.sponsors_bg_url || "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"}
     />
   );
 }
+

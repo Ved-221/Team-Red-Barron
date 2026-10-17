@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { updateContactInfo } from "./actions";
 import { SubmitButton } from "@/components/admin/SubmitButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminContactPage() {
   const supabase = await createClient();
   const { data: contact } = await supabase.from("contact_info").select("*").eq("id", 1).single();
@@ -72,6 +74,19 @@ export default async function AdminContactPage() {
                   className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
                 />
               </div>
+              <div>
+                <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
+                  Managing Director Phone
+                </label>
+                <input
+                  key={contact?.managing_director_phone || "managing_director_phone"}
+                  type="text"
+                  name="managing_director_phone"
+                  defaultValue={contact?.managing_director_phone}
+                  placeholder="+91 84829 88462"
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
+                />
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -96,6 +111,19 @@ export default async function AdminContactPage() {
                   type="email"
                   name="marketing_director_email"
                   defaultValue={contact?.marketing_director_email}
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
+                  Marketing Director Phone
+                </label>
+                <input
+                  key={contact?.marketing_director_phone || "marketing_director_phone"}
+                  type="text"
+                  name="marketing_director_phone"
+                  defaultValue={contact?.marketing_director_phone}
+                  placeholder="+91 88301 34073"
                   className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
                 />
               </div>

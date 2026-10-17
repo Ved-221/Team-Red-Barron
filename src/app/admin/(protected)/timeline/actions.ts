@@ -30,6 +30,26 @@ export async function addVehicle(formData: FormData) {
     if (newUrl) image_url = newUrl;
   }
 
+  // Auto-arrange order: shift all existing vehicles at or above this order by +1
+  const { data: existingToShift, error: shiftFetchErr } = await supabase
+    .from("vehicles")
+    .select("id, timeline_order")
+    .is("deleted_at", null)
+    .gte("timeline_order", timeline_order)
+    .order("timeline_order", { ascending: false });
+
+  if (shiftFetchErr) throw new Error(shiftFetchErr.message);
+
+  if (existingToShift && existingToShift.length > 0) {
+    for (const v of existingToShift) {
+      const { error: updErr } = await supabase
+        .from("vehicles")
+        .update({ timeline_order: v.timeline_order + 1 })
+        .eq("id", v.id);
+      if (updErr) throw new Error(updErr.message);
+    }
+  }
+
   const { error } = await supabase.from("vehicles").insert({
     year, vehicle_name, chassis_serial, subtitle, rank_text, badge_text,
     icon_key, description, status_badge, background_video_url, era_label, timeline_order,
@@ -44,6 +64,7 @@ export async function addVehicle(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/admin/timeline");
+  revalidatePath("/admin/home");
   redirect("/admin/timeline");
 }
 
@@ -65,37 +86,98 @@ export async function updateVehicle(id: string, formData: FormData) {
 
   const file = formData.get("image") as File;
   const directUrl = ((formData.get("image_direct_url") as string) || "").trim();
-  const existingImageUrl = (formData.get("image_existing") as string) || "";
   const imageRemoved = formData.get("image_removed") === "true";
 
-  let finalImageUrl = existingImageUrl;
-  if (file && file.size > 0) {
-    const newUrl = await uploadImage(file, "vehicles");
-    if (newUrl) {
-      finalImageUrl = newUrl;
-      if (existingImageUrl && existingImageUrl !== newUrl) await deleteImage(existingImageUrl);
-    }
-  } else if (directUrl && directUrl !== existingImageUrl) {
-    finalImageUrl = directUrl;
-  } else if (imageRemoved) {
-    finalImageUrl = "";
-    if (existingImageUrl) await deleteImage(existingImageUrl);
+  // Check if order changed to auto-arrange only the affected range, and get existing image URL
+  const { data: currentVehicle, error: fetchErr } = await supabase
+    .from("vehicles")
+    .select("timeline_order, image_url")
+    .eq("id", id)
+    .single();
+
+  if (fetchErr) {
+    throw new Error(`Failed to read vehicle: ${fetchErr.message}`);
   }
 
-  const { error } = await supabase.from("vehicles").update({
+  const realExistingUrl = currentVehicle?.image_url || "";
+  let finalImageUrl = realExistingUrl;
+  if (file && file.size > 0) {
+    const newUrl = await uploadImage(file, "vehicles");
+    if (newUrl) finalImageUrl = newUrl;
+  } else if (imageRemoved) {
+    finalImageUrl = "";
+  } else if (directUrl && directUrl !== realExistingUrl) {
+    finalImageUrl = directUrl;
+  }
+
+  const oldOrder = currentVehicle?.timeline_order ?? 0;
+  if (oldOrder !== timeline_order) {
+    if (oldOrder > timeline_order) {
+      // Moving up: shift rows in [timeline_order, oldOrder) upward by +1
+      const { data: rangeToShift, error: rangeErr } = await supabase
+        .from("vehicles")
+        .select("id, timeline_order")
+        .is("deleted_at", null)
+        .neq("id", id)
+        .gte("timeline_order", timeline_order)
+        .lt("timeline_order", oldOrder)
+        .order("timeline_order", { ascending: false });
+
+      if (rangeErr) throw new Error(rangeErr.message);
+
+      if (rangeToShift && rangeToShift.length > 0) {
+        for (const v of rangeToShift) {
+          const { error: updErr } = await supabase
+            .from("vehicles")
+            .update({ timeline_order: v.timeline_order + 1 })
+            .eq("id", v.id);
+          if (updErr) throw new Error(updErr.message);
+        }
+      }
+    } else {
+      // Moving down: shift rows in (oldOrder, timeline_order] downward by -1
+      const { data: rangeToShift, error: rangeErr } = await supabase
+        .from("vehicles")
+        .select("id, timeline_order")
+        .is("deleted_at", null)
+        .neq("id", id)
+        .gt("timeline_order", oldOrder)
+        .lte("timeline_order", timeline_order)
+        .order("timeline_order", { ascending: true });
+
+      if (rangeErr) throw new Error(rangeErr.message);
+
+      if (rangeToShift && rangeToShift.length > 0) {
+        for (const v of rangeToShift) {
+          const { error: updErr } = await supabase
+            .from("vehicles")
+            .update({ timeline_order: v.timeline_order - 1 })
+            .eq("id", v.id);
+          if (updErr) throw new Error(updErr.message);
+        }
+      }
+    }
+  }
+
+  const { data: updatedRows, error } = await supabase.from("vehicles").update({
     year, vehicle_name, chassis_serial, subtitle, rank_text, badge_text,
     icon_key, description, status_badge, background_video_url, era_label, timeline_order,
     image_url: finalImageUrl
-  }).eq("id", id);
+  }).eq("id", id).select("id");
 
   if (error) {
     console.error("Error updating vehicle:", error);
     throw new Error(error.message);
   }
 
+  if (updatedRows && updatedRows.length > 0 && realExistingUrl && realExistingUrl !== finalImageUrl && realExistingUrl.includes("supabase.co/storage")) {
+    await deleteImage(realExistingUrl);
+  }
+
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/admin/timeline");
+  revalidatePath("/admin/home");
   redirect("/admin/timeline");
 }
 
@@ -118,6 +200,7 @@ export async function deleteVehicle(id: string, imageUrl: string) {
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/admin/timeline");
+  revalidatePath("/admin/home");
 }
 
 export async function updateSpecs(vehicleId: string, specs: { id?: string, label: string, value: string, sort_order: number }[]) {

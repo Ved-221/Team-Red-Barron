@@ -2,11 +2,23 @@ import { createClient } from "@/lib/supabase/server";
 import { updateHomeSettings } from "./actions";
 import { SubmitButton } from "@/components/admin/SubmitButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminHomePage() {
   const supabase = await createClient();
   
   const { data: settings } = await supabase.from("site_settings").select("*").eq("id", 1).single();
-  const { data: vehicles } = await supabase.from("vehicles").select("id, vehicle_name, year").order("year", { ascending: false });
+  const { data: vehicles } = await supabase
+    .from("vehicles")
+    .select("id, vehicle_name, year")
+    .is("deleted_at", null)
+    .order("year", { ascending: false });
+
+  const activeVehicles = vehicles || [];
+
+  const selectedVehicleId = activeVehicles.some(v => v.id === settings?.flagship_vehicle_id)
+    ? settings?.flagship_vehicle_id
+    : activeVehicles[0]?.id || "";
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -37,13 +49,13 @@ export default async function AdminHomePage() {
             Flagship Vehicle
           </label>
           <select
-            key={settings?.flagship_vehicle_id || "none"}
+            key={selectedVehicleId || "none"}
             name="flagship_vehicle_id"
-            defaultValue={settings?.flagship_vehicle_id || ""}
+            defaultValue={selectedVehicleId}
             className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
           >
             <option value="" disabled>Select a vehicle</option>
-            {vehicles?.map(v => (
+            {activeVehicles.map(v => (
               <option key={v.id} value={v.id}>
                 {v.year} — {v.vehicle_name}
               </option>

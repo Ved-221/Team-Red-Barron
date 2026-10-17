@@ -34,26 +34,26 @@ const IMPACT_METRICS = [
 const VALUE_PROPS = [
   {
     title: "Brand Visibility",
-    desc: "Gain prominent logo placement on championship ATVs, team apparel, national event media, and digital platforms reaching over 50,000+ motorsport enthusiasts and collegiate engineers.",
+    desc: "Logo placement on championship ATVs, apparel, and national media reaching 50,000+ motorsport enthusiasts.",
     tag: "MAXIMUM EXPOSURE",
     icon: Target
   },
   {
     title: "Talent Pipeline",
-    desc: "Direct access to top-tier PCCOE student engineers trained in CAD, FEA, CFD, composite fabrication, hands-on machining, and real-time IoT data telemetry.",
+    desc: "Direct recruitment pipeline of student engineers trained in CAD, FEA, CFD, and real-time telemetry.",
     tag: "PREMIER RECRUITMENT",
     icon: Users
   },
   {
     title: "Innovation Ecosystem",
-    desc: "Collaborate with student-led R&D testing your products, sensors, coatings, and raw materials under extreme offroad endurance track conditions.",
+    desc: "R&D track testing of partner components, sensors, and materials under extreme race conditions.",
     tag: "REAL-WORLD R&D",
     icon: Cpu
   },
   {
     title: "Long-Term Impact",
-    desc: "Empower future automotive leaders and foster sustainable mobility engineering while strengthening your company's CSR and STEM education initiatives.",
-    tag: "CORPORATE RESPONSIBILITY",
+    desc: "Champion collegiate mobility engineering while strengthening CSR and STEM education initiatives.",
+    tag: "CORPORATE IMPACT",
     icon: TrendingUp
   }
 ];
@@ -80,17 +80,22 @@ const TESTIMONIALS = [
   }
 ];
 
-const tierSubtitles: Record<string, string> = {
-  "TITLE SPONSORS": "GENERATING SEASON & VEHICLE ENGINEERING FOUNDATIONS",
-  "PLATINUM SPONSORS": "PRECISION COMPONENTS, BEARINGS & FLUID SYSTEMS",
-  "GOLD SPONSORS": "ADVANCED MATERIALS, COATINGS & METROLOGY",
-  "SILVER SPONSORS": "MANUFACTURING SUPPORT, FABRICATION & CONNECTIVITY",
-};
 
-export default function SponsorsClient({ sponsorTiers, featuredPartners }: { sponsorTiers: any[], featuredPartners: any[] }) {
+export default function SponsorsClient({
+  sponsorTiers,
+  testimonials = [],
+  heroBgUrl = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"
+}: {
+  sponsorTiers: any[];
+  testimonials?: any[];
+  heroBgUrl?: string;
+}) {
   const [donateModalOpen, setDonateModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+
+  const testimonialItems = (testimonials && testimonials.length > 0) ? testimonials : TESTIMONIALS;
+  const currentTestimonial = testimonialItems[activeTestimonial % testimonialItems.length];
 
   // Animated Counter Effect Hook
   const [counterValues, setCounterValues] = useState(IMPACT_METRICS.map(() => 0));
@@ -120,7 +125,7 @@ export default function SponsorsClient({ sponsorTiers, featuredPartners }: { spo
       <section className="relative min-h-[92vh] flex items-center justify-center pt-32 pb-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full overflow-hidden z-10">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"
+            src={heroBgUrl}
             alt="Team Red Baron Championship ATV Hero Shot"
             fill
             unoptimized
@@ -133,11 +138,6 @@ export default function SponsorsClient({ sponsorTiers, featuredPartners }: { spo
         </div>
 
         <div className="relative z-10 text-center max-w-4xl mx-auto flex flex-col items-center">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#252e39]/60 border border-[#de1615]/50 text-[#ffb4a9] text-xs font-mono tracking-widest uppercase mb-6 backdrop-blur-md shadow-[0_0_20px_rgba(222,22,21,0.3)]">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#de1615] animate-ping" />
-            CHAMPIONSHIP PARTNERS & SPONSORS // TRB PITWALL
-          </div>
-
           <h1 className="font-sora font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight mb-6 leading-tight uppercase flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
             <ShinyText text="OUR" speed={2} color="#ffffff" shineColor="#ff6534" spread={120} />
             <ShinyText text="SPONSORS" speed={2} color="#de1615" shineColor="#ffffff" spread={120} />
@@ -190,9 +190,6 @@ export default function SponsorsClient({ sponsorTiers, featuredPartners }: { spo
                     <span className="w-3 h-3 rounded-full bg-[#de1615]" />
                     {tier.tier_name}
                   </h3>
-                  <p className="font-mono-tech text-xs text-[#ff6534] tracking-widest uppercase mt-1">
-                    {tierSubtitles[tier.tier_name] || "STRATEGIC PARTNERS"}
-                  </p>
                 </div>
                 <span className="font-mono-tech text-xs text-[#ae8882] bg-white/5 border border-white/10 px-3 py-1 rounded-full uppercase">
                   {tier.sponsors.length} PARTNERS
@@ -224,77 +221,27 @@ export default function SponsorsClient({ sponsorTiers, featuredPartners }: { spo
         </div>
       </section>
 
-      {/* SECTION 4 — FEATURED PARTNERS */}
-      <section className="py-24 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-          <span className="font-mono-tech text-xs text-[#de1615] tracking-widest uppercase font-semibold mb-2">STRATEGIC INDUSTRY SHOWCASE</span>
-          <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white uppercase tracking-tight">FEATURED CHAMPIONSHIP PARTNERS</h2>
-          <p className="font-inter text-sm sm:text-base text-[#e8bdb6] mt-3">In-depth look at key technical sponsors enabling TRB's engineering breakthroughs.</p>
-        </div>
-
-        <div className="space-y-16">
-          {featuredPartners.map((partner, idx) => {
-            const isImageLeft = idx % 2 === 0;
-            return (
-              <div key={partner.id} className="glass-card rounded-3xl border border-white/15 bg-[#1e2020]/70 backdrop-blur-xl p-8 sm:p-12 hover:border-white/30 transition-all duration-300 group overflow-hidden">
-                <div className={`grid grid-cols-1 lg:grid-cols-12 gap-10 items-center ${isImageLeft ? "" : "lg:flex-row-reverse"}`}>
-                  <div className={`lg:col-span-5 relative aspect-[16/10] rounded-2xl overflow-hidden border border-white/15 bg-black ${isImageLeft ? "" : "lg:order-2"}`}>
-                    <Image src={partner.background_image_url} alt={partner.name} fill unoptimized className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                    <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-md p-3 rounded-xl border border-white/20 max-w-[160px]">
-                      <Image src={partner.logo_url} alt={partner.name} width={140} height={50} unoptimized className="object-contain max-h-10 filter brightness-125" />
-                    </div>
-                  </div>
-
-                  <div className={`lg:col-span-7 flex flex-col gap-4 ${isImageLeft ? "" : "lg:order-1"}`}>
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono-tech text-xs text-[#de1615] bg-[#de1615]/15 px-3 py-1 rounded-full border border-[#de1615]/40 font-bold uppercase tracking-wider">{partner.tier_label}</span>
-                    </div>
-                    <h3 className="font-sora font-extrabold text-2xl sm:text-4xl text-white uppercase tracking-tight group-hover:text-[#ffb59f] transition-colors">{partner.name}</h3>
-                    <p className="font-inter text-sm sm:text-base text-[#e2e2e2]/90 leading-relaxed">{partner.description}</p>
-                    <div className="p-4 rounded-xl bg-black/50 border border-white/10 mt-2">
-                      <span className="font-mono-tech text-xs text-[#ff6534] block uppercase tracking-wider mb-1">KEY CONTRIBUTION & HARDWARE</span>
-                      <span className="font-sora font-bold text-sm text-white">{partner.contribution}</span>
-                    </div>
-                    <div className="pt-4 flex items-center gap-4">
-                      {partner.website_url && partner.website_url !== "#" && (
-                        <a href={partner.website_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-white bg-[#de1615] hover:bg-[#b81211] px-6 py-2.5 rounded-full font-sora font-bold text-xs uppercase tracking-wider hover:scale-105 transition-transform shadow-md">
-                          Visit Partner Website <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
       {/* SECTION 5 — WHY PARTNER WITH TRB */}
-      <section className="py-24 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-          <span className="font-mono-tech text-xs text-[#de1615] tracking-widest uppercase font-semibold mb-2">MUTUAL VALUE PROPOSITION</span>
-          <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white uppercase tracking-tight">WHY PARTNER WITH TEAM RED BARON?</h2>
-          <p className="font-inter text-sm sm:text-base text-[#e8bdb6] mt-3">Sponsoring Team Red Baron delivers measurable return on investment for industry partners.</p>
+      <section className="py-16 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
+        <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10">
+          <h2 className="font-sora font-extrabold text-2xl sm:text-4xl text-white uppercase tracking-tight">WHY PARTNER WITH TEAM RED BARON?</h2>
+          <p className="font-inter text-xs sm:text-sm text-[#e8bdb6] mt-2">Measurable return on investment and engineering collaboration for industry partners.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {VALUE_PROPS.map((vp) => {
             const Icon = vp.icon;
             return (
-              <div key={vp.title} className="glass-card p-8 rounded-3xl border border-white/10 bg-[#1e2020]/60 backdrop-blur-xl flex flex-col justify-between group hover:border-white/30 transition-all duration-300">
+              <div key={vp.title} className="glass-card p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#1e2020]/60 backdrop-blur-xl flex flex-col justify-between group hover:border-[#de1615]/50 transition-all duration-300">
                 <div>
-                  <div className="w-12 h-12 rounded-2xl bg-[#de1615]/20 border border-[#de1615]/50 flex items-center justify-center text-[#de1615] mb-6 group-hover:bg-[#de1615] group-hover:text-white transition-colors">
-                    <Icon className="w-6 h-6" />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#de1615]/20 border border-[#de1615]/40 flex items-center justify-center text-[#de1615] group-hover:bg-[#de1615] group-hover:text-white transition-colors">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono-tech text-[10px] text-[#ff6534] bg-[#ff6534]/10 border border-[#ff6534]/20 px-2 py-0.5 rounded tracking-wider font-semibold uppercase">{vp.tag}</span>
                   </div>
-                  <span className="font-mono-tech text-[10px] text-[#ff6534] bg-[#ff6534]/10 border border-[#ff6534]/20 px-2.5 py-1 rounded-md tracking-widest font-semibold uppercase block mb-3 w-fit">{vp.tag}</span>
-                  <h3 className="font-sora font-bold text-xl text-white mb-3 group-hover:text-[#ffb59f] transition-colors">{vp.title}</h3>
-                  <p className="font-inter text-xs sm:text-sm text-[#e2e2e2]/80 leading-relaxed">{vp.desc}</p>
-                </div>
-                <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between font-mono-tech text-xs text-[#de1615]">
-                  <span>Explore Returns</span>
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <h3 className="font-sora font-bold text-base sm:text-lg text-white mb-2 group-hover:text-[#ffb59f] transition-colors">{vp.title}</h3>
+                  <p className="font-inter text-xs text-[#e2e2e2]/80 leading-relaxed">{vp.desc}</p>
                 </div>
               </div>
             );
@@ -305,24 +252,38 @@ export default function SponsorsClient({ sponsorTiers, featuredPartners }: { spo
       {/* SECTION 7 — TESTIMONIALS */}
       <section className="py-24 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-          <span className="font-mono-tech text-xs text-[#de1615] tracking-widest uppercase font-semibold mb-2">WHAT OUR SUPPORTERS SAY</span>
           <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white uppercase tracking-tight">SPONSOR TESTIMONIALS</h2>
         </div>
 
         <div className="max-w-4xl mx-auto relative">
           <div className="glass-card p-10 sm:p-14 rounded-3xl border border-white/15 bg-[#1e2020]/80 backdrop-blur-2xl text-center relative overflow-hidden">
             <Quote className="w-16 h-16 text-[#de1615]/20 absolute top-6 left-6 pointer-events-none" />
-            <p className="font-inter text-lg sm:text-xl text-white leading-relaxed italic mb-8 relative z-10">"{TESTIMONIALS[activeTestimonial].quote}"</p>
+            <p className="font-inter text-lg sm:text-xl text-white leading-relaxed italic mb-8 relative z-10">"{currentTestimonial.quote}"</p>
             <div className="flex flex-col items-center">
-              <span className="font-sora font-extrabold text-lg text-white">{TESTIMONIALS[activeTestimonial].name}</span>
-              <span className="font-mono-tech text-xs text-[#ff6534] font-semibold uppercase mt-0.5">{TESTIMONIALS[activeTestimonial].company}</span>
-              <span className="font-mono-tech text-[10px] text-[#ae8882] uppercase mt-1">{TESTIMONIALS[activeTestimonial].tier}</span>
+              <span className="font-sora font-extrabold text-lg text-white">{currentTestimonial.name}</span>
+              <span className="font-mono-tech text-xs text-[#ff6534] font-semibold uppercase mt-0.5">{currentTestimonial.company}</span>
+              <span className="font-mono-tech text-[10px] text-[#ae8882] uppercase mt-1">{currentTestimonial.tier}</span>
+
+              {/* Sponsor Website / Case Study Link (with space for links) */}
+              {currentTestimonial.website_url ? (
+                <a
+                  href={currentTestimonial.website_url.startsWith("http") ? currentTestimonial.website_url : `https://${currentTestimonial.website_url}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-xs font-mono-tech text-white bg-[#de1615] hover:bg-[#b81211] px-5 py-2 rounded-full transition-all hover:scale-105 shadow-md"
+                >
+                  <span>Visit Sponsor Website</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              ) : null}
             </div>
-            <div className="flex items-center justify-center gap-4 mt-8">
-              {TESTIMONIALS.map((_, idx) => (
-                <button key={idx} onClick={() => setActiveTestimonial(idx)} className={`w-3 h-3 rounded-full transition-all ${idx === activeTestimonial ? "bg-[#de1615] w-8 shadow-[0_0_10px_#de1615]" : "bg-white/20 hover:bg-white/50"}`} />
-              ))}
-            </div>
+            {testimonialItems.length > 1 && (
+              <div className="flex items-center justify-center gap-4 mt-8">
+                {testimonialItems.map((_, idx) => (
+                  <button key={idx} onClick={() => setActiveTestimonial(idx)} className={`w-3 h-3 rounded-full transition-all ${idx === (activeTestimonial % testimonialItems.length) ? "bg-[#de1615] w-8 shadow-[0_0_10px_#de1615]" : "bg-white/20 hover:bg-white/50"}`} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -335,7 +296,6 @@ export default function SponsorsClient({ sponsorTiers, featuredPartners }: { spo
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
-            <span className="font-mono-tech text-xs text-[#ff6534] tracking-widest uppercase font-semibold mb-3">JOIN THE CHAMPIONSHIP JOURNEY</span>
             <h2 className="font-sora font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight mb-6">JOIN THE <span className="text-[#de1615]">JOURNEY</span></h2>
             <p className="font-inter text-base sm:text-lg text-[#e8bdb6] leading-relaxed mb-10">“Partner with Team Red Baron and help shape the next generation of engineering innovation.”</p>
             <div className="flex flex-col sm:flex-row items-center gap-4">

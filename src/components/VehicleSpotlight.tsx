@@ -64,10 +64,6 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: any }) {
 
         {/* Left / Top Column: Vehicle Spotlight Header & Photo */}
         <div className="lg:col-span-6 flex flex-col">
-          <div className="inline-flex items-center gap-2 font-mono-tech text-xs text-[#de1615] tracking-widest uppercase mb-4 drop-shadow">
-            <span className="w-2 h-2 rounded-full bg-[#de1615] animate-ping" />
-            Current Flagship Vehicle
-          </div>
 
           <h2 className="font-sora font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white mb-6 tracking-tight uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
             {vehicleData.vehicle_name || "ALBATROX XIV"}
@@ -115,9 +111,6 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: any }) {
 
         {/* Right / Bottom Column: Telemetry Specs & Approval Status */}
         <div className="lg:col-span-6 flex flex-col justify-center space-y-4">
-          <span className="font-mono-tech text-xs text-[#ff6534] tracking-widest uppercase mb-1 font-bold">
-            TELEMETRY & TECHNICAL SPECIFICATIONS
-          </span>
 
           {(vehicleData.vehicle_specs || []).map((spec: any, idx: number) => {
             const icons = [Gauge, Zap, Timer, CheckCircle2];

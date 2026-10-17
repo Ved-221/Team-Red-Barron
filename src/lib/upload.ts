@@ -47,7 +47,8 @@ export async function deleteImage(url: string) {
     if (url.includes(bucketPrefix)) {
       const filePath = url.split(bucketPrefix)[1];
       if (filePath) {
-        await supabase.storage.from('trb-media').remove([filePath]);
+        const { error } = await supabase.storage.from('trb-media').remove([filePath]);
+        if (error) console.warn("deleteImage warning:", error);
       }
     }
   } catch (err) {

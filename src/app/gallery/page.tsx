@@ -13,6 +13,7 @@ export default async function GalleryPage() {
   const { data: galleryData } = await supabase
     .from("gallery_images")
     .select("*")
+    .is("deleted_at", null)
     .order("sort_order", { ascending: true });
 
   return <GalleryClient galleryData={galleryData || []} />;

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "testimonial-varroc",
+    "quote": "Team Red Baron represents the pinnacle of collegiate engineering discipline in India. Their attention to manufacturing tolerances and data telemetry rivals professional motorsport standards.",
+    "name": "Senior Engineering Director",
+    "company": "Varroc Engineering Limited",
+    "tier": "Title Sponsor Partner",
+    "website_url": "https://varroc.com",
+    "sort_order": 0
+  },
+  {
+    "id": "testimonial-altium",
+    "quote": "Providing Altium PCB design tools to TRB students has proven how fast young engineers can innovate when backed by industry-standard EDA software. Their pitwall telemetry system is remarkable.",
+    "name": "University Program Lead",
+    "company": "Altium LLC",
+    "tier": "Electronics Partner",
+    "website_url": "https://www.altium.com",
+    "sort_order": 1
+  },
+  {
+    "id": "testimonial-skf",
+    "quote": "Supporting TRB with SKF high-precision bearings for their 4WD transfer case has been a rewarding partnership. Their alumni enter the automotive workforce with unparalleled practical experience.",
+    "name": "Application Engineering Manager",
+    "company": "SKF India",
+    "tier": "Platinum Sponsor",
+    "website_url": "https://www.skf.com",
+    "sort_order": 2
+  }
+]
