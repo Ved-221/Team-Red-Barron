@@ -491,13 +491,13 @@ export function HomepageIntro() {
         <div className="relative w-[62vw] max-w-[290px] sm:max-w-[390px] md:max-w-[480px] lg:max-w-[580px] xl:max-w-[660px] aspect-square flex items-center justify-center">
 
           {/* 4a. Ground Contact Shadow (Soft grounded anchor) */}
-          <div className="absolute bottom-[16%] left-[10%] right-[8%] h-[12%] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.45)_50%,_transparent_75%)] blur-[4px] pointer-events-none z-0" />
+          <div className="absolute bottom-[13.5%] left-[5%] right-[5%] h-[11%] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.45)_50%,_transparent_75%)] blur-[4px] pointer-events-none z-0" />
 
           {/* 4b. Vehicle Body (Chassis, roll cage, driver, suspension, markings) */}
           <div className="absolute inset-0 z-10">
             <Image
-              src="/trb_vehicle_body.png"
-              alt="TRB Buggy Chassis #63"
+              src="/vehicle-image-new.png"
+              alt="TRB Buggy Chassis"
               fill
               priority
               sizes="(max-width: 768px) 65vw, (max-width: 1200px) 55vw, 660px"
@@ -505,20 +505,20 @@ export function HomepageIntro() {
             />
           </div>
 
-          {/* 4c. Independent Rear Wheel (Exact axle center: left 13.48%, top 72.07%, width 28.51%) */}
+          {/* 4c. Independent Rear Wheel (Exact axle center: left 14.45%, top 72.0%, width 29.0%) */}
           <div
             className="absolute z-20 aspect-square"
             style={{
-              left: "13.48%",
-              top: "72.07%",
-              width: "28.51%",
+              left: "14.45%",
+              top: "72.0%",
+              width: "29.0%",
               transform: `translate(-50%, -50%) rotate(${wheelRotationDeg}deg)`,
               transformOrigin: "center center",
               willChange: "transform",
             }}
           >
             <Image
-              src="/trb_rear_wheel.png"
+              src="/tire-new.png"
               alt="TRB Rear Wheel"
               fill
               priority
@@ -527,20 +527,20 @@ export function HomepageIntro() {
             />
           </div>
 
-          {/* 4d. Independent Front Wheel (Exact axle center: left 86.72%, top 71.88%, width 28.03%) */}
+          {/* 4d. Independent Front Wheel (Exact axle center: left 82.5%, top 72.0%, width 28.0%) */}
           <div
             className="absolute z-20 aspect-square"
             style={{
-              left: "86.72%",
-              top: "71.88%",
-              width: "28.03%",
+              left: "82.5%",
+              top: "72.0%",
+              width: "28.0%",
               transform: `translate(-50%, -50%) rotate(${wheelRotationDeg}deg)`,
               transformOrigin: "center center",
               willChange: "transform",
             }}
           >
             <Image
-              src="/trb_front_wheel.png"
+              src="/tire-new.png"
               alt="TRB Front Wheel"
               fill
               priority
