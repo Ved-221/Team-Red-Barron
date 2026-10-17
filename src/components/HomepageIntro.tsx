@@ -491,7 +491,7 @@ export function HomepageIntro() {
         <div className="relative w-[62vw] max-w-[290px] sm:max-w-[390px] md:max-w-[480px] lg:max-w-[580px] xl:max-w-[660px] aspect-square flex items-center justify-center">
 
           {/* 4a. Ground Contact Shadow (Soft grounded anchor) */}
-          <div className="absolute bottom-[13.5%] left-[5%] right-[5%] h-[11%] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.45)_50%,_transparent_75%)] blur-[4px] pointer-events-none z-0" />
+          <div className="absolute bottom-[13.5%] left-[4%] right-[4%] h-[11%] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.45)_50%,_transparent_75%)] blur-[4px] pointer-events-none z-0" />
 
           {/* 4b. Vehicle Body (Chassis, roll cage, driver, suspension, markings) */}
           <div className="absolute inset-0 z-10">
@@ -505,13 +505,13 @@ export function HomepageIntro() {
             />
           </div>
 
-          {/* 4c. Independent Rear Wheel (Exact axle center: left 14.45%, top 72.0%, width 29.0%) */}
+          {/* 4c. Independent Rear Wheel (Exact axle center: left 14.67%, top 72.17%, width 32.22%) */}
           <div
             className="absolute z-20 aspect-square"
             style={{
-              left: "14.45%",
-              top: "72.0%",
-              width: "29.0%",
+              left: "14.67%",
+              top: "72.17%",
+              width: "32.22%",
               transform: `translate(-50%, -50%) rotate(${wheelRotationDeg}deg)`,
               transformOrigin: "center center",
               willChange: "transform",
@@ -522,18 +522,18 @@ export function HomepageIntro() {
               alt="TRB Rear Wheel"
               fill
               priority
-              sizes="220px"
+              sizes="260px"
               className="object-contain select-none drop-shadow-[0_4px_10px_rgba(0,0,0,0.85)]"
             />
           </div>
 
-          {/* 4d. Independent Front Wheel (Exact axle center: left 82.5%, top 72.0%, width 28.0%) */}
+          {/* 4d. Independent Front Wheel (Exact axle center: left 82.85%, top 73.36%, width 32.38%) */}
           <div
             className="absolute z-20 aspect-square"
             style={{
-              left: "82.5%",
-              top: "72.0%",
-              width: "28.0%",
+              left: "82.85%",
+              top: "73.36%",
+              width: "32.38%",
               transform: `translate(-50%, -50%) rotate(${wheelRotationDeg}deg)`,
               transformOrigin: "center center",
               willChange: "transform",
@@ -544,8 +544,37 @@ export function HomepageIntro() {
               alt="TRB Front Wheel"
               fill
               priority
-              sizes="220px"
+              sizes="260px"
               className="object-contain select-none drop-shadow-[0_4px_10px_rgba(0,0,0,0.85)]"
+            />
+          </div>
+
+          {/* 4e. Top Red Siren Alarm Glow Effect */}
+          <div
+            className="absolute z-30 pointer-events-none"
+            style={{
+              left: "30.42%",
+              top: "12.3%",
+              transform: "translate(-50%, -50%)",
+              width: "5.5%",
+              height: "4%",
+            }}
+          >
+            {/* Ambient wide red aura */}
+            <div
+              className="absolute inset-[-140%] rounded-full mix-blend-screen pointer-events-none animate-siren-ambient"
+              style={{
+                background: "radial-gradient(circle, rgba(222,22,21,0.9) 0%, rgba(255,60,40,0.55) 35%, rgba(222,22,21,0.2) 65%, transparent 85%)",
+                filter: "blur(8px)",
+              }}
+            />
+            {/* High-intensity glowing red core */}
+            <div
+              className="absolute inset-0 rounded-full mix-blend-screen pointer-events-none animate-siren-core"
+              style={{
+                background: "radial-gradient(ellipse at center, rgba(255,255,255,0.98) 0%, rgba(255,100,80,0.92) 35%, rgba(222,22,21,0.85) 70%, transparent 100%)",
+                boxShadow: "0 0 18px 5px #DE1615, 0 0 35px 12px rgba(222,22,21,0.75), 0 0 55px 20px rgba(255,50,30,0.45)",
+              }}
             />
           </div>
         </div>

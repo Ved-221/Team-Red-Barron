@@ -153,3 +153,37 @@
   animation: shockwave-pulse 950ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
 }
 
+/* Vehicle Siren Emergency Red Strobe / Beacon Glow */
+@keyframes siren-ambient {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes siren-core {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 8px rgba(222, 22, 21, 0.85));
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 22px rgba(222, 22, 21, 1)) drop-shadow(0 0 45px rgba(255, 60, 40, 0.85));
+  }
+}
+
+.animate-siren-ambient {
+  animation: siren-ambient 0.75s ease-in-out infinite;
+}
+
+.animate-siren-core {
+  animation: siren-core 0.75s ease-in-out infinite;
+}
+
+
