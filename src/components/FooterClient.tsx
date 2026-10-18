@@ -150,6 +150,35 @@ export function FooterClient({ contactData }: { contactData: any }) {
                 </a>
               )}
             </div>
+
+            {/* Developer Credit */}
+            <div className="mt-5 flex items-center gap-2.5">
+              <span className="font-mono-tech text-xs text-[#e8bdb6]">
+                Developed by <span className="text-white font-semibold">Ved</span>
+              </span>
+              <div className="flex items-center gap-1.5">
+                <a
+                  href="https://www.linkedin.com/in/veddhapodkar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-[#0A66C2] hover:border-[#0A66C2]/60 hover:bg-[#0A66C2]/10 transition-all"
+                  aria-label="Ved Dhapodkar on LinkedIn"
+                  title="Ved Dhapodkar on LinkedIn"
+                >
+                  <LinkedInIcon className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.instagram.com/ved_dh/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-[#E4405F] hover:border-[#E4405F]/60 hover:bg-[#E4405F]/10 transition-all"
+                  aria-label="Ved on Instagram"
+                  title="Ved on Instagram"
+                >
+                  <InstagramIcon className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}
@@ -240,19 +269,6 @@ export function FooterClient({ contactData }: { contactData: any }) {
         {/* Bottom Banner */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 font-mono-tech text-xs text-[#e8bdb6]">
           <span>©2025 Team Red Baron. PCCOE Pune. All Rights Reserved.</span>
-
-          <div className="flex items-center gap-1.5 text-xs text-[#e8bdb6]">
-            <span>Developed by</span>
-            <a
-              href="https://www.linkedin.com/in/veddhapodkar"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-white hover:text-[#ff6534] transition-colors inline-flex items-center gap-1 group"
-            >
-              <span className="underline decoration-[#de1615] underline-offset-4 group-hover:text-[#ff6534]">Ved Dhapodkar</span>
-              <span className="text-[#de1615] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[11px]">↗</span>
-            </a>
-          </div>
 
           <button
             onClick={scrollToTop}
