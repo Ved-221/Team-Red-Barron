@@ -10,7 +10,12 @@ import {
   CheckCircle2,
   Copy,
   Sparkles,
+  Mail,
+  ExternalLink,
 } from "lucide-react";
+import { submitContactTransmission } from "./actions";
+
+const TARGET_MARKETING_EMAIL = "redbaron.marketingexec@gmail.com";
 
 const inquiryTypes = [
   { id: "sponsorship", label: "Sponsorship Inquiry" },
@@ -94,6 +99,13 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
     organization: "",
     message: "",
   });
+  const [lastSubmission, setLastSubmission] = useState<{
+    inquiry_type: string;
+    name: string;
+    email: string;
+    organization: string;
+    message: string;
+  } | null>(null);
 
   const email = contactData?.email || "teamredbaron07@gmail.com";
   const address = contactData?.address || "Pimpri Chinchwad College of Engineering (PCCOE)\nSector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044";
@@ -153,14 +165,53 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
     setTimeout(() => setCopiedEmail(null), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate high-speed telemetry transmit
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-    }, 1200);
+
+    const typeObj = inquiryTypes.find((t) => t.id === selectedType);
+    const typeLabel = typeObj ? typeObj.label : "General Inquiry";
+
+    const payload = {
+      inquiry_type: typeLabel,
+      name: formData.name,
+      email: formData.email,
+      organization: formData.organization,
+      message: formData.message,
+    };
+
+    setLastSubmission(payload);
+
+    try {
+      await submitContactTransmission(payload);
+    } catch (err) {
+      console.error("Transmission error:", err);
+    }
+
+    // Prepare email parameters directed to redbaron.marketingexec@gmail.com
+    const subject = encodeURIComponent(`[TRB ${typeLabel}] Transmission from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Hello Team Red Baron,\n\n` +
+      `You have received a new inquiry transmission from the website:\n\n` +
+      `Inquiry Category: ${typeLabel}\n` +
+      `Sender Name: ${formData.name}\n` +
+      `Sender Email: ${formData.email}\n` +
+      `Organization: ${formData.organization || "N/A"}\n\n` +
+      `Message Details:\n${formData.message}\n\n` +
+      `Best regards,\n${formData.name}`
+    );
+
+    const mailtoUrl = `mailto:${TARGET_MARKETING_EMAIL}?subject=${subject}&body=${body}`;
+
+    // Prompt native mail client draft
+    try {
+      window.location.href = mailtoUrl;
+    } catch (e) {
+      console.warn("Mailto redirect warning:", e);
+    }
+
+    setIsSubmitting(false);
+    setSubmitted(true);
   };
 
   return (
@@ -287,21 +338,53 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
                 <Sparkles className="w-5 h-5 text-[#ff6534]" />
               </div>
 
-              {submitted ? (
-                <div className="py-12 flex flex-col items-center text-center gap-4 animate-in fade-in duration-300">
+              {submitted && lastSubmission ? (
+                <div className="py-10 flex flex-col items-center text-center gap-5 animate-in fade-in duration-300">
                   <div className="w-16 h-16 rounded-full bg-[#de1615]/20 border border-[#de1615] flex items-center justify-center text-[#de1615]">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h3 className="font-sora font-bold text-2xl text-white">Transmission Sent!</h3>
-                  <p className="font-inter text-sm text-[#e8bdb6] max-w-md">
-                    Thank you for reaching out to Team Red Baron. Our pitwall team has received your message and will respond within 24 hours.
+                  <div>
+                    <h3 className="font-sora font-bold text-2xl text-white">Transmission Sent!</h3>
+                    <p className="font-mono text-xs text-[#ff6534] mt-1 uppercase tracking-wider">
+                      Transmitted to {TARGET_MARKETING_EMAIL}
+                    </p>
+                  </div>
+
+                  <p className="font-inter text-sm text-[#e8bdb6] max-w-md leading-relaxed">
+                    Thank you for reaching out to Team Red Baron. Your transmission has been recorded and addressed to <strong className="text-white">{TARGET_MARKETING_EMAIL}</strong>.
                   </p>
+
+                  {/* Quick-Send Fallback Actions */}
+                  <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md pt-2">
+                    <a
+                      href={`https://mail.google.com/mail/?view=cm&fs=1&to=${TARGET_MARKETING_EMAIL}&su=${encodeURIComponent(`[TRB ${lastSubmission.inquiry_type}] Transmission from ${lastSubmission.name}`)}&body=${encodeURIComponent(
+                        `Hello Team Red Baron,\n\nInquiry Category: ${lastSubmission.inquiry_type}\nSender: ${lastSubmission.name} (${lastSubmission.email})\nOrganization: ${lastSubmission.organization || "N/A"}\n\nMessage Details:\n${lastSubmission.message}\n\nBest regards,\n${lastSubmission.name}`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 w-full px-4 py-3 rounded-xl bg-[#de1615] hover:bg-[#b81211] text-white font-sora font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-all"
+                    >
+                      <Mail className="w-4 h-4" />
+                      Open in Gmail Web
+                    </a>
+
+                    <a
+                      href={`mailto:${TARGET_MARKETING_EMAIL}?subject=${encodeURIComponent(`[TRB ${lastSubmission.inquiry_type}] Transmission from ${lastSubmission.name}`)}&body=${encodeURIComponent(
+                        `Hello Team Red Baron,\n\nInquiry Category: ${lastSubmission.inquiry_type}\nSender: ${lastSubmission.name} (${lastSubmission.email})\nOrganization: ${lastSubmission.organization || "N/A"}\n\nMessage Details:\n${lastSubmission.message}\n\nBest regards,\n${lastSubmission.name}`
+                      )}`}
+                      className="flex-1 w-full px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-sora font-bold text-xs border border-white/20 flex items-center justify-center gap-2 hover:scale-[1.02] transition-all"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Open Mail App
+                    </a>
+                  </div>
+
                   <button
                     onClick={() => {
                       setSubmitted(false);
                       setFormData({ name: "", email: "", organization: "", message: "" });
                     }}
-                    className="mt-4 px-6 py-2.5 rounded-full bg-white/10 text-white font-sora font-semibold text-xs border border-white/20 hover:bg-white/20 transition-all"
+                    className="mt-2 text-xs font-mono text-[#ae8882] hover:text-white underline transition-colors"
                   >
                     Send Another Transmission
                   </button>
