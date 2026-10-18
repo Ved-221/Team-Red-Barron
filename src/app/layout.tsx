@@ -54,6 +54,13 @@ export default function RootLayout({
     >
       <head>
         <link rel="preconnect" href="https://axzwucvnrjtenvvrxfew.supabase.co" />
+        <link
+          rel="preload"
+          href="/fonts/AbandoN.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="bg-black text-[#e2e2e2] min-h-screen flex flex-col font-inter selection:bg-[#de1615] selection:text-white">
         <NavigationProgress />
