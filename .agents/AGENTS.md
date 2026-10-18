@@ -27,7 +27,7 @@
    - Always use `image (2).png` (saved as `public/logo.png`) as the official logo across all components and pages. The old logo file is removed.
 
 7. **Key Reference Files:**
-   - [DESIGN (3).md](file:///Users/veddhapodkar/Documents/REPO/Team-Red-Barron/DESIGN%20%283%29.md)
-   - [PRD-team-redbaron-website.md](file:///Users/veddhapodkar/Documents/REPO/Team-Red-Barron/PRD-team-redbaron-website.md)
-   - [TRB WEB INFO (1).pdf](file:///Users/veddhapodkar/Documents/REPO/Team-Red-Barron/TRB%20WEB%20INFO%20%281%29.pdf)
-   - [TRB-colours.jpeg](file:///Users/veddhapodkar/Documents/REPO/Team-Red-Barron/TRB-colours.jpeg)
+   - [DESIGN (3).md](file:///Users/veddhapodkar/Desktop/Team-Red-Barron/docs/DESIGN%20%283%29.md)
+   - [PRD-team-redbaron-website.md](file:///Users/veddhapodkar/Desktop/Team-Red-Barron/docs/PRD-team-redbaron-website.md)
+   - [TRB WEB INFO (1).pdf](file:///Users/veddhapodkar/Desktop/Team-Red-Barron/docs/TRB%20WEB%20INFO%20%281%29.pdf)
+   - [TRB-colours.jpeg](file:///Users/veddhapodkar/Desktop/Team-Red-Barron/docs/TRB-colours.jpeg)
