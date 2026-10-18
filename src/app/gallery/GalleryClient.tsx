@@ -6,11 +6,18 @@ import { Footer } from "@/components/Footer";
 import Masonry, { MasonryItem } from "@/components/ui/Masonry";
 import { FoldText } from "@/components/ui/FoldText";
 import { X } from "lucide-react";
-import Image from "next/image";
+import { SmartImage } from "@/components/SmartImage";
 
 const HEIGHTS = [750, 520, 850, 600, 700, 550, 480, 800, 520, 680, 560, 720, 580, 760, 490, 640, 700, 540, 780];
 
-export default function GalleryClient({ galleryData }: { galleryData: any[] }) {
+interface GalleryItemData {
+  id: string;
+  image_url: string;
+  title?: string;
+  category?: string;
+}
+
+export default function GalleryClient({ galleryData }: { galleryData: GalleryItemData[] }) {
   const [selectedItem, setSelectedItem] = useState<MasonryItem | null>(null);
 
   const GALLERY_ITEMS: MasonryItem[] = galleryData.map((item, index) => ({
@@ -96,13 +103,14 @@ export default function GalleryClient({ galleryData }: { galleryData: any[] }) {
             </button>
 
             {/* High-Res Image Display */}
-            <Image
+            <SmartImage
               src={selectedItem.img}
-              alt="Gallery image"
+              alt={selectedItem.title || "Gallery image"}
               width={1920}
               height={1080}
               className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-2xl shadow-2xl border border-white/10"
-              quality={90}
+              quality={85}
+              sizes="(max-width: 1280px) 95vw, 1200px"
             />
           </div>
         </div>

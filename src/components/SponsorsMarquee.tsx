@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SmartImage } from "@/components/SmartImage";
 import Link from "next/link";
 
 export function SponsorsMarquee({ sponsors }: { sponsors: any[] }) {
@@ -24,12 +24,12 @@ export function SponsorsMarquee({ sponsors }: { sponsors: any[] }) {
             className="flex items-center justify-center shrink-0 group filter hover:scale-110 transition-all duration-300"
           >
             <div className="relative w-36 h-14 flex items-center justify-center">
-              <Image
+              <SmartImage
                 src={s.logo_url}
                 alt={`${s.name} Logo`}
                 width={150}
                 height={55}
-                unoptimized
+                sizes="150px"
                 className="object-contain max-h-12 filter brightness-125"
               />
             </div>

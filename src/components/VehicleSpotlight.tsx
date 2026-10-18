@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
-import Image from "next/image";
+import { SmartImage } from "@/components/SmartImage";
 import { Gauge, Zap, Timer, CheckCircle2 } from "lucide-react";
 import { useInView } from "framer-motion";
 
@@ -92,7 +92,7 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
       {/* Layer 0: Background Video / Poster (Decorative, Full Bleed) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         {/* Poster backdrop (instant visual base, lightweight ~31KB) */}
-        <Image
+        <SmartImage
           src="/videos/trb_bg_poster.webp"
           alt=""
           fill
@@ -150,12 +150,11 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
             <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden glass-card border border-white/20 shadow-2xl">
               {/* Vehicle Card Image */}
               <div className="relative w-full h-full overflow-hidden">
-                <Image
+                <SmartImage
                   src={vehicleData.image_url || "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png"}
                   alt={vehicleData.vehicle_name || "Flagship Offroad Vehicle"}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  unoptimized
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none z-10" />

@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import Image from "next/image";
-import { ArrowRight, Heart, Mail, Sparkles, Handshake, ShieldCheck } from "lucide-react";
+import { SmartImage } from "@/components/SmartImage";
+import { ArrowRight, Mail, Handshake } from "lucide-react";
 import GradientWaves from "@/components/ui/GradientWaves";
 import BorderGlow from "@/components/ui/BorderGlow";
 import { DonateModal, ContactModal } from "@/components/ui/SupportModals";
@@ -60,11 +60,11 @@ export function SupportCTA() {
               {/* Background Layer 2: Faint Formula Student / Baja Vehicle Silhouette (5-10% Opacity) */}
               <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.07] overflow-hidden">
                 <div className="relative w-[700px] h-[500px]">
-                  <Image
+                  <SmartImage
                     src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"
                     alt="Formula Student Vehicle Background Silhouette"
                     fill
-                    unoptimized
+                    sizes="700px"
                     className="object-contain"
                   />
                 </div>

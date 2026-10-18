@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import { SmartImage } from "@/components/SmartImage";
 import {
   Trophy,
   Users,
@@ -124,11 +124,10 @@ export default function SponsorsClient({
       {/* SECTION 1 — HERO SECTION */}
       <section className="relative min-h-[92vh] flex items-center justify-center pt-32 pb-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full overflow-hidden z-10">
         <div className="absolute inset-0 z-0">
-          <Image
+          <SmartImage
             src={heroBgUrl}
             alt="Team Red Baron Championship ATV Hero Shot"
             fill
-            unoptimized
             priority
             className="object-cover object-center scale-105"
             sizes="100vw"
@@ -207,7 +206,7 @@ export default function SponsorsClient({
                   return (
                     <CardTag key={sp.id} {...cardLinkProps}>
                       <div className="relative w-full h-16 flex items-center justify-center filter group-hover:scale-105 transition-all duration-300">
-                        <Image src={sp.logo_url} alt={`${sp.name} Logo`} width={160} height={60} unoptimized className="object-contain max-h-14" />
+                        <SmartImage src={sp.logo_url} alt={`${sp.name} Logo`} width={160} height={60} sizes="160px" className="object-contain max-h-14" />
                       </div>
                       <span className="font-sora font-bold text-xs text-white/70 group-hover:text-white mt-3 tracking-wider uppercase transition-colors text-center">
                         {sp.name}
@@ -292,7 +291,7 @@ export default function SponsorsClient({
       <section className="py-24 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
         <div className="glass-card rounded-[3rem] p-10 sm:p-16 lg:p-20 text-center relative overflow-hidden border border-[#de1615]/50 bg-gradient-to-br from-[#121414] via-[#1e2020] to-[#0c0f0f] shadow-[0_0_60px_rgba(222,22,21,0.25)]">
           <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-            <Image src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png" alt="TRB ATV Hero Background" fill unoptimized className="object-cover object-center" />
+            <SmartImage src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png" alt="TRB ATV Hero Background" fill sizes="100vw" className="object-cover object-center" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">

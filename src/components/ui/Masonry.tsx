@@ -2,7 +2,7 @@
 
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import Image from 'next/image';
+import { SmartImage } from '@/components/SmartImage';
 
 import './Masonry.css';
 
@@ -255,7 +255,7 @@ export default function Masonry({
             onMouseLeave={e => handleMouseLeave(e, item)}
           >
             <div className="item-img">
-              <Image src={item.img} alt={item.title || "Gallery item"} fill className="object-cover" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" />
+              <SmartImage src={item.img} alt={item.title || "Gallery item"} fill className="object-cover" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" />
               {colorShiftOnHover && (
                 <div
                   className="color-overlay"

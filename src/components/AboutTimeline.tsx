@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
+import { SmartImage } from "@/components/SmartImage";
 import { Timeline, TimelineEntry } from "@/components/ui/timeline";
 import { Flag, Cpu, Trophy, ShieldCheck, Zap, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -41,11 +41,10 @@ export function AboutTimeline({ milestones }: { milestones: VehicleMilestone[] }
     const PhotoCard = (
       <div className="flex justify-center items-center w-full">
         <div className="relative w-full max-w-[360px] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-black/60 shadow-[0_0_25px_rgba(0,0,0,0.8)] group hover:border-[#de1615] hover:shadow-[0_0_35px_rgba(222,22,21,0.4)] hover:scale-[1.03] transition-all duration-300">
-          <Image
+          <SmartImage
             src={m.imageSrc}
             alt={`Team Red Baron ATV (${m.year})`}
             fill
-            unoptimized
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, 40vw"
           />

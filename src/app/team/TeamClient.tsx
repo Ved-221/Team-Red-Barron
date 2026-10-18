@@ -10,6 +10,8 @@ import { WarpText } from "@/components/ui/WarpText";
 import GhostCursor from "@/components/ui/GhostCursor";
 import { ChevronDown, Users, ShieldAlert, Cpu, Wrench, Flame, Zap, Settings } from "lucide-react";
 
+import { SmartImage } from "@/components/SmartImage";
+
 function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -171,11 +173,14 @@ function TeamContent({ teamData }: { teamData: Record<string, any[]> }) {
                         }}
                         className="group relative bg-[#12151b]/80 border border-white/10 rounded-2xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row items-stretch"
                       >
-                        <div className="relative w-28 sm:w-32 shrink-0 bg-black/50 overflow-hidden">
-                          <img
-                            src={member.photo_url || "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/team_person.png"}
+                        <div className="relative w-28 sm:w-32 shrink-0 bg-black/50 overflow-hidden min-h-[110px] sm:min-h-[120px]">
+                          <SmartImage
+                            src={member.photo_url || "/team_person.webp"}
+                            fallbackSrc="/team_person.webp"
                             alt={member.name}
-                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                            fill
+                            sizes="(max-width: 640px) 112px, 128px"
+                            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                           />
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#12151b]/80" />
                         </div>
