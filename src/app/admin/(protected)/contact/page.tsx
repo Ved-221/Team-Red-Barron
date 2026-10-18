@@ -133,7 +133,7 @@ export default async function AdminContactPage() {
 
         <div className="pt-8 border-t border-white/10">
           <h2 className="font-sora font-bold text-lg text-white mb-6">Social Links</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
                 Instagram URL
@@ -167,18 +167,6 @@ export default async function AdminContactPage() {
                 type="url"
                 name="youtube_url"
                 defaultValue={contact?.youtube_url}
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
-                Twitter/X URL
-              </label>
-              <input
-                key={contact?.twitter_url || "twitter_url"}
-                type="url"
-                name="twitter_url"
-                defaultValue={contact?.twitter_url}
                 className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
               />
             </div>

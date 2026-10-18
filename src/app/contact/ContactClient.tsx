@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { submitContactTransmission } from "./actions";
 
+import { toast } from "react-hot-toast";
+
 const TARGET_MARKETING_EMAIL = "redbaron.marketingexec@gmail.com";
 
 const inquiryTypes = [
@@ -138,25 +140,32 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
       color: "#FF0000",
     });
   }
-  if (contactData?.twitter_url) {
-    socials.push({
-      name: "Facebook",
-      handle: "Team Red Baron",
-      href: contactData.twitter_url,
-      icon: FacebookIcon,
-      color: "#1877F2",
-    });
-  }
 
-  // Fallback if db is empty
+  // Fallback defaults if db is empty
   if (socials.length === 0) {
-    socials.push({
-      name: "Instagram",
-      handle: "@team_red_baron",
-      href: "https://www.instagram.com/team_red_baron",
-      icon: InstagramIcon,
-      color: "#E4405F",
-    });
+    socials.push(
+      {
+        name: "Instagram",
+        handle: "@team_red_baron",
+        href: "https://www.instagram.com/team_red_baron",
+        icon: InstagramIcon,
+        color: "#E4405F",
+      },
+      {
+        name: "LinkedIn",
+        handle: "Team Red Baron",
+        href: "https://www.linkedin.com/company/team-red-baron",
+        icon: LinkedInIcon,
+        color: "#0A66C2",
+      },
+      {
+        name: "YouTube",
+        handle: "@teamredbaron",
+        href: "https://youtube.com/@teamredbaron4316",
+        icon: YouTubeIcon,
+        color: "#FF0000",
+      }
+    );
   }
 
   const handleCopyEmail = (emailStr: string) => {
@@ -182,32 +191,41 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
 
     setLastSubmission(payload);
 
+    let serverDispatched = false;
     try {
-      await submitContactTransmission(payload);
+      const res = await submitContactTransmission(payload);
+      if (!res.success) {
+        toast.error(res.error || "Failed to transmit message. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+      serverDispatched = !!res.serverDispatched;
     } catch (err) {
       console.error("Transmission error:", err);
+      toast.error("An error occurred during transmission. Opening email client fallback...");
     }
 
-    // Prepare email parameters directed to redbaron.marketingexec@gmail.com
-    const subject = encodeURIComponent(`[TRB ${typeLabel}] Transmission from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Hello Team Red Baron,\n\n` +
-      `You have received a new inquiry transmission from the website:\n\n` +
-      `Inquiry Category: ${typeLabel}\n` +
-      `Sender Name: ${formData.name}\n` +
-      `Sender Email: ${formData.email}\n` +
-      `Organization: ${formData.organization || "N/A"}\n\n` +
-      `Message Details:\n${formData.message}\n\n` +
-      `Best regards,\n${formData.name}`
-    );
+    // Only prompt native mail client draft if the server did NOT already dispatch via SMTP
+    if (!serverDispatched) {
+      const subject = encodeURIComponent(`[TRB ${typeLabel}] Transmission from ${formData.name}`);
+      const body = encodeURIComponent(
+        `Hello Team Red Baron,\n\n` +
+        `You have received a new inquiry transmission from the website:\n\n` +
+        `Inquiry Category: ${typeLabel}\n` +
+        `Sender Name: ${formData.name}\n` +
+        `Sender Email: ${formData.email}\n` +
+        `Organization: ${formData.organization || "N/A"}\n\n` +
+        `Message Details:\n${formData.message}\n\n` +
+        `Best regards,\n${formData.name}`
+      );
 
-    const mailtoUrl = `mailto:${TARGET_MARKETING_EMAIL}?subject=${subject}&body=${body}`;
+      const mailtoUrl = `mailto:${TARGET_MARKETING_EMAIL}?subject=${subject}&body=${body}`;
 
-    // Prompt native mail client draft
-    try {
-      window.location.href = mailtoUrl;
-    } catch (e) {
-      console.warn("Mailto redirect warning:", e);
+      try {
+        window.location.href = mailtoUrl;
+      } catch (e) {
+        console.warn("Mailto redirect warning:", e);
+      }
     }
 
     setIsSubmitting(false);
@@ -507,7 +525,7 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {socials.map((soc) => {
               const Icon = soc.icon;
               return (
@@ -516,13 +534,13 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
                   href={soc.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-5 rounded-2xl bg-[#121414] border border-white/10 hover:border-white/30 flex items-center gap-4 group transition-all hover:bg-[#1e2020]"
+                  className="p-6 rounded-2xl bg-[#121414] border border-white/10 hover:border-[#de1615]/50 flex items-center gap-5 group transition-all hover:bg-[#1a1d22] hover:scale-[1.01] shadow-lg"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#1e2020] border border-white/10 flex items-center justify-center shrink-0">
-                    <Icon className="w-5 h-5 transition-transform group-hover:scale-110" style={{ color: soc.color }} />
+                  <div className="w-12 h-12 rounded-xl bg-[#1e2020] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-all">
+                    <Icon className="w-6 h-6 transition-transform group-hover:scale-110" style={{ color: soc.color }} />
                   </div>
                   <div className="flex flex-col truncate">
-                    <span className="font-sora text-sm font-bold text-white group-hover:text-[#ffb59f] transition-colors truncate">
+                    <span className="font-sora text-base font-bold text-white group-hover:text-[#ffb59f] transition-colors truncate">
                       {soc.name}
                     </span>
                     <span className="font-mono text-xs text-[#ae8882] truncate">{soc.handle}</span>

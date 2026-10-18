@@ -16,8 +16,9 @@ const TABLES = [
   "featured_partners"
 ];
 
-async function purgeAssetsForRow(supabase: any, table: string, row: any) {
-  if (!row) return;
+async function collectAssetsForRow(supabase: any, table: string, row: any): Promise<string[]> {
+  if (!row) return [];
+  const urls: string[] = [];
 
   // Handle cascaded child table assets
   if (table === "team_years") {
@@ -27,7 +28,7 @@ async function purgeAssetsForRow(supabase: any, table: string, row: any) {
       .eq("team_year_id", row.id);
     if (members && members.length > 0) {
       for (const m of members) {
-        if (m.image_url) await deleteImage(m.image_url);
+        if (m.image_url) urls.push(m.image_url);
       }
     }
   } else if (table === "sponsor_tiers") {
@@ -37,7 +38,7 @@ async function purgeAssetsForRow(supabase: any, table: string, row: any) {
       .eq("tier_id", row.id);
     if (sps && sps.length > 0) {
       for (const s of sps) {
-        if (s.logo_url) await deleteImage(s.logo_url);
+        if (s.logo_url) urls.push(s.logo_url);
       }
     }
   }
@@ -57,9 +58,11 @@ async function purgeAssetsForRow(supabase: any, table: string, row: any) {
 
   for (const key of candidateKeys) {
     if (row[key] && typeof row[key] === "string" && row[key].length > 0) {
-      await deleteImage(row[key]);
+      urls.push(row[key]);
     }
   }
+
+  return urls;
 }
 
 export async function restoreBatch(batchId: string) {
@@ -96,10 +99,21 @@ export async function permanentlyDeleteBatch(batchId: string) {
   for (const table of TABLES) {
     const { data: rows } = await supabase.from(table).select("*").eq("deleted_batch_id", batchId);
     if (rows && rows.length > 0) {
+      const urlsToPurge: string[] = [];
       for (const row of rows) {
-        await purgeAssetsForRow(supabase, table, row);
+        const collected = await collectAssetsForRow(supabase, table, row);
+        urlsToPurge.push(...collected);
       }
-      await supabase.from(table).delete().eq("deleted_batch_id", batchId);
+
+      const { error } = await supabase.from(table).delete().eq("deleted_batch_id", batchId);
+      if (error) {
+        console.error(`Failed to permanently delete batch from ${table}:`, error);
+        throw new Error(`Failed to delete batch: ${error.message}`);
+      }
+
+      for (const url of urlsToPurge) {
+        await deleteImage(url);
+      }
     }
   }
 
@@ -109,19 +123,23 @@ export async function permanentlyDeleteBatch(batchId: string) {
 export async function permanentlyDeleteItem(table: string, id: string, imageUrl?: string) {
   const supabase = await createClient();
 
-  if (imageUrl) {
-    await deleteImage(imageUrl);
-  }
-
   const { data: row } = await supabase.from(table).select("*").eq("id", id).maybeSingle();
+  const urlsToPurge: string[] = [];
+  if (imageUrl) urlsToPurge.push(imageUrl);
   if (row) {
-    await purgeAssetsForRow(supabase, table, row);
+    const collected = await collectAssetsForRow(supabase, table, row);
+    urlsToPurge.push(...collected);
   }
 
   const { error } = await supabase.from(table).delete().eq("id", id);
   if (error) {
     console.error(`Failed to permanently delete from ${table}:`, error);
     throw new Error(`Failed to delete record: ${error.message}`);
+  }
+
+  // Only purge storage assets once database row has successfully been deleted
+  for (const url of urlsToPurge) {
+    await deleteImage(url);
   }
 
   revalidatePath("/", "layout");
@@ -133,12 +151,19 @@ export async function emptyAllTrash() {
   for (const table of TABLES) {
     const { data: rows } = await supabase.from(table).select("*").not("deleted_at", "is", null);
     if (rows && rows.length > 0) {
+      const urlsToPurge: string[] = [];
       for (const row of rows) {
-        await purgeAssetsForRow(supabase, table, row);
+        const collected = await collectAssetsForRow(supabase, table, row);
+        urlsToPurge.push(...collected);
       }
+
       const { error } = await supabase.from(table).delete().not("deleted_at", "is", null);
       if (error) {
         console.error(`Failed to empty trash for table ${table}:`, error);
+      } else {
+        for (const url of urlsToPurge) {
+          await deleteImage(url);
+        }
       }
     }
   }
