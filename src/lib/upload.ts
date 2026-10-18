@@ -41,18 +41,26 @@ export async function deleteImage(url: string) {
 
   try {
     const supabase = await createClient();
-    // Extract path from public URL
-    // e.g., https://.../storage/v1/object/public/trb-media/folder/file.jpg
     const bucketPrefix = "/storage/v1/object/public/trb-media/";
+    let filePath = "";
+
     if (url.includes(bucketPrefix)) {
-      const filePath = url.split(bucketPrefix)[1];
-      if (filePath) {
-        const { error } = await supabase.storage.from('trb-media').remove([filePath]);
-        if (error) console.warn("deleteImage warning:", error);
+      filePath = url.split(bucketPrefix)[1];
+    } else if (url.startsWith("trb-media/")) {
+      filePath = url.replace("trb-media/", "");
+    } else if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("/")) {
+      filePath = url;
+    }
+
+    if (filePath) {
+      filePath = decodeURIComponent(filePath.split("?")[0].trim());
+      const { error } = await supabase.storage.from("trb-media").remove([filePath]);
+      if (error) {
+        console.warn(`deleteImage warning for [${filePath}]:`, error.message);
       }
     }
   } catch (err) {
-    console.warn("deleteImage warning:", err);
+    console.warn("deleteImage exception:", err);
   }
 }
 

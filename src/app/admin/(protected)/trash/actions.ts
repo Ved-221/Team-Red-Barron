@@ -67,11 +67,45 @@ export async function permanentlyDeleteBatch(batchId: string) {
 export async function permanentlyDeleteItem(table: string, id: string, imageUrl?: string) {
   const supabase = await createClient();
 
-  if (imageUrl) {
-    await deleteImage(imageUrl);
+  let targetImageUrl = imageUrl;
+  if (!targetImageUrl) {
+    const { data: row } = await supabase.from(table).select("*").eq("id", id).maybeSingle();
+    if (row) {
+      targetImageUrl = row.image_url || row.logo_url || row.photo_url;
+    }
   }
 
-  await supabase.from(table).delete().eq("id", id);
+  if (targetImageUrl) {
+    await deleteImage(targetImageUrl);
+  }
+
+  const { error } = await supabase.from(table).delete().eq("id", id);
+  if (error) {
+    console.error(`Failed to permanently delete from ${table}:`, error);
+    throw new Error(`Failed to delete record: ${error.message}`);
+  }
+
+  revalidatePath("/", "layout");
+}
+
+export async function emptyAllTrash() {
+  const supabase = await createClient();
+
+  for (const table of TABLES) {
+    const { data: rows } = await supabase.from(table).select("*").not("deleted_at", "is", null);
+    if (rows && rows.length > 0) {
+      for (const row of rows) {
+        const imageUrl = row.image_url || row.logo_url || row.photo_url;
+        if (imageUrl) {
+          await deleteImage(imageUrl);
+        }
+      }
+      const { error } = await supabase.from(table).delete().not("deleted_at", "is", null);
+      if (error) {
+        console.error(`Failed to empty trash for table ${table}:`, error);
+      }
+    }
+  }
 
   revalidatePath("/", "layout");
 }

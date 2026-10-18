@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { restoreItem, restoreBatch, permanentlyDeleteItem, permanentlyDeleteBatch } from "./actions";
+import { restoreItem, restoreBatch, permanentlyDeleteItem, permanentlyDeleteBatch, emptyAllTrash } from "./actions";
 import { Trash2, RotateCcw } from "lucide-react";
 import Image from "next/image";
 
@@ -48,9 +48,21 @@ export default async function AdminTrashPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-16">
-      <div>
-        <h1 className="font-sora font-bold text-3xl text-white tracking-tight">Trash</h1>
-        <p className="text-[#ae8882] text-sm mt-2">Restore or permanently delete removed items.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="font-sora font-bold text-3xl text-white tracking-tight">Trash</h1>
+          <p className="text-[#ae8882] text-sm mt-2">Restore or permanently delete removed items.</p>
+        </div>
+        {allDeletedItems.length > 0 && (
+          <form action={emptyAllTrash}>
+            <button
+              type="submit"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white text-xs font-sora font-bold uppercase tracking-wider transition-all border border-red-500/30"
+            >
+              <Trash2 className="w-4 h-4" /> Empty All Trash
+            </button>
+          </form>
+        )}
       </div>
 
       <div className="bg-[#12151b] border border-white/10 rounded-2xl p-6 space-y-6">
