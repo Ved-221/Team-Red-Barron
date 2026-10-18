@@ -31,3 +31,9 @@
    - [PRD-team-redbaron-website.md](file:///Users/veddhapodkar/Desktop/Team-Red-Barron/docs/PRD-team-redbaron-website.md)
    - [TRB WEB INFO (1).pdf](file:///Users/veddhapodkar/Desktop/Team-Red-Barron/docs/TRB%20WEB%20INFO%20%281%29.pdf)
    - [TRB-colours.jpeg](file:///Users/veddhapodkar/Desktop/Team-Red-Barron/docs/TRB-colours.jpeg)
+
+8. **CMS & Supabase Real-Time Synchronization:**
+   - Every time content is changed, added, or permanently deleted from the CMS / Admin Panel, it must immediately reflect in both Supabase PostgreSQL database tables and Supabase Storage (`trb-media`).
+   - Soft deletions move records to the Trash view (`deleted_at` timestamp).
+   - Permanent deletions (individual "Delete Forever" or "Empty All Trash") permanently remove database rows and delete the associated uploaded binary assets from Supabase Storage.
+   - All file uploads/deletions must handle URL encoding, query strings, and foreign key cascades (`ON DELETE CASCADE` / `SET NULL`).
