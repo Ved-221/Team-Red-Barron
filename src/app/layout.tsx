@@ -52,6 +52,9 @@ export default function RootLayout({
       lang="en"
       className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} dark h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://axzwucvnrjtenvvrxfew.supabase.co" />
+      </head>
       <body className="bg-black text-[#e2e2e2] min-h-screen flex flex-col font-inter selection:bg-[#de1615] selection:text-white">
         <NavigationProgress />
         <TRBLoadingScreen />

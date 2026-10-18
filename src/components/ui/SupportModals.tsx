@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { SmartImage } from "@/components/SmartImage";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, Mail, Send, CheckCircle2, Download, Copy, Check, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -143,11 +143,11 @@ export function DonateModal({
               <div className="flex flex-col items-center justify-center text-center space-y-4 animate-in fade-in zoom-in duration-500">
                 <div className="w-52 h-52 sm:w-56 sm:h-56 bg-white rounded-2xl p-3 flex flex-col items-center justify-center shadow-[0_0_35px_rgba(222,22,21,0.45)] border border-[#de1615]/30 overflow-hidden">
                   <div className="relative w-full h-full">
-                    <SmartImage
+                    <Image
                       src={qrCodeUrl}
                       alt="TRB UPI Payment QR Code"
                       fill
-                      sizes="(max-width: 640px) 208px, 224px"
+                      unoptimized
                       priority
                       className="object-contain"
                     />
