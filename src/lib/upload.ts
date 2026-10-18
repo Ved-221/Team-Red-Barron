@@ -16,7 +16,7 @@ export async function uploadImage(file: File, folder: string): Promise<string | 
     const { error } = await supabase.storage
       .from('trb-media')
       .upload(filePath, buffer, {
-        contentType: file.type || (cleanExt === 'png' ? 'image/png' : cleanExt === 'webp' ? 'image/webp' : 'image/jpeg'),
+        contentType: file.type || (cleanExt === 'pdf' ? 'application/pdf' : cleanExt === 'png' ? 'image/png' : cleanExt === 'webp' ? 'image/webp' : 'image/jpeg'),
         upsert: true
       });
 

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
-import { LogOut, Home, Users, Image as ImageIcon, Briefcase, Phone, Anchor, Trash2 } from "lucide-react";
+import { LogOut, Home, Users, Image as ImageIcon, Briefcase, Phone, Anchor, Trash2, QrCode } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -55,8 +55,12 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <Briefcase className="w-4 h-4 text-[#de1615]" />
             Sponsors
           </Link>
+          <Link href="/admin/support" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium">
+            <QrCode className="w-4 h-4 text-[#ff6534]" />
+            Support & Brochure
+          </Link>
           <Link href="/admin/contact" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium">
-            <Phone className="w-4 h-4 text-[#ff6534]" />
+            <Phone className="w-4 h-4 text-[#de1615]" />
             Contact Info
           </Link>
           <Link href="/admin/trash" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 mt-4">

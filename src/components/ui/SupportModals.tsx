@@ -1,19 +1,56 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Heart, Mail, Sparkles, Send, CheckCircle2, ShieldCheck, Download, Copy, Check } from "lucide-react";
+import { X, Heart, Mail, Sparkles, Send, CheckCircle2, ShieldCheck, Download, Copy, Check, QrCode, ArrowLeft } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  upiId?: string;
+  qrCodeUrl?: string;
+  brochureUrl?: string;
 }
 
-export function DonateModal({ isOpen, onClose }: ModalProps) {
+export function DonateModal({
+  isOpen,
+  onClose,
+  upiId: initialUpiId,
+  qrCodeUrl: initialQrCodeUrl,
+  brochureUrl: initialBrochureUrl,
+}: ModalProps) {
   const [submitted, setSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({ name: "", amount: "" });
-  const upiId = "teamredbaron@upi";
+  
+  const [upiId, setUpiId] = useState(initialUpiId || "umang19151863gund-2@oksbi");
+  const [qrCodeUrl, setQrCodeUrl] = useState(initialQrCodeUrl || "/trb_upi_qr.png");
+  const [brochureUrl, setBrochureUrl] = useState(initialBrochureUrl || "/TRB_BROCHURE_2027.pdf");
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from("site_settings")
+          .select("upi_id, qr_code_url, brochure_url")
+          .eq("id", 1)
+          .single();
+        if (data) {
+          if (data.upi_id) setUpiId(data.upi_id);
+          if (data.qr_code_url) setQrCodeUrl(data.qr_code_url);
+          if (data.brochure_url) setBrochureUrl(data.brochure_url);
+        }
+      } catch (err) {
+        // Silently fall back to defaults
+      }
+    }
+    if (isOpen) {
+      fetchSettings();
+    }
+  }, [isOpen]);
 
   const copyUpi = () => {
     navigator.clipboard.writeText(upiId);
@@ -24,6 +61,10 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+  };
+
+  const handleReset = () => {
+    setSubmitted(false);
   };
 
   return (
@@ -53,6 +94,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
             <button
               onClick={onClose}
               className="absolute top-5 right-5 text-white/60 hover:text-white p-2 rounded-full glass-card hover:border-[#de1615] transition-colors"
+              aria-label="Close modal"
             >
               <X className="w-5 h-5" />
             </button>
@@ -72,46 +114,80 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
               </div>
             </div>
 
-            <p className="font-inter text-sm text-[#e2e2e2]/80 mb-6 leading-relaxed">
+            <p className="font-inter text-sm text-[#e2e2e2]/80 mb-5 leading-relaxed">
               Your contribution directly powers the research, fabrication, composite bodywork, and IoT telemetry of our next-gen Formula Student race car.
             </p>
 
+            {/* Direct UPI ID Quick Support Box */}
+            <div className="w-full glass-card p-3 sm:p-4 rounded-2xl border border-[#de1615]/30 bg-black/60 mb-5 flex items-center justify-between gap-3 shadow-inner">
+              <div className="text-left min-w-0">
+                <span className="font-mono-tech text-[10px] text-[#ff6534] block uppercase tracking-wider font-semibold">
+                  Official Team UPI ID
+                </span>
+                <span className="font-mono-tech font-bold text-xs sm:text-sm text-white select-all truncate block">
+                  {upiId}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={copyUpi}
+                className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#de1615] text-white hover:bg-[#b81211] active:scale-95 text-xs font-mono-tech font-bold shadow-md transition-all"
+                title="Copy UPI ID"
+              >
+                {copied ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? "COPIED" : "COPY UPI"}
+              </button>
+            </div>
+
             {submitted ? (
               <div className="flex flex-col items-center justify-center text-center space-y-4 animate-in fade-in zoom-in duration-500">
-                <div className="w-48 h-48 bg-white rounded-xl p-4 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(222,22,21,0.4)]">
-                  {/* Space for QR Image */}
-                  <div className="w-full h-full border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400 font-mono-tech text-xs text-center">
-                    PLACE QR IMAGE HERE<br />(400x400)
+                <div className="w-52 h-52 sm:w-56 sm:h-56 bg-white rounded-2xl p-3 flex flex-col items-center justify-center shadow-[0_0_35px_rgba(222,22,21,0.45)] border border-[#de1615]/30 overflow-hidden">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={qrCodeUrl}
+                      alt="TRB UPI Payment QR Code"
+                      fill
+                      unoptimized
+                      priority
+                      className="object-contain"
+                    />
                   </div>
                 </div>
-                
-                <div className="space-y-2">
-                  <h4 className="font-sora font-bold text-xl text-white">Scan to Pay ₹{formData.amount}</h4>
-                  <p className="font-inter text-sm text-green-400 font-medium">
-                    ✓ Request logged. Awaiting transfer.
+
+                <div className="space-y-1.5">
+                  <h4 className="font-sora font-bold text-xl text-white">
+                    Scan to Pay {formData.amount ? `₹${formData.amount}` : "via UPI"}
+                  </h4>
+                  <p className="font-inter text-xs sm:text-sm text-green-400 font-medium">
+                    ✓ Request logged. Open any UPI App (GPay, PhonePe, Paytm) to complete transfer.
                   </p>
-                  <p className="font-inter text-xs text-white/50 px-4">
-                    Upon successful payment, these details will be sent to the official TRB mail and logged in the Admin Panel for verification.
+                  <p className="font-inter text-[11px] text-white/50 px-4">
+                    Upon payment, thank you for powering Team Red Baron's upcoming competition season!
                   </p>
                 </div>
 
-                {/* Direct UPI / Bank Details Box */}
-                <div className="w-full glass-card p-4 rounded-2xl border border-white/15 bg-black/50 mt-4 flex items-center justify-between">
-                  <div className="text-left">
-                    <span className="font-mono-tech text-[10px] text-white/50 block uppercase">Official Team UPI ID</span>
-                    <span className="font-mono-tech font-bold text-sm text-white">{upiId}</span>
-                  </div>
+                <div className="pt-2 flex flex-col sm:flex-row gap-3 w-full">
                   <button
-                    onClick={copyUpi}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#de1615]/20 text-[#de1615] border border-[#de1615]/40 text-xs font-mono-tech hover:bg-[#de1615] hover:text-white transition-colors"
+                    type="button"
+                    onClick={handleReset}
+                    className="flex-1 glass-card py-3 rounded-xl border border-white/20 text-white font-sora text-xs font-semibold hover:border-[#de1615] transition-colors flex items-center justify-center gap-1.5"
                   >
-                    {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                    {copied ? "COPIED" : "COPY UPI"}
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    Modify Amount
                   </button>
+                  <a
+                    href={brochureUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 glass-card py-3 rounded-xl border border-white/20 text-white font-sora text-xs font-semibold hover:border-[#de1615] transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Download className="w-3.5 h-3.5 text-[#de1615]" />
+                    View Brochure
+                  </a>
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="font-mono-tech text-xs text-[#e8bdb6] block mb-1.5 uppercase">Supporter Name / Organization</label>
                   <input
@@ -120,7 +196,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
                     placeholder="e.g. John Doe / Tech Corp"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white font-inter text-sm focus:outline-none focus:border-[#de1615] transition-colors"
+                    className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-2.5 text-white font-inter text-sm focus:outline-none focus:border-[#de1615] transition-colors"
                   />
                 </div>
 
@@ -135,7 +211,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
                       placeholder="5000"
                       value={formData.amount}
                       onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                      className="w-full bg-white/5 border border-white/15 rounded-xl pl-9 pr-4 py-3 text-white font-inter text-sm focus:outline-none focus:border-[#de1615] transition-colors appearance-none"
+                      className="w-full bg-white/5 border border-white/15 rounded-xl pl-9 pr-4 py-2.5 text-white font-inter text-sm focus:outline-none focus:border-[#de1615] transition-colors appearance-none"
                     />
                   </div>
                 </div>
@@ -147,7 +223,7 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
                       key={amt}
                       type="button"
                       onClick={() => setFormData({ ...formData, amount: amt.toString() })}
-                      className="flex-1 py-2 glass-card rounded-lg border border-white/10 hover:border-[#de1615]/60 hover:bg-[#de1615]/10 font-mono-tech text-xs text-white/80 transition-all"
+                      className="flex-1 py-1.5 glass-card rounded-lg border border-white/10 hover:border-[#de1615]/60 hover:bg-[#de1615]/10 font-mono-tech text-xs text-white/80 transition-all"
                     >
                       ₹{amt}
                     </button>
@@ -157,19 +233,20 @@ export function DonateModal({ isOpen, onClose }: ModalProps) {
                 <div className="pt-2 flex flex-col sm:flex-row gap-3">
                   <button
                     type="submit"
-                    className="flex-1 bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3.5 rounded-xl font-sora font-extrabold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(222,22,21,0.3)] relative overflow-hidden group"
+                    className="flex-1 bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3 rounded-xl font-sora font-extrabold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(222,22,21,0.3)] relative overflow-hidden group"
                   >
                     <Heart className="w-4 h-4 fill-white" />
                     Proceed to Support
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
                   </button>
                   <a
-                    href="#sponsors"
-                    onClick={onClose}
-                    className="glass-card px-5 py-3.5 rounded-xl border border-white/20 text-white font-sora text-sm font-semibold hover:border-[#de1615] transition-colors flex items-center justify-center gap-2"
+                    href={brochureUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="glass-card px-5 py-3 rounded-xl border border-white/20 text-white font-sora text-sm font-semibold hover:border-[#de1615] transition-colors flex items-center justify-center gap-2"
                   >
                     <Download className="w-4 h-4 text-[#de1615]" />
-                    Sponsorship Deck
+                    View Brochure
                   </a>
                 </div>
               </form>
