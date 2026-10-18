@@ -1,55 +1,125 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { Gauge, Zap, Timer, CheckCircle2 } from "lucide-react";
 import { useInView } from "framer-motion";
 
-const VEHICLE_BACKGROUND_VIDEO = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/videos/trb_bg_optimized.mp4";
+interface NetworkConnection {
+  saveData?: boolean;
+}
 
-export function VehicleSpotlight({ vehicleData }: { vehicleData: any }) {
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkConnection;
+  mozConnection?: NetworkConnection;
+  webkitConnection?: NetworkConnection;
+}
+
+interface VehicleSpecItem {
+  label: string;
+  value: string;
+}
+
+interface VehicleSpotlightData {
+  id?: string;
+  year?: string;
+  vehicle_name?: string;
+  chassis_serial?: string;
+  subtitle?: string;
+  rank_text?: string;
+  badge_text?: string;
+  description?: string;
+  image_url?: string;
+  status_badge?: string;
+  vehicle_specs?: VehicleSpecItem[];
+}
+
+function subscribeCapabilities(callback: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  const mediaQueryDesktop = window.matchMedia("(min-width: 768px)");
+  const mediaQueryMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  mediaQueryDesktop.addEventListener("change", callback);
+  mediaQueryMotion.addEventListener("change", callback);
+
+  return () => {
+    mediaQueryDesktop.removeEventListener("change", callback);
+    mediaQueryMotion.removeEventListener("change", callback);
+  };
+}
+
+function getSnapshotCapabilities(): boolean {
+  if (typeof window === "undefined") return false;
+  const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const nav = navigator as NavigatorWithConnection;
+  const navConnection = nav.connection || nav.mozConnection || nav.webkitConnection;
+  const isSaveData = navConnection?.saveData === true;
+
+  return isDesktop && !prefersReduced && !isSaveData;
+}
+
+function getServerSnapshotCapabilities(): boolean {
+  return false;
+}
+
+export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotlightData | null }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "300px" });
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  const canPlayVideo = useSyncExternalStore(
+    subscribeCapabilities,
+    getSnapshotCapabilities,
+    getServerSnapshotCapabilities
+  );
+
+  const shouldAttachSources = canPlayVideo && isInView;
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handleChange);
-
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
-    if (videoRef.current && !prefersReducedMotion && isInView) {
+    if (videoRef.current && shouldAttachSources) {
+      videoRef.current.load();
       videoRef.current.play().catch(() => {
         // Autoplay policy fallback
       });
     }
-  }, [isInView, prefersReducedMotion]);
+  }, [shouldAttachSources]);
 
   if (!vehicleData) return null;
 
   return (
     <section ref={containerRef} className="py-28 relative bg-[#0a0c0e] overflow-hidden min-h-[750px] flex items-center">
-      {/* Layer 0: Background Video (Decorative, Full Bleed) */}
-      {!prefersReducedMotion && (
+      {/* Layer 0: Background Video / Poster (Decorative, Full Bleed) */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        {/* Poster backdrop (instant visual base, lightweight ~31KB) */}
+        <Image
+          src="/videos/trb_bg_poster.webp"
+          alt=""
+          fill
+          priority={false}
+          className="object-cover object-center"
+        />
+
+        {/* Video layer: sources attached only on desktop when in view and allowed */}
         <video
           ref={videoRef}
           muted
           loop
           playsInline
           preload="none"
+          poster="/videos/trb_bg_poster.webp"
           aria-hidden="true"
           tabIndex={-1}
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         >
-          <source src={VEHICLE_BACKGROUND_VIDEO} type="video/mp4" />
+          {shouldAttachSources && (
+            <>
+              <source src="/videos/trb_bg_small.mp4" type="video/mp4" />
+              <source src="/videos/trb_bg_small.webm" type="video/webm" />
+            </>
+          )}
         </video>
-      )}
+      </div>
 
       {/* Layer 1: Dark Cinematic Overlay */}
       <div className="absolute inset-0 bg-black/35 z-[1] pointer-events-none" />
@@ -112,7 +182,7 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: any }) {
         {/* Right / Bottom Column: Telemetry Specs & Approval Status */}
         <div className="lg:col-span-6 flex flex-col justify-center space-y-4">
 
-          {(vehicleData.vehicle_specs || []).map((spec: any, idx: number) => {
+          {(vehicleData.vehicle_specs || []).map((spec: VehicleSpecItem, idx: number) => {
             const icons = [Gauge, Zap, Timer, CheckCircle2];
             const Icon = icons[idx % icons.length];
             return (

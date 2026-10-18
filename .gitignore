@@ -48,6 +48,7 @@ photos:vids/
 
 # Large Media Assets
 *.mp4
+!public/videos/*.mp4
 *.glb
 *.mov
 *.zip
