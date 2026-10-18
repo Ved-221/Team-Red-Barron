@@ -186,116 +186,108 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
         <div className="max-w-4xl mx-auto w-full relative pt-14 pb-4">
 
           {/* VEHICLE ANIMATION LAYER */}
-          <div className="relative h-20 w-full mb-1">
+          <div className="relative h-24 sm:h-28 md:h-32 w-full mb-1">
             <motion.div
               animate={{
                 left: `${vehiclePercent}%`,
                 rotate: isDriving ? -2 : 0,
-                y: isDriving ? [0, -4, 2, 0] : 0,
+                y: isDriving ? [0, -3, 2, 0] : 0,
               }}
               transition={{
                 left: { type: "spring", stiffness: 85, damping: 18 },
                 rotate: { duration: 0.3 },
                 y: { repeat: isDriving ? Infinity : 0, duration: 0.2 },
               }}
-              className="absolute bottom-0 -translate-x-1/2 w-36 sm:w-48 md:w-60 h-auto pointer-events-none z-30 flex flex-col items-center"
+              className="absolute bottom-0 -translate-x-1/2 w-32 sm:w-40 md:w-48 h-auto pointer-events-none z-30 flex flex-col items-center"
             >
-              <div className="relative w-full aspect-[4/3] drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)]">
-                <Image
-                  src="/final_photo_vehicle.png"
-                  alt="Team Red Baron Buggy"
-                  fill
-                  unoptimized
-                  className="object-contain"
-                />{/* Rear Tire Smoke & Dust */}
+              <div className="relative w-full aspect-square drop-shadow-[0_8px_20px_rgba(0,0,0,0.95)]">
+                {/* Ground Contact Shadow */}
+                <div className="absolute bottom-[13.5%] left-[4%] right-[4%] h-[10%] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.45)_50%,_transparent_75%)] blur-[3px] pointer-events-none z-0" />
+
+                {/* Buggy Chassis Body (exact start animation vehicle) */}
+                <div className="absolute inset-0 z-10">
+                  <Image
+                    src="/vehicle-image-new.png"
+                    alt="Team Red Baron Buggy"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 160px, 200px"
+                    className="object-contain select-none"
+                  />
+                </div>
+
+                {/* Top Red Siren Alarm Glow Effect */}
+                <div
+                  className="absolute z-30 pointer-events-none"
+                  style={{
+                    left: "30.42%",
+                    top: "12.3%",
+                    transform: "translate(-50%, -50%)",
+                    width: "5.5%",
+                    height: "4%",
+                  }}
+                >
+                  <div className="w-full h-full rounded-full bg-[#ff2200] opacity-90 shadow-[0_0_8px_#ff2200,0_0_16px_#ff0000] animate-pulse" />
+                </div>
+
+                {/* Rear Tire Smoke & Dust */}
                 <AnimatePresence>
                   {isDriving && (
                     <>
                       {/* Smoke */}
                       <motion.div
                         initial={{ opacity: 0, scale: 0, x: 0 }}
-                        animate={{ opacity: [0, 0.8, 0], scale: [0.5, 2.5, 4], x: -40, y: -20 }}
+                        animate={{ opacity: [0, 0.8, 0], scale: [0.5, 2, 3], x: -30, y: -15 }}
                         exit={{ opacity: 0, scale: 0, transition: { duration: 0.1 } }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="absolute bottom-[5%] left-[8%] w-6 h-6 bg-gray-300/60 rounded-full blur-md pointer-events-none"
-                      />
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0, x: 0 }}
-                        animate={{ opacity: [0, 0.6, 0], scale: [0.5, 2, 3.5], x: -30, y: -10 }}
-                        exit={{ opacity: 0, scale: 0, transition: { duration: 0.1 } }}
-                        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                        className="absolute bottom-[10%] left-[12%] w-5 h-5 bg-gray-400/50 rounded-full blur-md pointer-events-none"
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="absolute bottom-[10%] left-[8%] w-5 h-5 bg-gray-300/60 rounded-full blur-md pointer-events-none z-10"
                       />
                       {/* Dust Particles */}
-                      {[...Array(5)].map((_, i) => (
+                      {[...Array(4)].map((_, i) => (
                         <motion.div
                           key={`dust-rear-${i}`}
                           initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
                           animate={{
                             opacity: [0, 1, 0],
-                            scale: [0, 1.5, 0],
-                            x: -15 - (Math.random() * 25),
-                            y: -5 - (Math.random() * 20)
+                            scale: [0, 1.4, 0],
+                            x: -12 - Math.random() * 20,
+                            y: -4 - Math.random() * 14,
                           }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 + (Math.random() * 0.3), ease: "easeOut" }}
-                          className="absolute bottom-[2%] left-[10%] w-1.5 h-1.5 bg-[#8b4513] rounded-full pointer-events-none z-10"
+                          transition={{ duration: 0.3 + Math.random() * 0.2, ease: "easeOut" }}
+                          className="absolute bottom-[11%] left-[10%] w-1.5 h-1.5 bg-[#8b4513] rounded-full pointer-events-none z-10"
                         />
                       ))}
                     </>
                   )}
                 </AnimatePresence>
 
-                <motion.div
-                  animate={{ rotate: isDriving ? 360 * 3 : 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="absolute bottom-[8%] left-[10.5%] w-[24%] h-[32%] rounded-full border-2 border-dashed border-[#de1615]/80 pointer-events-none flex items-center justify-center z-10"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#de1615]" />
-                </motion.div>
-
-                {/* Front Tire Smoke & Dust */}
+                {/* Front Tire Dust */}
                 <AnimatePresence>
                   {isDriving && (
                     <>
-                      {/* Smoke */}
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0, x: 0 }}
-                        animate={{ opacity: [0, 0.7, 0], scale: [0.5, 2, 3], x: -30, y: -15 }}
-                        exit={{ opacity: 0, scale: 0, transition: { duration: 0.1 } }}
-                        transition={{ duration: 0.6, delay: 0.05, ease: "easeOut" }}
-                        className="absolute bottom-[5%] right-[5%] w-6 h-6 bg-gray-300/60 rounded-full blur-md pointer-events-none"
-                      />
-                      {/* Dust Particles */}
-                      {[...Array(4)].map((_, i) => (
+                      {[...Array(3)].map((_, i) => (
                         <motion.div
                           key={`dust-front-${i}`}
                           initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
                           animate={{
                             opacity: [0, 1, 0],
                             scale: [0, 1.2, 0],
-                            x: -10 - (Math.random() * 20),
-                            y: -5 - (Math.random() * 15)
+                            x: -8 - Math.random() * 15,
+                            y: -4 - Math.random() * 10,
                           }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 + (Math.random() * 0.3), delay: 0.05, ease: "easeOut" }}
-                          className="absolute bottom-[2%] right-[5%] w-1.5 h-1.5 bg-[#a0522d] rounded-full pointer-events-none z-10"
+                          transition={{ duration: 0.3 + Math.random() * 0.2, delay: 0.05, ease: "easeOut" }}
+                          className="absolute bottom-[11%] left-[78%] w-1.5 h-1.5 bg-[#a0522d] rounded-full pointer-events-none z-10"
                         />
                       ))}
                     </>
                   )}
                 </AnimatePresence>
-
-                <motion.div
-                  animate={{ rotate: isDriving ? 360 * 3 : 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="absolute bottom-[8%] right-[5%] w-[24%] h-[32%] rounded-full border-2 border-dashed border-[#de1615]/80 pointer-events-none flex items-center justify-center z-10"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#de1615]" />
-                </motion.div>
               </div>
 
-              <div className="w-0.5 h-3 bg-[#de1615] shadow-[0_0_8px_#de1615] -mt-1" />
+              {/* Indicator needle pointing down to track */}
+              <div className="w-0.5 h-3 bg-[#de1615] shadow-[0_0_8px_#de1615] -mt-2" />
             </motion.div>
           </div>
 
