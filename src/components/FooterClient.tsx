@@ -238,12 +238,25 @@ export function FooterClient({ contactData }: { contactData: any }) {
         </div>
 
         {/* Bottom Banner */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono-tech text-xs text-[#e8bdb6]">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 font-mono-tech text-xs text-[#e8bdb6]">
           <span>©2025 Team Red Baron. PCCOE Pune. All Rights Reserved.</span>
+
+          <div className="flex items-center gap-1.5 text-xs text-[#e8bdb6]">
+            <span>Developed by</span>
+            <a
+              href="https://www.linkedin.com/in/veddhapodkar"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-white hover:text-[#ff6534] transition-colors inline-flex items-center gap-1 group"
+            >
+              <span className="underline decoration-[#de1615] underline-offset-4 group-hover:text-[#ff6534]">Ved Dhapodkar</span>
+              <span className="text-[#de1615] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[11px]">↗</span>
+            </a>
+          </div>
 
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-2 text-white/70 hover:text-[#de1615] transition-colors"
+            className="flex items-center gap-2 text-white/70 hover:text-[#de1615] transition-colors cursor-pointer"
           >
             BACK TO TOP <ArrowUp className="w-4 h-4" />
           </button>
