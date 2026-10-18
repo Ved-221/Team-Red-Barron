@@ -20,7 +20,9 @@ export const INTRO_TIMELINE = {
   UNMOUNT: 7400,          // 7.4s: Component unmounts
 };
 
+// Zero-allocation particle structure
 interface DustParticle {
+  active: boolean;
   x: number;
   y: number;
   vx: number;
@@ -30,8 +32,11 @@ interface DustParticle {
   alpha: number;
   decay: number;
   type: "smoke" | "debris" | "spark";
+  stampType: 0 | 1 | 2; // 0: smoke, 1: dust, 2: heat
   color: string;
 }
+
+const PARTICLE_POOL_SIZE = 140;
 
 export function HomepageIntro() {
   const [shouldPlay, setShouldPlay] = useState(true);
@@ -156,75 +161,151 @@ export function HomepageIntro() {
     };
     window.addEventListener("resize", handleResize, { passive: true });
 
-    // Pre-rendered offscreen smoke stamp for zero-allocation GPU-accelerated particle blits
-    let smokeStamp: HTMLCanvasElement | null = null;
-    if (typeof document !== "undefined") {
-      smokeStamp = document.createElement("canvas");
-      smokeStamp.width = 64;
-      smokeStamp.height = 64;
-      const sCtx = smokeStamp.getContext("2d");
-      if (sCtx) {
-        const grad = sCtx.createRadialGradient(32, 32, 2, 32, 32, 32);
-        grad.addColorStop(0, "rgba(130, 110, 105, 0.45)");
-        grad.addColorStop(0.4, "rgba(130, 110, 105, 0.2)");
-        grad.addColorStop(1, "rgba(130, 110, 105, 0)");
-        sCtx.fillStyle = grad;
-        sCtx.beginPath();
-        sCtx.arc(32, 32, 32, 0, Math.PI * 2);
-        sCtx.fill();
-      }
+    // Pre-rendered offscreen stamps for zero-allocation GPU-accelerated particle blits
+    function makeStamp(c1: string, c2: string, c3: string): HTMLCanvasElement | null {
+      if (typeof document === "undefined") return null;
+      const c = document.createElement("canvas");
+      c.width = 64;
+      c.height = 64;
+      const x = c.getContext("2d");
+      if (!x) return null;
+      const g = x.createRadialGradient(32, 32, 2, 32, 32, 32);
+      g.addColorStop(0, c1);
+      g.addColorStop(0.4, c2);
+      g.addColorStop(1, c3);
+      x.fillStyle = g;
+      x.beginPath();
+      x.arc(32, 32, 32, 0, Math.PI * 2);
+      x.fill();
+      return c;
     }
 
-    const particles: DustParticle[] = [];
+    const stampSmoke = makeStamp("rgba(145, 125, 120, 0.55)", "rgba(130, 110, 105, 0.22)", "rgba(130, 110, 105, 0)");
+    const stampDust = makeStamp("rgba(195, 160, 135, 0.5)", "rgba(175, 140, 115, 0.2)", "rgba(175, 140, 115, 0)");
+    const stampHeat = makeStamp("rgba(255, 95, 45, 0.45)", "rgba(222, 22, 21, 0.18)", "rgba(222, 22, 21, 0)");
 
-    const spawnParticles = (wheelX: number, wheelY: number, intensity: number) => {
-      if (particles.length > 55) return; // Particle pooling cap prevents GC stutter
-      const count = Math.min(3, Math.floor(intensity * 2.2));
-      for (let i = 0; i < count; i++) {
-        const isSmoke = Math.random() > 0.35;
-        const isDebris = !isSmoke && Math.random() > 0.4;
+    // Pre-allocated Particle Pool (ZERO heap allocations during animation loop)
+    const particlePool: DustParticle[] = Array.from({ length: PARTICLE_POOL_SIZE }, () => ({
+      active: false,
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      radius: 0,
+      maxRadius: 0,
+      alpha: 0,
+      decay: 0,
+      type: "smoke",
+      stampType: 0,
+      color: "",
+    }));
 
-        if (isSmoke) {
-          particles.push({
-            x: wheelX + (Math.random() - 0.5) * 20,
-            y: wheelY + (Math.random() - 0.5) * 10,
-            vx: -(Math.random() * 3.8 + 1.8),
-            vy: (Math.random() - 0.65) * 1.8 - 0.4,
-            radius: Math.random() * 8 + 6,
-            maxRadius: Math.random() * 38 + 24,
-            alpha: Math.random() * 0.3 + 0.15,
-            decay: Math.random() * 0.014 + 0.01,
-            type: "smoke",
-            color: "",
-          });
-        } else if (isDebris) {
-          particles.push({
-            x: wheelX + (Math.random() - 0.5) * 16,
-            y: wheelY + (Math.random() - 0.5) * 8,
-            vx: -(Math.random() * 6.0 + 3.0),
-            vy: (Math.random() - 0.8) * 3.5 - 0.8,
-            radius: Math.random() * 2 + 1.2,
-            maxRadius: 2.5,
-            alpha: 0.8,
-            decay: Math.random() * 0.028 + 0.02,
-            type: "debris",
-            color: "rgba(215, 195, 185, ",
-          });
-        } else {
-          // Heat spark
-          particles.push({
-            x: wheelX + (Math.random() - 0.5) * 10,
-            y: wheelY + (Math.random() - 0.5) * 6,
-            vx: -(Math.random() * 7.5 + 3.0),
-            vy: (Math.random() - 0.7) * 2.8 - 0.6,
-            radius: Math.random() * 1.8 + 0.8,
-            maxRadius: 1.8,
-            alpha: 1.0,
-            decay: Math.random() * 0.045 + 0.03,
-            type: "spark",
-            color: Math.random() > 0.5 ? "rgba(222, 22, 21, " : "rgba(255, 101, 52, ",
-          });
+    let poolHead = 0;
+
+    const spawnFromPool = (
+      x: number,
+      y: number,
+      vx: number,
+      vy: number,
+      radius: number,
+      maxRadius: number,
+      alpha: number,
+      decay: number,
+      type: "smoke" | "debris" | "spark",
+      stampType: 0 | 1 | 2 = 0,
+      color: string = ""
+    ) => {
+      const p = particlePool[poolHead];
+      poolHead = (poolHead + 1) % PARTICLE_POOL_SIZE;
+
+      p.active = true;
+      p.x = x;
+      p.y = y;
+      p.vx = vx;
+      p.vy = vy;
+      p.radius = radius;
+      p.maxRadius = maxRadius;
+      p.alpha = alpha;
+      p.decay = decay;
+      p.type = type;
+      p.stampType = stampType;
+      p.color = color;
+    };
+
+    const emitParticles = (rearX: number, frontX: number, tireY: number, intensity: number) => {
+      // 1. Heavy rear tire rooster tail & smoke clouds
+      const smokeCount = Math.min(6, Math.floor(intensity * 1.6));
+      for (let i = 0; i < smokeCount; i++) {
+        const isDust = Math.random() > 0.45;
+        const isHeat = !isDust && Math.random() > 0.6;
+        const stampIdx: 0 | 1 | 2 = isHeat ? 2 : isDust ? 1 : 0;
+
+        spawnFromPool(
+          rearX + (Math.random() - 0.5) * 24,
+          tireY + (Math.random() - 0.5) * 12,
+          -(Math.random() * 4.2 + 2.0),
+          (Math.random() - 0.65) * 2.2 - 0.5,
+          Math.random() * 10 + 7,
+          Math.random() * 42 + 26,
+          Math.random() * 0.35 + 0.18,
+          Math.random() * 0.012 + 0.008,
+          "smoke",
+          stampIdx
+        );
+      }
+
+      // 2. Flying dirt pebbles & gravel
+      const debrisCount = Math.min(4, Math.floor(intensity * 1.2));
+      for (let i = 0; i < debrisCount; i++) {
+        spawnFromPool(
+          rearX + (Math.random() - 0.5) * 18,
+          tireY + (Math.random() - 0.5) * 8,
+          -(Math.random() * 6.5 + 3.2),
+          (Math.random() - 0.8) * 3.8 - 0.8,
+          Math.random() * 2.2 + 1.2,
+          2.5,
+          0.85,
+          Math.random() * 0.024 + 0.016,
+          "debris",
+          0,
+          "rgba(205, 180, 165, "
+        );
+      }
+
+      // 3. Friction heat sparks (intense offroad acceleration)
+      if (intensity > 1.2) {
+        const sparkCount = Math.floor(intensity * 0.8);
+        for (let i = 0; i < sparkCount; i++) {
+          spawnFromPool(
+            rearX + (Math.random() - 0.5) * 12,
+            tireY + (Math.random() - 0.5) * 6,
+            -(Math.random() * 8.0 + 3.5),
+            (Math.random() - 0.7) * 3.0 - 0.8,
+            Math.random() * 1.8 + 0.8,
+            1.8,
+            1.0,
+            Math.random() * 0.04 + 0.025,
+            "spark",
+            0,
+            Math.random() > 0.5 ? "rgba(222, 22, 21, " : "rgba(255, 101, 52, "
+          );
         }
+      }
+
+      // 4. Subtle front wheel ground dust kick-up
+      if (frontX > -50 && frontX < width + 50 && Math.random() > 0.4) {
+        spawnFromPool(
+          frontX + (Math.random() - 0.5) * 15,
+          tireY + (Math.random() - 0.5) * 6,
+          -(Math.random() * 2.0 + 1.0),
+          (Math.random() - 0.5) * 1.2 - 0.3,
+          Math.random() * 6 + 5,
+          Math.random() * 24 + 16,
+          Math.random() * 0.2 + 0.1,
+          Math.random() * 0.018 + 0.012,
+          "smoke",
+          1
+        );
       }
     };
 
@@ -299,7 +380,7 @@ export function HomepageIntro() {
         frontWheelRef.current.style.transform = wheelRot;
       }
 
-      // 2. PARTICLE SYSTEM (Synchronized in same frame)
+      // 2. HIGH-PERFORMANCE DENSE PARTICLE SYSTEM
       if (ctx && canvas) {
         ctx.clearRect(0, 0, width, height);
 
@@ -307,6 +388,7 @@ export function HomepageIntro() {
         const vehicleWidth = Math.min(width * 0.65, 660);
         const vehicleScreenPixelX = (width * 0.5) + (currentXFrac * width * 0.5);
         const rearTireContactX = vehicleScreenPixelX - (vehicleWidth * 0.355);
+        const frontTireContactX = vehicleScreenPixelX + (vehicleWidth * 0.328);
         const tireContactY = centerY + (vehicleWidth * 0.22);
 
         let isEmitting = false;
@@ -314,83 +396,101 @@ export function HomepageIntro() {
 
         if (elapsed >= INTRO_TIMELINE.ENTER_START && elapsed < INTRO_TIMELINE.CENTER_STAGE) {
           isEmitting = true;
-          intensity = 2.0;
+          intensity = 2.6;
         } else if (elapsed >= INTRO_TIMELINE.CENTER_STAGE && elapsed < INTRO_TIMELINE.MOVING_RIGHT) {
           isEmitting = true;
-          intensity = 0.3;
+          intensity = 0.5;
         } else if (elapsed >= INTRO_TIMELINE.MOVING_RIGHT && elapsed < INTRO_TIMELINE.EXIT_START) {
           isEmitting = true;
-          intensity = 1.5;
+          intensity = 2.0;
         } else if (elapsed >= INTRO_TIMELINE.EXIT_START && elapsed < INTRO_TIMELINE.VEHICLE_EXITED) {
           isEmitting = true;
-          intensity = 3.2;
+          intensity = 4.2;
         }
 
-        if (isEmitting && rearTireContactX > -100 && rearTireContactX < width + 100) {
-          spawnParticles(rearTireContactX, tireContactY, intensity);
+        if (isEmitting && rearTireContactX > -120 && rearTireContactX < width + 120) {
+          emitParticles(rearTireContactX, frontTireContactX, tireContactY, intensity);
         }
 
-        // Draw and update active particles
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
+        // BATCH DRAWING: Draw active particles with minimal state switches
+        // Pass A: Draw all smoke & dust stamps (hardware texture blit)
+        for (let i = 0; i < PARTICLE_POOL_SIZE; i++) {
+          const p = particlePool[i];
+          if (!p.active) continue;
+
           p.x += p.vx;
           p.y += p.vy;
 
           if (p.type === "smoke") {
             p.radius += (p.maxRadius - p.radius) * 0.045;
             p.vx *= 0.95;
-            p.vy = p.vy * 0.94 - 0.08;
+            p.vy = p.vy * 0.94 - 0.07;
             p.alpha -= p.decay;
 
             if (p.alpha <= 0) {
-              particles.splice(i, 1);
+              p.active = false;
               continue;
             }
 
-            if (smokeStamp) {
+            const stamp = p.stampType === 2 ? stampHeat : p.stampType === 1 ? stampDust : stampSmoke;
+            if (stamp) {
               ctx.globalAlpha = p.alpha;
-              ctx.drawImage(smokeStamp, p.x - p.radius, p.y - p.radius, p.radius * 2, p.radius * 2);
+              ctx.drawImage(stamp, p.x - p.radius, p.y - p.radius, p.radius * 2, p.radius * 2);
             }
-          } else if (p.type === "debris") {
-            p.vy += 0.18;
-            p.vx *= 0.97;
-            p.alpha -= p.decay;
-
-            if (p.alpha <= 0) {
-              particles.splice(i, 1);
-              continue;
-            }
-
-            ctx.globalAlpha = p.alpha;
-            ctx.fillStyle = `${p.color}${p.alpha})`;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fill();
-          } else {
-            // Spark
-            p.vy += 0.14;
-            p.vx *= 0.96;
-            p.alpha -= p.decay;
-
-            if (p.alpha <= 0) {
-              particles.splice(i, 1);
-              continue;
-            }
-
-            // High performance glowing spark without costly canvas shadowBlur
-            ctx.globalAlpha = p.alpha * 0.5;
-            ctx.fillStyle = "#FF6534";
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius * 2.2, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.globalAlpha = p.alpha;
-            ctx.fillStyle = "#DE1615";
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fill();
           }
         }
+
+        // Pass B: Batch draw debris / flying dirt pebbles
+        ctx.globalAlpha = 0.85;
+        ctx.fillStyle = "#c5ab9a";
+        ctx.beginPath();
+        for (let i = 0; i < PARTICLE_POOL_SIZE; i++) {
+          const p = particlePool[i];
+          if (!p.active || p.type !== "debris") continue;
+
+          p.vy += 0.18;
+          p.vx *= 0.97;
+          p.alpha -= p.decay;
+
+          if (p.alpha <= 0) {
+            p.active = false;
+            continue;
+          }
+
+          ctx.moveTo(p.x + p.radius, p.y);
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        }
+        ctx.fill();
+
+        // Pass C: Batch draw sparks
+        for (let i = 0; i < PARTICLE_POOL_SIZE; i++) {
+          const p = particlePool[i];
+          if (!p.active || p.type !== "spark") continue;
+
+          p.vy += 0.14;
+          p.vx *= 0.96;
+          p.alpha -= p.decay;
+
+          if (p.alpha <= 0) {
+            p.active = false;
+            continue;
+          }
+
+          // Orange glow aura
+          ctx.globalAlpha = p.alpha * 0.45;
+          ctx.fillStyle = "#FF6534";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius * 2.2, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Saturated Mach-Red core
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = "#DE1615";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
         ctx.globalAlpha = 1.0;
       }
 
@@ -425,9 +525,25 @@ export function HomepageIntro() {
         isFading ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      {/* 1. CLEAN MINIMAL STATIC BACKGROUND */}
+      {/* 1. MOTORSPORT TEXTURED BACKGROUND (Tarmac Noise, Grid Mesh & Vignette) */}
       <div className="absolute inset-0 bg-[#000000] pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#121414_0%,_#000000_80%)] opacity-95" />
+        {/* Radial spotlight */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,_#15181b_0%,_#000000_80%)] opacity-95" />
+
+        {/* Engineering telemetry grid mesh */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] opacity-70" />
+
+        {/* Gritty tarmac / film grain texture overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-25 mix-blend-screen"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E")`,
+            backgroundSize: "180px 180px",
+          }}
+        />
+
+        {/* Low horizontal track speed atmosphere */}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(222,22,21,0.025)_50%,transparent_100%)] pointer-events-none" />
       </div>
 
       {/* 2. DUST & SMOKE PARTICLES CANVAS (Behind Vehicle) */}
