@@ -36,7 +36,7 @@ interface DustParticle {
   color: string;
 }
 
-const PARTICLE_POOL_SIZE = 140;
+const PARTICLE_POOL_SIZE = 700;
 
 export function HomepageIntro() {
   const [shouldPlay, setShouldPlay] = useState(true);
@@ -215,7 +215,17 @@ export function HomepageIntro() {
       stampType: 0 | 1 | 2 = 0,
       color: string = ""
     ) => {
-      const p = particlePool[poolHead];
+      let p = particlePool[poolHead];
+      if (p.active && p.alpha > 0.05) {
+        for (let i = 1; i <= 30; i++) {
+          const nextIdx = (poolHead + i) % PARTICLE_POOL_SIZE;
+          if (!particlePool[nextIdx].active) {
+            poolHead = nextIdx;
+            p = particlePool[poolHead];
+            break;
+          }
+        }
+      }
       poolHead = (poolHead + 1) % PARTICLE_POOL_SIZE;
 
       p.active = true;

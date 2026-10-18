@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Heart, Mail, Sparkles, Send, CheckCircle2, ShieldCheck, Download, Copy, Check, QrCode, ArrowLeft } from "lucide-react";
+import { X, Heart, Mail, Send, CheckCircle2, Download, Copy, Check, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 interface ModalProps {
@@ -43,7 +43,7 @@ export function DonateModal({
           if (data.qr_code_url) setQrCodeUrl(data.qr_code_url);
           if (data.brochure_url) setBrochureUrl(data.brochure_url);
         }
-      } catch (err) {
+      } catch {
         // Silently fall back to defaults
       }
     }
@@ -162,7 +162,7 @@ export function DonateModal({
                     ✓ Request logged. Open any UPI App (GPay, PhonePe, Paytm) to complete transfer.
                   </p>
                   <p className="font-inter text-[11px] text-white/50 px-4">
-                    Upon payment, thank you for powering Team Red Baron's upcoming competition season!
+                    Upon payment, thank you for powering Team Red Baron&apos;s upcoming competition season!
                   </p>
                 </div>
 
