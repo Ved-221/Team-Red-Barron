@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { uploadImage } from "@/lib/upload";
+import { uploadImage, deleteImage } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
 
 export async function updateSupportSettings(formData: FormData) {
@@ -13,6 +13,12 @@ export async function updateSupportSettings(formData: FormData) {
 
   const brochureDirectUrl = ((formData.get("brochure_direct_url") as string) || "").trim();
   const brochureFile = formData.get("brochure_file") as File | null;
+
+  const { data: currentSettings } = await supabase
+    .from("site_settings")
+    .select("qr_code_url, brochure_url")
+    .eq("id", 1)
+    .single();
 
   let finalQrUrl: string | undefined = qrDirectUrl || undefined;
   if (qrFile && qrFile.size > 0) {
@@ -48,6 +54,14 @@ export async function updateSupportSettings(formData: FormData) {
   if (error) {
     console.error("Failed to update support settings:", error);
     throw new Error(`Failed to update support settings: ${error.message}`);
+  }
+
+  // Clean up previous files if replaced
+  if (finalQrUrl && currentSettings?.qr_code_url && finalQrUrl !== currentSettings.qr_code_url) {
+    await deleteImage(currentSettings.qr_code_url);
+  }
+  if (finalBrochureUrl && currentSettings?.brochure_url && finalBrochureUrl !== currentSettings.brochure_url) {
+    await deleteImage(currentSettings.brochure_url);
   }
 
   revalidatePath("/");

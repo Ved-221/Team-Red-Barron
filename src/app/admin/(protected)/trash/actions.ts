@@ -12,8 +12,55 @@ const TABLES = [
   "team_members",
   "gallery_images",
   "sponsor_tiers",
-  "sponsors"
+  "sponsors",
+  "featured_partners"
 ];
+
+async function purgeAssetsForRow(supabase: any, table: string, row: any) {
+  if (!row) return;
+
+  // Handle cascaded child table assets
+  if (table === "team_years") {
+    const { data: members } = await supabase
+      .from("team_members")
+      .select("image_url")
+      .eq("team_year_id", row.id);
+    if (members && members.length > 0) {
+      for (const m of members) {
+        if (m.image_url) await deleteImage(m.image_url);
+      }
+    }
+  } else if (table === "sponsor_tiers") {
+    const { data: sps } = await supabase
+      .from("sponsors")
+      .select("logo_url")
+      .eq("tier_id", row.id);
+    if (sps && sps.length > 0) {
+      for (const s of sps) {
+        if (s.logo_url) await deleteImage(s.logo_url);
+      }
+    }
+  }
+
+  // Scan all potential storage URL fields in the row
+  const candidateKeys = [
+    "image_url",
+    "logo_url",
+    "photo_url",
+    "background_video_url",
+    "background_image_url",
+    "team_photo_url",
+    "brochure_url",
+    "qr_code_url",
+    "sponsors_bg_url"
+  ];
+
+  for (const key of candidateKeys) {
+    if (row[key] && typeof row[key] === "string" && row[key].length > 0) {
+      await deleteImage(row[key]);
+    }
+  }
+}
 
 export async function restoreBatch(batchId: string) {
   const supabase = await createClient();
@@ -46,16 +93,11 @@ export async function permanentlyDeleteBatch(batchId: string) {
   
   if (!batchId) return;
 
-  // We must handle image deletions for specific tables
   for (const table of TABLES) {
     const { data: rows } = await supabase.from(table).select("*").eq("deleted_batch_id", batchId);
     if (rows && rows.length > 0) {
       for (const row of rows) {
-        // Delete image if exists
-        const imageUrl = row.image_url || row.logo_url;
-        if (imageUrl) {
-          await deleteImage(imageUrl);
-        }
+        await purgeAssetsForRow(supabase, table, row);
       }
       await supabase.from(table).delete().eq("deleted_batch_id", batchId);
     }
@@ -67,16 +109,13 @@ export async function permanentlyDeleteBatch(batchId: string) {
 export async function permanentlyDeleteItem(table: string, id: string, imageUrl?: string) {
   const supabase = await createClient();
 
-  let targetImageUrl = imageUrl;
-  if (!targetImageUrl) {
-    const { data: row } = await supabase.from(table).select("*").eq("id", id).maybeSingle();
-    if (row) {
-      targetImageUrl = row.image_url || row.logo_url || row.photo_url;
-    }
+  if (imageUrl) {
+    await deleteImage(imageUrl);
   }
 
-  if (targetImageUrl) {
-    await deleteImage(targetImageUrl);
+  const { data: row } = await supabase.from(table).select("*").eq("id", id).maybeSingle();
+  if (row) {
+    await purgeAssetsForRow(supabase, table, row);
   }
 
   const { error } = await supabase.from(table).delete().eq("id", id);
@@ -95,10 +134,7 @@ export async function emptyAllTrash() {
     const { data: rows } = await supabase.from(table).select("*").not("deleted_at", "is", null);
     if (rows && rows.length > 0) {
       for (const row of rows) {
-        const imageUrl = row.image_url || row.logo_url || row.photo_url;
-        if (imageUrl) {
-          await deleteImage(imageUrl);
-        }
+        await purgeAssetsForRow(supabase, table, row);
       }
       const { error } = await supabase.from(table).delete().not("deleted_at", "is", null);
       if (error) {
