@@ -17,6 +17,7 @@ async function run() {
     .from('trb-media')
     .upload(supabasePath, fileBody, {
       contentType: 'video/mp4',
+      cacheControl: '31536000',
       upsert: true,
     });
 

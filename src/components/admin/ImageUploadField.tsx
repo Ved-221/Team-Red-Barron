@@ -1,14 +1,106 @@
 "use client";
 
-import { useState, useRef, useId, useEffect } from "react";
+import { useState, useRef, useId } from "react";
 import Image from "next/image";
-import { Upload, X, RefreshCw, Link as LinkIcon, CheckCircle2, Image as ImageIcon } from "lucide-react";
+import { Upload, X, RefreshCw, Link as LinkIcon, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 
 interface ImageUploadFieldProps {
   name: string;
   defaultValue?: string | null;
   label?: string;
   className?: string;
+}
+
+function loadHtmlImage(file: File): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+    img.onerror = (err) => {
+      URL.revokeObjectURL(url);
+      reject(err);
+    };
+    img.src = url;
+  });
+}
+
+async function compressImageInBrowser(file: File): Promise<File> {
+  const validTypes = ["image/jpeg", "image/png", "image/webp"];
+  if (!validTypes.includes(file.type)) {
+    return file;
+  }
+
+  let imageSource: ImageBitmap | HTMLImageElement;
+  let width = 0;
+  let height = 0;
+
+  if (typeof createImageBitmap === "function") {
+    try {
+      imageSource = await createImageBitmap(file, { imageOrientation: "from-image" });
+      width = imageSource.width;
+      height = imageSource.height;
+    } catch {
+      imageSource = await loadHtmlImage(file);
+      width = imageSource.width;
+      height = imageSource.height;
+    }
+  } else {
+    imageSource = await loadHtmlImage(file);
+    width = imageSource.width;
+    height = imageSource.height;
+  }
+
+  const maxDimension = 1920;
+  let targetWidth = width;
+  let targetHeight = height;
+
+  if (width > maxDimension || height > maxDimension) {
+    if (width > height) {
+      targetWidth = maxDimension;
+      targetHeight = Math.round((height * maxDimension) / width);
+    } else {
+      targetHeight = maxDimension;
+      targetWidth = Math.round((width * maxDimension) / height);
+    }
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = targetWidth;
+  canvas.height = targetHeight;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    if ("close" in imageSource && typeof imageSource.close === "function") {
+      imageSource.close();
+    }
+    return file;
+  }
+
+  ctx.clearRect(0, 0, targetWidth, targetHeight);
+  ctx.drawImage(imageSource, 0, 0, targetWidth, targetHeight);
+
+  if ("close" in imageSource && typeof imageSource.close === "function") {
+    imageSource.close();
+  }
+
+  const blob = await new Promise<Blob | null>((resolve) => {
+    canvas.toBlob(resolve, "image/webp", 0.8);
+  });
+
+  if (!blob) {
+    return file;
+  }
+
+  const baseName = file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
+  const newFileName = `${baseName}.webp`;
+  const compressedFile = new File([blob], newFileName, {
+    type: "image/webp",
+    lastModified: Date.now(),
+  });
+
+  return compressedFile.size < file.size ? compressedFile : file;
 }
 
 export function ImageUploadField({
@@ -26,14 +118,18 @@ export function ImageUploadField({
   const [isRemoved, setIsRemoved] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [directUrl, setDirectUrl] = useState(defaultValue || "");
+  const [isOptimizing, setIsOptimizing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Sync if defaultValue changes (e.g. navigated to another record)
-  useEffect(() => {
+  const [prevDefaultValue, setPrevDefaultValue] = useState(defaultValue);
+  if (defaultValue !== prevDefaultValue) {
+    setPrevDefaultValue(defaultValue);
     setPreview(defaultValue || null);
     setDirectUrl(defaultValue || "");
     setIsRemoved(false);
     setSelectedFileMeta(null);
-  }, [defaultValue]);
+    setErrorMessage(null);
+  }
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return `${bytes} B`;
@@ -41,16 +137,56 @@ export function ImageUploadField({
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
-  const handleFiles = (files: FileList | null) => {
+  const handleFiles = async (files: FileList | null) => {
     const file = files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
+    if (!file) return;
+
+    setErrorMessage(null);
+    setIsOptimizing(true);
+
+    const form = inputRef.current?.closest("form");
+    const submitButtons = form?.querySelectorAll<HTMLButtonElement>("button[type='submit']");
+    submitButtons?.forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    try {
+      let finalFile: File = file;
+      try {
+        finalFile = await compressImageInBrowser(file);
+      } catch (err) {
+        console.warn("Browser compression failed, using original file:", err);
+        finalFile = file;
+      }
+
+      if (finalFile.size > 5 * 1024 * 1024) {
+        setErrorMessage("File exceeds 5 MB limit. Please select a smaller file.");
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+        setPreview(null);
+        setSelectedFileMeta(null);
+        return;
+      }
+
+      if (inputRef.current && typeof DataTransfer !== "undefined") {
+        const dt = new DataTransfer();
+        dt.items.add(finalFile);
+        inputRef.current.files = dt.files;
+      }
+
+      const url = URL.createObjectURL(finalFile);
       setPreview(url);
       setSelectedFileMeta({
-        name: file.name,
-        size: formatFileSize(file.size),
+        name: finalFile.name,
+        size: formatFileSize(finalFile.size),
       });
       setIsRemoved(false);
+    } finally {
+      setIsOptimizing(false);
+      submitButtons?.forEach((btn) => {
+        btn.disabled = false;
+      });
     }
   };
 
@@ -250,6 +386,21 @@ export function ImageUploadField({
           </div>
         )}
 
+        {/* Optimizing Overlay */}
+        {isOptimizing && (
+          <div className="absolute inset-0 z-30 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
+            <Loader2 className="w-8 h-8 text-[#de1615] animate-spin" />
+            <div className="text-center">
+              <span className="font-sora font-semibold text-sm text-white block">
+                Optimizing...
+              </span>
+              <span className="font-mono-tech text-xs text-white/50 mt-0.5 block">
+                Resizing and compressing to WebP
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* The actual HTML file input */}
         <input
           ref={inputRef}
@@ -269,6 +420,13 @@ export function ImageUploadField({
           <input type="hidden" name={`${name}_existing`} value={defaultValue} />
         )}
       </div>
+
+      {errorMessage && (
+        <div className="flex items-center gap-2 p-3 rounded-xl bg-red-950/50 border border-red-500/50 text-red-300 text-xs font-mono-tech">
+          <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+          <span>{errorMessage}</span>
+        </div>
+      )}
 
       {preview && !selectedFileMeta && defaultValue && (
         <p className="text-[11px] text-white/40 font-mono-tech truncate">

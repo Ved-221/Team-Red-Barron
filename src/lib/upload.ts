@@ -17,6 +17,7 @@ export async function uploadImage(file: File, folder: string): Promise<string | 
       .from('trb-media')
       .upload(filePath, buffer, {
         contentType: file.type || (cleanExt === 'pdf' ? 'application/pdf' : cleanExt === 'png' ? 'image/png' : cleanExt === 'webp' ? 'image/webp' : 'image/jpeg'),
+        cacheControl: '31536000',
         upsert: true
       });
 
