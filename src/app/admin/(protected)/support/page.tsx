@@ -101,7 +101,7 @@ export default async function AdminSupportPage() {
                   className="w-full text-xs text-white/70 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-sora file:font-bold file:bg-[#de1615]/20 file:text-[#de1615] hover:file:bg-[#de1615] hover:file:text-white file:transition-colors file:cursor-pointer cursor-pointer bg-black/40 border border-white/10 rounded-lg p-2"
                 />
                 <p className="text-[11px] text-white/40 mt-1.5">
-                  Uploading a file will upload to Supabase storage bucket `trb-media/support/`.
+                  Uploading a file will upload to Supabase storage bucket `trb-media/support/` (Max 5 MB).
                 </p>
               </div>
 
@@ -154,7 +154,7 @@ export default async function AdminSupportPage() {
                 className="w-full text-xs text-white/70 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-sora file:font-bold file:bg-[#de1615]/20 file:text-[#de1615] hover:file:bg-[#de1615] hover:file:text-white file:transition-colors file:cursor-pointer cursor-pointer bg-black/40 border border-white/10 rounded-lg p-2"
               />
               <p className="text-[11px] text-white/40 mt-1.5">
-                Uploading a file will upload to Supabase storage bucket `trb-media/brochures/`.
+                Uploading a file will upload to Supabase storage bucket `trb-media/brochures/` (Max 10 MB PDF).
               </p>
             </div>
 

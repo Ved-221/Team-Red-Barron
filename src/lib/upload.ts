@@ -1,12 +1,24 @@
 import { createClient } from "./supabase/server";
 
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_DOC_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+
 export async function uploadImage(file: File, folder: string): Promise<string | null> {
   if (!file || file.size === 0) return null;
 
+  const rawExt = file.name ? file.name.split('.').pop() : 'jpg';
+  const cleanExt = (rawExt || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+  const isDoc = cleanExt === 'pdf' || file.type === 'application/pdf' || folder === 'brochures';
+  const maxBytes = isDoc ? MAX_DOC_SIZE_BYTES : MAX_IMAGE_SIZE_BYTES;
+  const maxLabel = isDoc ? '10 MB' : '5 MB';
+
+  if (file.size > maxBytes) {
+    const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+    throw new Error(`Upload rejected: "${file.name}" (${sizeMb} MB) exceeds the maximum allowed size of ${maxLabel}.`);
+  }
+
   try {
     const supabase = await createClient();
-    const rawExt = file.name ? file.name.split('.').pop() : 'jpg';
-    const cleanExt = (rawExt || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${cleanExt}`;
     const filePath = `${folder}/${fileName}`;
 

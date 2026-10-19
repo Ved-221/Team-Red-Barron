@@ -381,7 +381,7 @@ export function ImageUploadField({
               Click to select or drag & drop image
             </span>
             <span className="text-xs text-white/40 mt-1 font-mono-tech uppercase">
-              PNG, JPG, WEBP, AVIF (up to 50MB)
+              PNG, JPG, WEBP, AVIF (Max 5 MB • Auto-optimized)
             </span>
           </div>
         )}
