@@ -84,9 +84,9 @@ function TeamContent({
   const searchParams = useSearchParams();
   const yearParam = searchParams.get("year");
   
-  // Find latest year if nothing is selected or year is invalid
+  // Find latest year with members if nothing is selected or year is invalid
   const allYears = Object.keys(teamData).sort().reverse();
-  const defaultYear = allYears.length > 0 ? allYears[0] : "2025-26";
+  const defaultYear = allYears.find(y => (teamData[y] && teamData[y].length > 0)) || allYears[0] || "2025-26";
   
   const selectedSeason = (yearParam && teamData[yearParam]) ? yearParam : defaultYear;
   const currentMembers = teamData[selectedSeason] || [];
@@ -164,17 +164,17 @@ function TeamContent({
               return (
                 <motion.div
                   key={deptName}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true, margin: "120px" }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                   className="space-y-8 scroll-mt-32"
                 >
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    viewport={{ once: true, margin: "120px" }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
                     className="text-center max-w-3xl mx-auto space-y-3"
                   >
                     <div className="inline-flex items-center justify-center gap-2 font-sora font-extrabold text-2xl sm:text-3xl text-white uppercase tracking-wider">
@@ -190,12 +190,12 @@ function TeamContent({
                     {deptMembers.map((member, idx) => (
                       <motion.div
                         key={member.id}
-                        initial={{ opacity: 0, y: 35, scale: 0.96 }}
+                        initial={{ opacity: 0, y: 20, scale: 0.98 }}
                         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                        viewport={{ once: true, margin: "-40px" }}
+                        viewport={{ once: true, margin: "120px" }}
                         transition={{
-                          duration: 0.65,
-                          delay: (idx % 4) * 0.1,
+                          duration: 0.4,
+                          delay: (idx % 3) * 0.05,
                           ease: [0.16, 1, 0.3, 1],
                         }}
                         className="group relative bg-[#12151b]/80 border border-white/10 rounded-2xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row items-stretch"
@@ -206,6 +206,7 @@ function TeamContent({
                             fallbackSrc="/team_person.webp"
                             alt={member.name}
                             fill
+                            priority={idx < 6}
                             sizes="(max-width: 640px) 112px, 128px"
                             className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                           />
