@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import type { SharedChromeData } from "@/lib/server-data";
 import {
   MapPin,
   Send,
@@ -66,16 +67,6 @@ const YouTubeIcon = ({ className, style }: { className?: string; style?: React.C
   </svg>
 );
 
-const FacebookIcon = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={className}
-    style={style}
-  >
-    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-  </svg>
-);
 
 interface ContactInfo {
   email: string | null;
@@ -90,7 +81,13 @@ interface ContactInfo {
   marketing_director_email?: string | null;
 }
 
-export default function ContactClient({ contactData }: { contactData: ContactInfo | null }) {
+export default function ContactClient({
+  contactData,
+  chromeData,
+}: {
+  contactData: ContactInfo | null;
+  chromeData?: SharedChromeData;
+}) {
   const [selectedType, setSelectedType] = useState("sponsorship");
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,7 +106,6 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
     message: string;
   } | null>(null);
 
-  const email = contactData?.email || "teamredbaron07@gmail.com";
   const address = contactData?.address || "Pimpri Chinchwad College of Engineering (PCCOE)\nSector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044";
 
   const socials = [];
@@ -235,7 +231,7 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
   return (
     <main className="min-h-screen bg-[#000000] text-[#e2e2e2] flex flex-col font-sans relative overflow-hidden">
       <BackgroundBeams />
-      <Navbar />
+      <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
 
       {/* Hero Header Section */}
       <section className="relative pt-36 pb-16 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full overflow-hidden">
@@ -552,7 +548,7 @@ export default function ContactClient({ contactData }: { contactData: ContactInf
         </div>
       </section>
 
-      <Footer />
+      <Footer contactData={chromeData?.contactInfo || contactData} />
     </main>
   );
 }

@@ -1,8 +1,8 @@
-import { supabase } from "@/lib/supabase";
 import ContactClient from "./ContactClient";
 import { Metadata } from "next";
+import { getSharedChromeData } from "@/lib/server-data";
 
-export const revalidate = 60; // Revalidate cache every 60 seconds
+export const revalidate = 3600; // 1-hour ISR cache
 
 export const metadata: Metadata = {
   title: "Contact | Team Red Baron",
@@ -10,11 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const { data: contactData } = await supabase
-    .from("contact_info")
-    .select("*")
-    .eq("id", 1)
-    .single();
+  const chromeData = await getSharedChromeData();
 
-  return <ContactClient contactData={contactData} />;
+  return <ContactClient contactData={chromeData.contactInfo} chromeData={chromeData} />;
 }

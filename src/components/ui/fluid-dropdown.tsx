@@ -51,9 +51,10 @@ export interface NavCategory {
 export interface FluidDropdownProps {
   onItemSelect?: () => void;
   className?: string;
+  teamYears?: { id: string; year_label: string }[];
 }
 
-function FluidDropdownInner({ onItemSelect, className = "" }: FluidDropdownProps) {
+function FluidDropdownInner({ onItemSelect, className = "", teamYears: propTeamYears }: FluidDropdownProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [teamOpen, setTeamOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -62,9 +63,12 @@ function FluidDropdownInner({ onItemSelect, className = "" }: FluidDropdownProps
   const searchParams = useSearchParams();
   const currentYear = searchParams.get("year");
 
-  const [teamYears, setTeamYears] = useState<{ id: string; year_label: string }[]>([]);
+  const [teamYears, setTeamYears] = useState<{ id: string; year_label: string }[]>(propTeamYears || []);
 
   useEffect(() => {
+    if (propTeamYears && propTeamYears.length > 0) {
+      return;
+    }
     async function fetchYears() {
       const { createClient } = await import("@supabase/supabase-js");
       const supabase = createClient(
@@ -81,7 +85,7 @@ function FluidDropdownInner({ onItemSelect, className = "" }: FluidDropdownProps
       }
     }
     fetchYears();
-  }, []);
+  }, [propTeamYears]);
 
   useClickAway(dropdownRef, () => setIsOpen(false));
 

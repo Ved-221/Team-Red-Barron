@@ -1,8 +1,10 @@
 import { supabase } from "@/lib/supabase";
-import TeamClient from "./TeamClient";
+import TeamClient, { TeamMemberItem } from "./TeamClient";
 import { Metadata } from "next";
 
-export const revalidate = 60;
+import { getSharedChromeData } from "@/lib/server-data";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Team Members | Team Red Baron",
@@ -10,24 +12,24 @@ export const metadata: Metadata = {
 };
 
 export default async function TeamPage() {
-  const { data: years } = await supabase
-    .from("team_years")
-    .select("*")
-    .is("deleted_at", null)
-    .order("sort_order", { ascending: true });
+  const [chrome, { data: years }, { data: members }] = await Promise.all([
+    getSharedChromeData(),
+    supabase
+      .from("team_years")
+      .select("id, year_label, sort_order")
+      .is("deleted_at", null)
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("team_members")
+      .select(`
+        id, name, department, academic_year, linkedin_url, image_url, team_year_id, sort_order,
+        team_years (year_label)
+      `)
+      .is("deleted_at", null)
+      .order("sort_order", { ascending: true }),
+  ]);
 
-  const { data: members } = await supabase
-    .from("team_members")
-    .select(`
-      *,
-      team_years (
-        year_label
-      )
-    `)
-    .is("deleted_at", null)
-    .order("sort_order", { ascending: true });
-
-  const teamData: Record<string, any[]> = {};
+  const teamData: Record<string, TeamMemberItem[]> = {};
 
   if (years && members) {
     years.forEach((y) => {
@@ -38,5 +40,5 @@ export default async function TeamPage() {
     });
   }
 
-  return <TeamClient teamData={teamData} />;
+  return <TeamClient teamData={teamData} chromeData={chrome} />;
 }

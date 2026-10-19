@@ -8,7 +8,15 @@ import GradientWaves from "@/components/ui/GradientWaves";
 import BorderGlow from "@/components/ui/BorderGlow";
 import { DonateModal, ContactModal } from "@/components/ui/SupportModals";
 
-export function SupportCTA() {
+export interface SupportCTAProps {
+  supportSettings?: {
+    upi_id?: string | null;
+    qr_code_url?: string | null;
+    brochure_url?: string | null;
+  } | null;
+}
+
+export function SupportCTA({ supportSettings }: SupportCTAProps = {}) {
   const [donateOpen, setDonateOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
 
@@ -155,7 +163,13 @@ export function SupportCTA() {
       </section>
 
       {/* Interactive Modals */}
-      <DonateModal isOpen={donateOpen} onClose={() => setDonateOpen(false)} />
+      <DonateModal
+        isOpen={donateOpen}
+        onClose={() => setDonateOpen(false)}
+        upiId={supportSettings?.upi_id || undefined}
+        qrCodeUrl={supportSettings?.qr_code_url || undefined}
+        brochureUrl={supportSettings?.brochure_url || undefined}
+      />
       <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );

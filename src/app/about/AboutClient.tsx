@@ -12,7 +12,6 @@ import {
   Cpu,
   Trophy,
   Award,
-  Users,
   Target,
   Wrench,
 } from "lucide-react";
@@ -24,15 +23,44 @@ const stats = [
   { label: "Electric Era", value: "2023-Present", icon: Cpu, note: "EV Powertrain" },
 ];
 
+import type { SharedChromeData } from "@/lib/server-data";
+
+export interface AboutContentData {
+  id?: number | string;
+  intro_headline?: string | null;
+  intro_summary?: string | null;
+  main_body_text?: string | null;
+  vision_text?: string | null;
+  mission_text?: string | null;
+  team_photo_url?: string | null;
+  team_photo_caption?: string | null;
+  stats_cards?: { label: string; value: string; note: string }[] | null;
+}
+
+export interface VehicleMilestoneData {
+  year: string;
+  vehicleName: string;
+  rank: string;
+  subtitle: string;
+  badge: string;
+  icon: string;
+  imageSrc: string;
+  description: string;
+  specs: { label: string; val: string }[];
+}
+
 export default function AboutClient({
   aboutData,
-  vehiclesData
+  vehiclesData,
+  chromeData,
 }: {
-  aboutData: any;
-  vehiclesData: any[];
+  aboutData: AboutContentData | null;
+  vehiclesData: VehicleMilestoneData[];
+  chromeData?: SharedChromeData;
 }) {
   return (
     <main className="min-h-screen bg-[#000000] text-[#e2e2e2] flex flex-col font-sans relative">
+      <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
       <div className="fixed inset-0 pointer-events-none z-0 opacity-60">
         <Particles
           particleColors={["#de1615", "#ff6534", "#ffffff"]}
@@ -181,7 +209,7 @@ export default function AboutClient({
         </section>
       </ScrollReveal>
 
-      <Footer />
+      <Footer contactData={chromeData?.contactInfo} />
     </main>
   );
 }

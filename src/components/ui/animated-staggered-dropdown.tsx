@@ -8,16 +8,29 @@ import { useSearchParams } from "next/navigation";
 
 export interface StaggeredDropDownProps {
   onSelectSeason?: (year: string) => void;
+  teamYears?: { id: string; year_label: string }[];
 }
 
-function DropDownInner({ onSelectSeason }: StaggeredDropDownProps) {
+function DropDownInner({ onSelectSeason, teamYears: propTeamYears }: StaggeredDropDownProps) {
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const currentSeasonId = searchParams.get("year");
 
-  const [seasons, setSeasons] = useState<{ year: string; label: string; id: string }[]>([]);
+  const [seasons, setSeasons] = useState<{ year: string; label: string; id: string }[]>(() => {
+    if (propTeamYears && propTeamYears.length > 0) {
+      return propTeamYears.map((y) => ({
+        year: y.year_label,
+        label: `TEAM ${y.year_label}`,
+        id: y.year_label,
+      }));
+    }
+    return [];
+  });
 
   React.useEffect(() => {
+    if (propTeamYears && propTeamYears.length > 0) {
+      return;
+    }
     async function fetchYears() {
       const { createClient } = await import("@supabase/supabase-js");
       const supabase = createClient(
@@ -39,11 +52,7 @@ function DropDownInner({ onSelectSeason }: StaggeredDropDownProps) {
       }
     }
     fetchYears();
-  }, []);
-
-  // Determine current season label
-  const currentSeasonData = seasons.find(s => s.id === currentSeasonId) || seasons[0];
-  const currentLabel = currentSeasonData ? currentSeasonData.label : "TEAM";
+  }, [propTeamYears]);
 
   return (
     <div className="relative inline-block">

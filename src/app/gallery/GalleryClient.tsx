@@ -10,6 +10,8 @@ import { SmartImage } from "@/components/SmartImage";
 
 const HEIGHTS = [750, 520, 850, 600, 700, 550, 480, 800, 520, 680, 560, 720, 580, 760, 490, 640, 700, 540, 780];
 
+import type { SharedChromeData } from "@/lib/server-data";
+
 interface GalleryItemData {
   id: string;
   image_url: string;
@@ -17,7 +19,13 @@ interface GalleryItemData {
   category?: string;
 }
 
-export default function GalleryClient({ galleryData }: { galleryData: GalleryItemData[] }) {
+export default function GalleryClient({
+  galleryData,
+  chromeData,
+}: {
+  galleryData: GalleryItemData[];
+  chromeData?: SharedChromeData;
+}) {
   const [selectedItem, setSelectedItem] = useState<MasonryItem | null>(null);
 
   const GALLERY_ITEMS: MasonryItem[] = galleryData.map((item, index) => ({
@@ -30,7 +38,7 @@ export default function GalleryClient({ galleryData }: { galleryData: GalleryIte
 
   return (
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
-      <Navbar />
+      <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
 
       {/* Hero Section */}
       <section className="pt-32 pb-12 relative overflow-hidden">
@@ -116,7 +124,7 @@ export default function GalleryClient({ galleryData }: { galleryData: GalleryIte
         </div>
       )}
 
-      <Footer />
+      <Footer contactData={chromeData?.contactInfo} />
     </main>
   );
 }

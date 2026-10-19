@@ -38,6 +38,7 @@ export async function updateContactInfo(formData: FormData) {
     throw new Error(`Failed to update contact info: ${error.message}`);
   }
 
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/team");

@@ -8,7 +8,7 @@ import { Footer } from "@/components/Footer";
 import { SparklesDivider } from "@/components/ui/SparklesDivider";
 import { WarpText } from "@/components/ui/WarpText";
 import GhostCursor from "@/components/ui/GhostCursor";
-import { ChevronDown, Users, ShieldAlert, Cpu, Wrench, Flame, Zap, Settings } from "lucide-react";
+import { ShieldAlert, Cpu, Wrench, Flame, Zap, Settings } from "lucide-react";
 
 import { SmartImage } from "@/components/SmartImage";
 
@@ -33,7 +33,7 @@ const getLinkedinUrl = (url?: string) => {
   return `https://${url}`;
 };
 
-const KNOWN_DEPARTMENTS: Record<string, { description: string; icon: any }> = {
+const KNOWN_DEPARTMENTS: Record<string, { description: string; icon: React.ComponentType<{ className?: string }> }> = {
   "TRANSMISSION": {
     description: "Designing and optimizing the power delivery system to ensure maximum efficiency and performance on the track.",
     icon: Settings,
@@ -60,8 +60,25 @@ const KNOWN_DEPARTMENTS: Record<string, { description: string; icon: any }> = {
   },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function TeamContent({ teamData }: { teamData: Record<string, any[]> }) {
+export interface TeamMemberItem {
+  id: string;
+  name: string;
+  department: string;
+  academic_year?: string | null;
+  linkedin_url?: string | null;
+  image_url?: string | null;
+  photo_url?: string | null;
+  team_year_id: string;
+  sort_order?: number;
+}
+
+function TeamContent({
+  teamData,
+  chromeData,
+}: {
+  teamData: Record<string, TeamMemberItem[]>;
+  chromeData?: SharedChromeData;
+}) {
   const searchParams = useSearchParams();
   const yearParam = searchParams.get("year");
   
@@ -74,7 +91,7 @@ function TeamContent({ teamData }: { teamData: Record<string, any[]> }) {
 
   return (
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
-      <Navbar />
+      <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
 
       <section className="pt-32 pb-16 relative overflow-hidden">
         <GhostCursor className="absolute inset-0 z-0 pointer-events-none" color="#de1615" bloomStrength={0.25} bloomRadius={1.2} trailLength={60} inertia={0.6} fadeDelayMs={800} fadeDurationMs={1500} />
@@ -221,15 +238,21 @@ function TeamContent({ teamData }: { teamData: Record<string, any[]> }) {
         </div>
       </section>
 
-      <Footer />
+      <Footer contactData={chromeData?.contactInfo} />
     </main>
   );
 }
 
-export default function TeamClient({ teamData }: { teamData: Record<string, any[]> }) {
+export default function TeamClient({
+  teamData,
+  chromeData,
+}: {
+  teamData: Record<string, TeamMemberItem[]>;
+  chromeData?: SharedChromeData;
+}) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-black" />}>
-      <TeamContent teamData={teamData} />
+      <TeamContent teamData={teamData} chromeData={chromeData} />
     </Suspense>
   );
 }

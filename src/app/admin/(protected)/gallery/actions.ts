@@ -123,6 +123,7 @@ export async function deleteGalleryImage(id: string, imageUrl: string) {
     .update({ deleted_at: new Date().toISOString(), deleted_batch_id: crypto.randomUUID() })
     .eq("id", id);
     
+  revalidatePath("/");
   revalidatePath("/gallery");
   revalidatePath("/admin/gallery");
 }

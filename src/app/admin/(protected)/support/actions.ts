@@ -64,6 +64,7 @@ export async function updateSupportSettings(formData: FormData) {
     await deleteImage(currentSettings.brochure_url);
   }
 
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/sponsors");
   revalidatePath("/admin/support");

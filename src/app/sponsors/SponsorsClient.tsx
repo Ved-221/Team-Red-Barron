@@ -21,6 +21,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import ShinyText from "@/components/ui/ShinyText";
 import { DonateModal, ContactModal } from "@/components/ui/SupportModals";
+import type { SharedChromeData } from "@/lib/server-data";
 
 // --- IMPACT METRICS DATA ---
 const IMPACT_METRICS = [
@@ -81,14 +82,39 @@ const TESTIMONIALS = [
 ];
 
 
+export interface SponsorItem {
+  id: string;
+  name: string;
+  logo_url: string;
+  website_url?: string | null;
+  sort_order?: number;
+}
+
+export interface SponsorTierItem {
+  id: string;
+  tier_name: string;
+  sort_order?: number;
+  sponsors: SponsorItem[];
+}
+
+export interface TestimonialItem {
+  quote: string;
+  name: string;
+  company: string;
+  tier?: string;
+  website_url?: string | null;
+}
+
 export default function SponsorsClient({
   sponsorTiers,
   testimonials = [],
-  heroBgUrl = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"
+  heroBgUrl = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png",
+  chromeData,
 }: {
-  sponsorTiers: any[];
-  testimonials?: any[];
+  sponsorTiers: SponsorTierItem[];
+  testimonials?: TestimonialItem[];
   heroBgUrl?: string;
+  chromeData?: SharedChromeData;
 }) {
   const [donateModalOpen, setDonateModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -119,7 +145,7 @@ export default function SponsorsClient({
 
   return (
     <main className="min-h-screen bg-[#000000] text-[#e2e2e2] flex flex-col font-sans relative">
-      <Navbar />
+      <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
 
       {/* SECTION 1 — HERO SECTION */}
       <section className="relative min-h-[92vh] flex items-center justify-center pt-32 pb-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full overflow-hidden z-10">
@@ -196,7 +222,7 @@ export default function SponsorsClient({
               </div>
 
               <div className={`grid w-full gap-6 ${tierIdx === 0 ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4" : tierIdx === 1 ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-6" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6"}`}>
-                {tier.sponsors.map((sp: any) => {
+                {tier.sponsors.map((sp: SponsorItem) => {
                   const hasWebsite = Boolean(sp.website_url && sp.website_url !== "#");
                   const CardTag = hasWebsite ? "a" : "div";
                   const cardLinkProps = hasWebsite
@@ -257,7 +283,7 @@ export default function SponsorsClient({
         <div className="max-w-4xl mx-auto relative">
           <div className="glass-card p-10 sm:p-14 rounded-3xl border border-white/15 bg-[#1e2020]/80 backdrop-blur-2xl text-center relative overflow-hidden">
             <Quote className="w-16 h-16 text-[#de1615]/20 absolute top-6 left-6 pointer-events-none" />
-            <p className="font-inter text-lg sm:text-xl text-white leading-relaxed italic mb-8 relative z-10">"{currentTestimonial.quote}"</p>
+            <p className="font-inter text-lg sm:text-xl text-white leading-relaxed italic mb-8 relative z-10">&ldquo;{currentTestimonial.quote}&rdquo;</p>
             <div className="flex flex-col items-center">
               <span className="font-sora font-extrabold text-lg text-white">{currentTestimonial.name}</span>
               <span className="font-mono-tech text-xs text-[#ff6534] font-semibold uppercase mt-0.5">{currentTestimonial.company}</span>
@@ -309,10 +335,14 @@ export default function SponsorsClient({
         </div>
       </section>
 
-      <Footer />
+      <Footer contactData={chromeData?.contactInfo} />
 
       {/* Shared Interactive Modals */}
-      <DonateModal isOpen={donateModalOpen} onClose={() => setDonateModalOpen(false)} />
+      <DonateModal
+        isOpen={donateModalOpen}
+        onClose={() => setDonateModalOpen(false)}
+        initialSettings={chromeData?.siteSettings}
+      />
       <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
     </main>
   );

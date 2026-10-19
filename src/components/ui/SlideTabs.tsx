@@ -19,9 +19,10 @@ interface Position {
 
 interface SlideTabsProps {
   items: TabItem[];
+  teamYears?: { id: string; year_label: string }[];
 }
 
-export function SlideTabs({ items }: SlideTabsProps) {
+export function SlideTabs({ items, teamYears }: SlideTabsProps) {
   const pathname = usePathname();
   
   const [position, setPosition] = useState<Position>({
@@ -55,7 +56,7 @@ export function SlideTabs({ items }: SlideTabsProps) {
                 setActivePosition={setActivePosition}
                 isActive={isActive}
               >
-                <StaggeredDropDown />
+                <StaggeredDropDown teamYears={teamYears} />
               </TabContainer>
             );
           }

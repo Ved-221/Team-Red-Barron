@@ -30,6 +30,7 @@ export async function addTeamYear(formData: FormData) {
     await supabase.from("team_years").insert({ year_label, sort_order });
   }
   
+  revalidatePath("/", "layout");
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }
@@ -43,6 +44,7 @@ export async function updateTeamYear(id: string, formData: FormData) {
     await supabase.from("team_years").update({ year_label, sort_order }).eq("id", id);
   }
   
+  revalidatePath("/", "layout");
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }
@@ -77,6 +79,7 @@ export async function deleteTeamYear(id: string) {
     })
     .eq("id", id);
 
+  revalidatePath("/", "layout");
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }
@@ -206,6 +209,7 @@ export async function deleteTeamMember(id: string, imageUrl: string) {
     .update({ deleted_at: new Date().toISOString(), deleted_batch_id: crypto.randomUUID() })
     .eq("id", id);
     
+  revalidatePath("/");
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }

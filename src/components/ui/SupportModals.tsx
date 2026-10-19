@@ -47,10 +47,13 @@ export function DonateModal({
         // Silently fall back to defaults
       }
     }
+    if (initialUpiId || initialQrCodeUrl || initialBrochureUrl) {
+      return;
+    }
     if (isOpen) {
       fetchSettings();
     }
-  }, [isOpen]);
+  }, [isOpen, initialUpiId, initialQrCodeUrl, initialBrochureUrl]);
 
   const copyUpi = () => {
     navigator.clipboard.writeText(upiId);
