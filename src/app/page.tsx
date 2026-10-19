@@ -38,7 +38,7 @@ export default async function Home() {
         .order("sort_order", { ascending: true }),
       supabase
         .from("team_photos")
-        .select("id, image_url, title, sort_order")
+        .select("id, image_url, caption, sort_order")
         .is("deleted_at", null)
         .order("sort_order", { ascending: true }),
     ]);

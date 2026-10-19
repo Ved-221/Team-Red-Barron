@@ -124,11 +124,19 @@ function TeamContent({
 
       <section className="pb-32 relative z-10 pt-16">
         <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 space-y-28">
-          
-          {(() => {
-            const memberDepts = Array.from(
-              new Set(currentMembers.map((m) => (m.department?.trim() || "ENGINEERING").toUpperCase()))
-            );
+          {currentMembers.length === 0 ? (
+            <div className="py-24 text-center">
+              <p className="font-mono-tech text-xs tracking-widest text-[#de1615] uppercase mb-2">Season Roster</p>
+              <h3 className="font-sora text-xl sm:text-2xl text-white font-bold">No Team Members Listed Yet</h3>
+              <p className="font-inter text-gray-400 text-sm mt-2 max-w-md mx-auto">
+                Roster details for season {selectedSeason} will be announced soon.
+              </p>
+            </div>
+          ) : (
+            (() => {
+              const memberDepts = Array.from(
+                new Set(currentMembers.map((m) => (m.department?.trim() || "ENGINEERING").toUpperCase()))
+              );
 
             const knownKeys = Object.keys(KNOWN_DEPARTMENTS);
             const activeDepartments = memberDepts.sort((a, b) => {
@@ -235,7 +243,8 @@ function TeamContent({
                 </motion.div>
               );
             });
-          })()}
+          })()
+        )}
 
         </div>
       </section>

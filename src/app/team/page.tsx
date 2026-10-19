@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TeamPage() {
-  const [chrome, { data: years }, { data: members }] = await Promise.all([
+  const [chrome, { data: years, error: yearsError }, { data: members, error: membersError }] = await Promise.all([
     getSharedChromeData(),
     supabase
       .from("team_years")
@@ -22,12 +22,15 @@ export default async function TeamPage() {
     supabase
       .from("team_members")
       .select(`
-        id, name, department, academic_year, linkedin_url, image_url, team_year_id, sort_order,
+        id, name, department, linkedin_url, image_url, team_year_id, sort_order,
         team_years (year_label)
       `)
       .is("deleted_at", null)
       .order("sort_order", { ascending: true }),
   ]);
+
+  if (yearsError) console.error("Error fetching team_years:", yearsError);
+  if (membersError) console.error("Error fetching team_members:", membersError);
 
   const teamData: Record<string, TeamMemberItem[]> = {};
 
