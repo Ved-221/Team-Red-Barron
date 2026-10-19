@@ -18,9 +18,9 @@ export async function getDepartments(): Promise<string[]> {
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
       // Ensure all uppercase and trimmed
-      return Array.from(new Set(parsed.map((d: any) => String(d).trim().toUpperCase()).filter(Boolean)));
+      return Array.from(new Set(parsed.map((d: unknown) => String(d).trim().toUpperCase()).filter(Boolean)));
     }
-  } catch (err) {
+  } catch {
     // If file doesn't exist, return defaults
   }
   return [...DEFAULT_DEPARTMENTS];

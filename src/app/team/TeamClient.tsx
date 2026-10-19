@@ -27,7 +27,9 @@ export interface DepartmentInfo {
   icon: any;
 }
 
-const getLinkedinUrl = (url?: string) => {
+import type { SharedChromeData } from "@/lib/server-data";
+
+const getLinkedinUrl = (url?: string | null) => {
   if (!url || url === "#") return "#";
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
   return `https://${url}`;

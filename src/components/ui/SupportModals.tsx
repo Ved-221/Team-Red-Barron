@@ -9,9 +9,9 @@ import { createClient } from "@/lib/supabase/client";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  upiId?: string;
-  qrCodeUrl?: string;
-  brochureUrl?: string;
+  upiId?: string | null;
+  qrCodeUrl?: string | null;
+  brochureUrl?: string | null;
 }
 
 export function DonateModal({

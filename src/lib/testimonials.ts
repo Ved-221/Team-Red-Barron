@@ -20,7 +20,7 @@ export async function getTestimonials(): Promise<SponsorTestimonial[]> {
     if (Array.isArray(parsed)) {
       return parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
     }
-  } catch (err) {
+  } catch {
     // If file doesn't exist, return empty array
   }
   return [];

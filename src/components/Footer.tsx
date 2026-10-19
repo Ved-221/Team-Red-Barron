@@ -17,7 +17,7 @@ export function Footer({ contactData: propContactData }: { contactData?: SharedC
       const supabase = createClient();
       const { data } = await supabase
         .from("contact_info")
-        .select("email, address, linkedin_url, instagram_url, youtube_url, managing_director_name, managing_director_email, managing_director_phone, marketing_director_name, marketing_director_email, marketing_director_phone")
+        .select("email, address, linkedin_url, instagram_url, youtube_url, twitter_url, managing_director_name, managing_director_email, managing_director_phone, marketing_director_name, marketing_director_email, marketing_director_phone")
         .eq("id", 1)
         .single();
       

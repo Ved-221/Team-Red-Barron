@@ -59,8 +59,16 @@ const VALUE_PROPS = [
   }
 ];
 
+export interface TestimonialItem {
+  quote: string;
+  name: string;
+  company: string;
+  tier?: string;
+  website_url?: string | null;
+}
+
 // --- TESTIMONIALS DATA ---
-const TESTIMONIALS = [
+const TESTIMONIALS: TestimonialItem[] = [
   {
     quote: "Team Red Baron represents the pinnacle of collegiate engineering discipline in India. Their attention to manufacturing tolerances and data telemetry rivals professional motorsport standards.",
     name: "Senior Engineering Director",
@@ -81,7 +89,6 @@ const TESTIMONIALS = [
   }
 ];
 
-
 export interface SponsorItem {
   id: string;
   name: string;
@@ -95,14 +102,6 @@ export interface SponsorTierItem {
   tier_name: string;
   sort_order?: number;
   sponsors: SponsorItem[];
-}
-
-export interface TestimonialItem {
-  quote: string;
-  name: string;
-  company: string;
-  tier?: string;
-  website_url?: string | null;
 }
 
 export default function SponsorsClient({
@@ -226,7 +225,7 @@ export default function SponsorsClient({
                   const hasWebsite = Boolean(sp.website_url && sp.website_url !== "#");
                   const CardTag = hasWebsite ? "a" : "div";
                   const cardLinkProps = hasWebsite
-                    ? { href: sp.website_url, target: "_blank", rel: "noreferrer", className: "group relative glass-card p-6 rounded-2xl border border-white/10 bg-[#121414]/90 backdrop-blur-xl flex flex-col items-center justify-center min-h-[140px] hover:border-white/30 hover:bg-[#1e2020] transition-all duration-300 cursor-pointer" }
+                    ? { href: sp.website_url || undefined, target: "_blank", rel: "noreferrer", className: "group relative glass-card p-6 rounded-2xl border border-white/10 bg-[#121414]/90 backdrop-blur-xl flex flex-col items-center justify-center min-h-[140px] hover:border-white/30 hover:bg-[#1e2020] transition-all duration-300 cursor-pointer" }
                     : { className: "group relative glass-card p-6 rounded-2xl border border-white/10 bg-[#121414]/90 backdrop-blur-xl flex flex-col items-center justify-center min-h-[140px] transition-all duration-300 cursor-default" };
 
                   return (
@@ -341,7 +340,9 @@ export default function SponsorsClient({
       <DonateModal
         isOpen={donateModalOpen}
         onClose={() => setDonateModalOpen(false)}
-        initialSettings={chromeData?.siteSettings}
+        upiId={chromeData?.siteSettings?.upi_id}
+        qrCodeUrl={chromeData?.siteSettings?.qr_code_url}
+        brochureUrl={chromeData?.siteSettings?.brochure_url}
       />
       <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
     </main>
