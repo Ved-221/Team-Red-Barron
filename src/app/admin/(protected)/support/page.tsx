@@ -3,7 +3,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { updateSupportSettings } from "./actions";
 import { SubmitButton } from "@/components/admin/SubmitButton";
-import { QrCode, FileText, ExternalLink, Upload, Landmark, Sparkles } from "lucide-react";
+import { QrCode, FileText, ExternalLink, Landmark } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +37,7 @@ export default async function AdminSupportPage() {
           </div>
         </div>
         <p className="text-[#ae8882] text-sm">
-          Update the team's official UPI ID, payment QR code, and sponsorship brochure PDF. Changes immediately reflect across public support modals and sponsorship sections.
+          Update the team&apos;s official UPI ID, payment QR code, and sponsorship brochure PDF. Changes immediately reflect across public support modals and sponsorship sections.
         </p>
       </div>
 

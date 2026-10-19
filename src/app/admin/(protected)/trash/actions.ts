@@ -16,7 +16,7 @@ const TABLES = [
   "featured_partners"
 ];
 
-async function collectAssetsForRow(supabase: any, table: string, row: any): Promise<string[]> {
+async function collectAssetsForRow(supabase: Awaited<ReturnType<typeof createClient>>, table: string, row: Record<string, unknown>): Promise<string[]> {
   if (!row) return [];
   const urls: string[] = [];
 
@@ -25,7 +25,7 @@ async function collectAssetsForRow(supabase: any, table: string, row: any): Prom
     const { data: members } = await supabase
       .from("team_members")
       .select("image_url")
-      .eq("team_year_id", row.id);
+      .eq("team_year_id", row.id as string | number);
     if (members && members.length > 0) {
       for (const m of members) {
         if (m.image_url) urls.push(m.image_url);
@@ -35,7 +35,7 @@ async function collectAssetsForRow(supabase: any, table: string, row: any): Prom
     const { data: sps } = await supabase
       .from("sponsors")
       .select("logo_url")
-      .eq("tier_id", row.id);
+      .eq("tier_id", row.id as string | number);
     if (sps && sps.length > 0) {
       for (const s of sps) {
         if (s.logo_url) urls.push(s.logo_url);
@@ -57,8 +57,9 @@ async function collectAssetsForRow(supabase: any, table: string, row: any): Prom
   ];
 
   for (const key of candidateKeys) {
-    if (row[key] && typeof row[key] === "string" && row[key].length > 0) {
-      urls.push(row[key]);
+    const val = row[key];
+    if (typeof val === "string" && val.length > 0) {
+      urls.push(val);
     }
   }
 

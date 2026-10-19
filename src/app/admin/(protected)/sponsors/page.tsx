@@ -18,6 +18,14 @@ import { Trash2, Sparkles, Quote, Plus } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
+interface SponsorItem {
+  id: string;
+  name: string;
+  logo_url: string;
+  website_url?: string;
+  sort_order: number;
+}
+
 export default async function AdminSponsorsPage(props: { searchParams: Promise<{ tier?: string }> }) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
@@ -37,7 +45,7 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
 
   const selectedTierId = searchParams.tier || (sponsorTiers?.[0]?.id);
 
-  let sponsors: any[] = [];
+  let sponsors: SponsorItem[] = [];
   if (selectedTierId) {
     const { data: s } = await supabase
       .from("sponsors")
@@ -45,7 +53,7 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
       .is("deleted_at", null)
       .eq("tier_id", selectedTierId)
       .order("sort_order", { ascending: true });
-    sponsors = s || [];
+    sponsors = (s as unknown as SponsorItem[]) || [];
   }
 
   return (

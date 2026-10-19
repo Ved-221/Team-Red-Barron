@@ -187,15 +187,15 @@ export default function DepthText({
     safeTilt,
   ]);
 
-  const rootStyle: CSSProperties = {
+  const rootStyle: CSSProperties & Record<`--${string}`, string | number> = {
     ...style,
-    ["--depth-text-perspective" as any]: `${safePerspective}px`,
-    ["--depth-text-font-family" as any]: fontFamily,
-    ["--depth-text-font-size" as any]: fontSize,
-    ["--depth-text-font-weight" as any]: fontWeight,
-    ["--depth-text-face-color" as any]: faceColor,
-    ["--depth-text-depth-color" as any]: depthColor,
-    ["--depth-text-shadow" as any]: shadow
+    "--depth-text-perspective": `${safePerspective}px`,
+    "--depth-text-font-family": fontFamily,
+    "--depth-text-font-size": fontSize,
+    "--depth-text-font-weight": fontWeight,
+    "--depth-text-face-color": faceColor,
+    "--depth-text-depth-color": depthColor,
+    "--depth-text-shadow": shadow
       ? `0 22px 34px color-mix(in srgb, ${depthColor} 36%, transparent), 0 4px 8px rgba(0, 0, 0, 0.28)`
       : "none",
   };

@@ -7,6 +7,15 @@ import { getDepartments } from "@/lib/departments";
 
 export const dynamic = "force-dynamic";
 
+interface TeamMemberItem {
+  id: string;
+  name: string;
+  image_url?: string;
+  department?: string;
+  linkedin_url?: string;
+  sort_order: number;
+}
+
 export default async function AdminTeamPage(props: { searchParams: Promise<{ year?: string }> }) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
@@ -15,10 +24,10 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
 
   const selectedYearId = searchParams.year || (teamYears?.[0]?.id);
 
-  let members: any[] = [];
+  let members: TeamMemberItem[] = [];
   if (selectedYearId) {
     const { data: m } = await supabase.from("team_members").select("*").is("deleted_at", null).eq("team_year_id", selectedYearId).order("sort_order", { ascending: true });
-    members = m || [];
+    members = (m as unknown as TeamMemberItem[]) || [];
   }
 
   const normDept = (d?: string | null) => (d || "").trim().toUpperCase() || "GENERAL";
@@ -196,7 +205,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           {deptMembers.map(member => (
                             <form key={member.id} action={updateTeamMember.bind(null, member.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
-                              <ImageUploadField name="image" defaultValue={member.image_url} />
+                              <ImageUploadField name="image" defaultValue={member.image_url} maxDimension={800} />
                               <div className="mt-4 space-y-3 flex-1">
                                 <input type="text" name="name" defaultValue={member.name} required placeholder="Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
                                 <div>
@@ -219,7 +228,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                               </div>
                               <div className="mt-4 flex gap-2 pt-4 border-t border-white/5">
                                 <button type="submit" className="flex-1 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 rounded-lg transition-colors">Update</button>
-                                <button formAction={deleteTeamMember.bind(null, member.id, member.image_url)} className="p-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-colors">
+                                <button formAction={deleteTeamMember.bind(null, member.id, member.image_url || "")} className="p-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-colors">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
                               </div>
@@ -237,7 +246,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                 <form action={addTeamMember} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input type="hidden" name="team_year_id" value={selectedYearId} />
                   <div>
-                    <ImageUploadField name="image" />
+                    <ImageUploadField name="image" maxDimension={800} />
                   </div>
                   <div className="space-y-3">
                     <input type="text" name="name" required placeholder="Member Full Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />

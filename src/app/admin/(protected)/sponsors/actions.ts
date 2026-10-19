@@ -196,6 +196,7 @@ export async function updateSponsorHeroBg(formData: FormData) {
     await deleteImage(realExistingUrl);
   }
 
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/sponsors");
   revalidatePath("/admin/sponsors");

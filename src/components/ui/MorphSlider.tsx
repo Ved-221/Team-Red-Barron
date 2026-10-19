@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Renderer, Triangle, Program, Mesh, Texture } from 'ogl';
+import { Renderer, Triangle, Program, Mesh, Texture, type OGLRenderingContext } from 'ogl';
 import { gsap } from 'gsap';
 
 import './MorphSlider.css';
@@ -230,7 +230,7 @@ void main() {
 }
 `;
 
-function makeFallbackTexture(gl: any) {
+function makeFallbackTexture(gl: OGLRenderingContext) {
   const size = 4;
   const data = new Uint8Array(size * size * 4);
   for (let i = 0; i < size * size; i++) {
@@ -280,7 +280,7 @@ class MorphEngine {
   shownIndex: number;
   tween: gsap.core.Tween | null;
   renderer: Renderer;
-  gl: any;
+  gl: OGLRenderingContext;
   canvas: HTMLCanvasElement;
   geometry: Triangle;
   textures: Texture[];
@@ -331,7 +331,7 @@ class MorphEngine {
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.05, 0.05, 0.06, 1);
 
-    this.canvas = this.gl.canvas;
+    this.canvas = this.gl.canvas as HTMLCanvasElement;
     this.canvas.className = 'morph-slider-canvas';
     container.appendChild(this.canvas);
 
@@ -614,7 +614,9 @@ export default function MorphSlider({
     loop,
     fitMode
   });
-  optsRef.current = { transition, duration, ease, intensity, scale, aberration, drift, overlayColor, loop, fitMode };
+  useEffect(() => {
+    optsRef.current = { transition, duration, ease, intensity, scale, aberration, drift, overlayColor, loop, fitMode };
+  }, [transition, duration, ease, intensity, scale, aberration, drift, overlayColor, loop, fitMode]);
 
   useEffect(() => {
     if (!containerRef.current) return undefined;

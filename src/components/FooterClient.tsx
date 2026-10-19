@@ -64,7 +64,9 @@ const TwitterIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function FooterClient({ contactData }: { contactData: any }) {
+import type { SharedContactInfo } from "@/lib/server-data";
+
+export function FooterClient({ contactData }: { contactData?: SharedContactInfo | null }) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

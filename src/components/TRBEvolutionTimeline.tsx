@@ -14,7 +14,20 @@ import {
   ChevronLeft,
 } from "lucide-react";
 
-interface Milestone {
+const REAR_DUST = [
+  { x: -18, y: -8, d: 0.35 },
+  { x: -24, y: -12, d: 0.42 },
+  { x: -15, y: -6, d: 0.38 },
+  { x: -28, y: -14, d: 0.48 }
+];
+
+const FRONT_DUST = [
+  { x: -12, y: -6, d: 0.36 },
+  { x: -18, y: -10, d: 0.44 },
+  { x: -14, y: -7, d: 0.40 }
+];
+
+export interface Milestone {
   id: string;
   year: string;
   title: string;
@@ -29,7 +42,7 @@ interface Milestone {
 
 const WINDOW_SIZE = 5; // Display max 5 nodes at a time for optimal spacing
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   "Flag": Flag,
   "Cpu": Cpu,
   "Trophy": Trophy,
@@ -243,18 +256,18 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
                         className="absolute bottom-[10%] left-[8%] w-5 h-5 bg-gray-300/60 rounded-full blur-md pointer-events-none z-10"
                       />
                       {/* Dust Particles */}
-                      {[...Array(4)].map((_, i) => (
+                      {REAR_DUST.map((dust, i) => (
                         <motion.div
                           key={`dust-rear-${i}`}
                           initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
                           animate={{
                             opacity: [0, 1, 0],
                             scale: [0, 1.4, 0],
-                            x: -12 - Math.random() * 20,
-                            y: -4 - Math.random() * 14,
+                            x: dust.x,
+                            y: dust.y,
                           }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 + Math.random() * 0.2, ease: "easeOut" }}
+                          transition={{ duration: dust.d, ease: "easeOut" }}
                           className="absolute bottom-[11%] left-[10%] w-1.5 h-1.5 bg-[#8b4513] rounded-full pointer-events-none z-10"
                         />
                       ))}
@@ -266,18 +279,18 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
                 <AnimatePresence>
                   {isDriving && (
                     <>
-                      {[...Array(3)].map((_, i) => (
+                      {FRONT_DUST.map((dust, i) => (
                         <motion.div
                           key={`dust-front-${i}`}
                           initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
                           animate={{
                             opacity: [0, 1, 0],
                             scale: [0, 1.2, 0],
-                            x: -8 - Math.random() * 15,
-                            y: -4 - Math.random() * 10,
+                            x: dust.x,
+                            y: dust.y,
                           }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 + Math.random() * 0.2, delay: 0.05, ease: "easeOut" }}
+                          transition={{ duration: dust.d, delay: 0.05, ease: "easeOut" }}
                           className="absolute bottom-[11%] left-[78%] w-1.5 h-1.5 bg-[#a0522d] rounded-full pointer-events-none z-10"
                         />
                       ))}

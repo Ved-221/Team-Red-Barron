@@ -32,7 +32,7 @@ export async function updateSupportSettings(formData: FormData) {
     if (uploadedBrochure) finalBrochureUrl = uploadedBrochure;
   }
 
-  const updatePayload: Record<string, any> = {
+  const updatePayload: Record<string, unknown> = {
     updated_at: new Date().toISOString(),
   };
 

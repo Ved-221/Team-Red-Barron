@@ -19,7 +19,7 @@ interface VehicleMilestone {
 
 
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   "Flag": Flag,
   "Cpu": Cpu,
   "Trophy": Trophy,

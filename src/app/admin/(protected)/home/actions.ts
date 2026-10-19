@@ -16,6 +16,7 @@ export async function updateHomeSettings(formData: FormData) {
     }).eq("id", 1);
   }
 
+  revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/admin/home");
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { CheckCircle2, AlertCircle, Loader2, X, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { CheckCircle2, AlertCircle, Loader2, X } from "lucide-react";
 
 export function AdminActionFeedback() {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,11 +49,11 @@ export function AdminActionFeedback() {
             });
           }
           return res;
-        } catch (err: any) {
+        } catch (err: unknown) {
           setIsLoading(false);
           setFeedback({
             type: "error",
-            message: err?.message || "A network error occurred while updating.",
+            message: err instanceof Error ? err.message : "A network error occurred while updating.",
           });
           throw err;
         }

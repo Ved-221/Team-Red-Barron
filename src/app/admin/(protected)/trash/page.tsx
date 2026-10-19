@@ -1,9 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
-import { restoreItem, restoreBatch, permanentlyDeleteItem, permanentlyDeleteBatch, emptyAllTrash } from "./actions";
+import { restoreItem, restoreBatch, permanentlyDeleteItem, permanentlyDeleteBatch } from "./actions";
 import { Trash2, RotateCcw } from "lucide-react";
 import Image from "next/image";
 
 import { EmptyTrashButton } from "@/components/admin/EmptyTrashButton";
+
+interface TrashItem {
+  id: string;
+  _type: string;
+  _label: string;
+  deleted_at: string;
+  deleted_batch_id?: string | null;
+  image_url?: string | null;
+  logo_url?: string | null;
+  [key: string]: unknown;
+}
 
 export default async function AdminTrashPage() {
   const supabase = await createClient();
@@ -26,7 +37,7 @@ export default async function AdminTrashPage() {
     supabase.from("team_photos").select("*").not("deleted_at", "is", null),
   ]);
 
-  const allDeletedItems = [
+  const allDeletedItems: TrashItem[] = [
     ...(vehicles || []).map(v => ({ ...v, _type: "vehicles", _label: `Vehicle: ${v.year} ${v.vehicle_name}` })),
     ...(teamYears || []).map(y => ({ ...y, _type: "team_years", _label: `Team Year: ${y.year_label}` })),
     ...(teamMembers || []).map(m => ({ ...m, _type: "team_members", _label: `Team Member: ${m.name}` })),
@@ -37,16 +48,12 @@ export default async function AdminTrashPage() {
   ].sort((a, b) => new Date(b.deleted_at).getTime() - new Date(a.deleted_at).getTime());
 
   // Group by batch if there is a batch ID
-  const groupedByBatch = allDeletedItems.reduce((acc, item) => {
-    if (item.deleted_batch_id) {
-      if (!acc[item.deleted_batch_id]) acc[item.deleted_batch_id] = [];
-      acc[item.deleted_batch_id].push(item);
-    } else {
-      if (!acc["individual"]) acc["individual"] = [];
-      acc["individual"].push(item);
-    }
+  const groupedByBatch = allDeletedItems.reduce<Record<string, TrashItem[]>>((acc, item) => {
+    const key = item.deleted_batch_id || "individual";
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(item);
     return acc;
-  }, {} as Record<string, any[]>);
+  }, {});
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-16">
@@ -67,12 +74,12 @@ export default async function AdminTrashPage() {
           <div className="space-y-6">
             {Object.entries(groupedByBatch).map(([batchId, items]) => {
               if (batchId === "individual") {
-                return (items as any[]).map((item: any) => (
+                return items.map((item) => (
                   <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-black/40 border border-white/5">
                     <div className="flex items-center gap-4">
                       {(item.image_url || item.logo_url) && (
                         <div className="relative w-16 h-12 rounded bg-black">
-                          <Image src={item.image_url || item.logo_url} alt="Thumbnail" fill unoptimized className="object-contain" />
+                          <Image src={item.image_url || item.logo_url || ""} alt="Thumbnail" fill unoptimized className="object-contain" />
                         </div>
                       )}
                       <div>
@@ -86,7 +93,7 @@ export default async function AdminTrashPage() {
                           <RotateCcw className="w-3.5 h-3.5" /> Restore
                         </button>
                       </form>
-                      <form action={permanentlyDeleteItem.bind(null, item._type, item.id, item.image_url || item.logo_url)}>
+                      <form action={permanentlyDeleteItem.bind(null, item._type, item.id, item.image_url || item.logo_url || undefined)}>
                         <button type="submit" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white text-xs font-semibold transition-colors border border-red-500/30">
                           <Trash2 className="w-3.5 h-3.5" /> Delete Forever
                         </button>
@@ -102,7 +109,7 @@ export default async function AdminTrashPage() {
                   <div className="flex items-center justify-between border-b border-white/10 pb-4">
                     <div>
                       <p className="font-sora font-semibold text-white text-sm">Grouped Deletion</p>
-                      <p className="font-mono-tech text-[#ae8882] text-xs">{(items as any[]).length} items</p>
+                      <p className="font-mono-tech text-[#ae8882] text-xs">{items.length} items</p>
                     </div>
                     <div className="flex items-center gap-3">
                       <form action={restoreBatch.bind(null, batchId)}>
@@ -118,7 +125,7 @@ export default async function AdminTrashPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    {(items as any[]).map((item: any) => (
+                    {items.map((item) => (
                       <div key={item.id} className="flex items-center gap-4 text-xs font-inter text-white/70">
                         <span className="w-2 h-2 rounded-full bg-[#de1615]" />
                         {item._label}

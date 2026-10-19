@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 
 import { useEffect, useMemo, useRef } from 'react';
@@ -8,6 +7,26 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import './GhostCursor.css';
+
+export interface GhostCursorProps {
+  className?: string;
+  style?: React.CSSProperties;
+  trailLength?: number;
+  inertia?: number;
+  grainIntensity?: number;
+  bloomStrength?: number;
+  bloomRadius?: number;
+  bloomThreshold?: number;
+  brightness?: number;
+  color?: string;
+  mixBlendMode?: string;
+  edgeIntensity?: number;
+  maxDevicePixelRatio?: number;
+  targetPixels?: number;
+  fadeDelayMs?: number;
+  fadeDurationMs?: number;
+  zIndex?: number;
+}
 
 const GhostCursor = ({
   className = '',
@@ -30,23 +49,23 @@ const GhostCursor = ({
   fadeDelayMs = 1000,
   fadeDurationMs = 1500,
   zIndex = 10
-}: any) => {
-  const containerRef = useRef(null);
-  const rendererRef = useRef(null);
-  const composerRef = useRef(null);
-  const materialRef = useRef(null);
-  const bloomPassRef = useRef(null);
-  const filmPassRef = useRef(null);
+}: GhostCursorProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const composerRef = useRef<EffectComposer | null>(null);
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const bloomPassRef = useRef<UnrealBloomPass | null>(null);
+  const filmPassRef = useRef<ShaderPass | null>(null);
 
-  const trailBufRef = useRef([]);
+  const trailBufRef = useRef<THREE.Vector2[]>([]);
   const headRef = useRef(0);
 
-  const rafRef = useRef(null);
-  const resizeObsRef = useRef(null);
+  const rafRef = useRef<number | null>(null);
+  const resizeObsRef = useRef<ResizeObserver | null>(null);
   const currentMouseRef = useRef(new THREE.Vector2(0.5, 0.5));
   const velocityRef = useRef(new THREE.Vector2(0, 0));
   const fadeOpacityRef = useRef(1.0);
-  const lastMoveTimeRef = useRef(typeof performance !== 'undefined' ? performance.now() : Date.now());
+  const lastMoveTimeRef = useRef(0);
   const pointerActiveRef = useRef(false);
   const runningRef = useRef(false);
   const hasValidSizeRef = useRef(false);
@@ -209,7 +228,7 @@ const GhostCursor = ({
     []
   );
 
-  function calculateScale(el) {
+  function calculateScale(el: HTMLElement) {
     const r = el.getBoundingClientRect();
     const base = 600;
     const current = Math.min(Math.max(1, r.width), Math.max(1, r.height));
@@ -358,6 +377,7 @@ const GhostCursor = ({
 
       const mat = materialRef.current;
       const comp = composerRef.current;
+      if (!mat || !comp) return;
 
       if (pointerActiveRef.current) {
         velocityRef.current.set(
@@ -412,7 +432,7 @@ const GhostCursor = ({
       }
     };
 
-    const onPointerMove = e => {
+    const onPointerMove = (e: PointerEvent) => {
       const rect = parent.getBoundingClientRect();
       const x = THREE.MathUtils.clamp((e.clientX - rect.left) / Math.max(1, rect.width), 0, 1);
       const y = THREE.MathUtils.clamp(1 - (e.clientY - rect.top) / Math.max(1, rect.height), 0, 1);
@@ -511,7 +531,7 @@ const GhostCursor = ({
   }, [grainIntensity]);
 
   useEffect(() => {
-    const el = rendererRef.current?.domElement;
+    const el = containerRef.current?.querySelector<HTMLCanvasElement>('canvas');
     if (!el) return;
     if (mixBlendMode) {
       el.style.mixBlendMode = String(mixBlendMode);

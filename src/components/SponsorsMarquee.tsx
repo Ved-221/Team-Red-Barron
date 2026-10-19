@@ -3,7 +3,14 @@
 import { SmartImage } from "@/components/SmartImage";
 import Link from "next/link";
 
-export function SponsorsMarquee({ sponsors }: { sponsors: any[] }) {
+interface SponsorMarqueeItem {
+  id?: string | number;
+  name?: string;
+  logo_url: string;
+  website_url?: string | null;
+}
+
+export function SponsorsMarquee({ sponsors }: { sponsors: SponsorMarqueeItem[] }) {
   if (!sponsors || sponsors.length === 0) return null;
 
   return (

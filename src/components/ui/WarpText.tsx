@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
+import { Renderer, Program, Mesh, Triangle, Texture, type OGLRenderingContext } from 'ogl';
 import './WarpText.css';
 
 const vertex = `#version 300 es
@@ -236,7 +236,7 @@ const buildTextCanvas = ({ container, width, height, dpr, props }: BuildCanvasPr
   return canvas;
 };
 
-const syncUniforms = (program: any, props: WarpTextProps) => {
+const syncUniforms = (program: Program, props: WarpTextProps) => {
   const uniforms = program.uniforms;
   uniforms.uWarpStrength.value = props.warpStrength ?? 0.08;
   uniforms.uWarpScale.value = props.warpScale ?? 1.7;
@@ -301,7 +301,7 @@ export function WarpText({
     refraction,
     ripple
   });
-  const contextRef = useRef<any>(null);
+  const contextRef = useRef<{ program: Program; rasterize: () => Promise<void> } | null>(null);
 
   useEffect(() => {
     propsRef.current = {
@@ -346,14 +346,8 @@ export function WarpText({
     const container = containerRef.current;
     if (!container || typeof window === 'undefined') return undefined;
 
-    let renderer: any;
-    let gl: any;
-    let program: any;
-    let geometry: any;
-    let mesh: any;
-    let texture: any;
-    let resizeObserver: ResizeObserver;
-    let intersectionObserver: IntersectionObserver;
+    let renderer: Renderer;
+    let gl: OGLRenderingContext;
     let raf = 0;
     let disposed = false;
     let contextLost = false;
@@ -380,7 +374,7 @@ export function WarpText({
     }
 
     gl.clearColor(0, 0, 0, 0);
-    const canvas = gl.canvas;
+    const canvas = gl.canvas as HTMLCanvasElement;
     canvas.style.position = 'absolute';
     canvas.style.inset = '0';
     canvas.style.width = '100%';
@@ -389,7 +383,7 @@ export function WarpText({
     canvas.setAttribute('aria-hidden', 'true');
     container.appendChild(canvas);
 
-    texture = new Texture(gl, {
+    const texture = new Texture(gl, {
       generateMipmaps: false,
       minFilter: gl.LINEAR,
       magFilter: gl.LINEAR,
@@ -397,8 +391,8 @@ export function WarpText({
       wrapT: gl.CLAMP_TO_EDGE
     });
 
-    geometry = new Triangle(gl);
-    program = new Program(gl, {
+    const geometry = new Triangle(gl);
+    const program = new Program(gl, {
       vertex,
       fragment,
       transparent: true,
@@ -420,7 +414,7 @@ export function WarpText({
         uMotion: { value: reduceMotion ? 0 : 1 }
       }
     });
-    mesh = new Mesh(gl, { geometry, program });
+    const mesh = new Mesh(gl, { geometry, program });
 
     const renderOnce = () => {
       if (disposed || contextLost) return;
@@ -523,10 +517,10 @@ export function WarpText({
       raf = requestAnimationFrame(loop);
     };
 
-    resizeObserver = new ResizeObserver(resize);
+    const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
 
-    intersectionObserver = new IntersectionObserver(
+    const intersectionObserver = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
         if (visible && pageVisible && !raf) raf = requestAnimationFrame(loop);

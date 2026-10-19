@@ -72,7 +72,7 @@ export function SupportCTA({ supportSettings }: SupportCTAProps = {}) {
                     src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"
                     alt="Formula Student Vehicle Background Silhouette"
                     fill
-                    sizes="700px"
+                    sizes="(max-width: 640px) 100vw, 640px"
                     className="object-contain"
                   />
                 </div>

@@ -2,7 +2,12 @@
 
 import MorphSlider from "@/components/ui/MorphSlider";
 
-export function GalleryPreview({ teamPhotos }: { teamPhotos: any[] }) {
+interface TeamPhotoItem {
+  image_url: string;
+  caption?: string | null;
+}
+
+export function GalleryPreview({ teamPhotos }: { teamPhotos: TeamPhotoItem[] }) {
   if (!teamPhotos || teamPhotos.length === 0) return null;
 
   const teamItems = teamPhotos.map(p => ({

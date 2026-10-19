@@ -8,20 +8,44 @@ import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
+interface VehicleRecord {
+  id?: string;
+  year?: string;
+  era_label?: string;
+  vehicle_name?: string;
+  chassis_serial?: string;
+  timeline_order?: number;
+  subtitle?: string;
+  rank_text?: string;
+  badge_text?: string;
+  icon_key?: string;
+  description?: string;
+  status_badge?: string;
+  background_video_url?: string;
+  image_url?: string;
+}
+
+interface SpecRecord {
+  id?: string;
+  label: string;
+  value: string;
+  sort_order: number;
+}
+
 export default async function AdminTimelineFormPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const isNew = params.id === "new";
   const supabase = await createClient();
-  let vehicle: any = null;
-  let specs: any[] = [];
+  let vehicle: VehicleRecord | null = null;
+  let specs: SpecRecord[] = [];
 
   if (!isNew) {
     const { data: v } = await supabase.from("vehicles").select("*").eq("id", params.id).single();
     if (!v) notFound();
-    vehicle = v;
+    vehicle = v as unknown as VehicleRecord;
 
     const { data: s } = await supabase.from("vehicle_specs").select("*").eq("vehicle_id", params.id).order("sort_order", { ascending: true });
-    specs = s || [];
+    specs = (s as unknown as SpecRecord[]) || [];
   }
 
   const ICONS = ["Flag", "Cpu", "Trophy", "ShieldCheck", "Zap", "Sparkles"];

@@ -8,11 +8,14 @@ import { OrbitalLoader } from "@/components/ui/orbital-loader";
 function NavigationProgressContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const currentKey = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+  const [prevKey, setPrevKey] = useState(currentKey);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  if (currentKey !== prevKey) {
+    setPrevKey(currentKey);
     setLoading(false);
-  }, [pathname, searchParams]);
+  }
 
   useEffect(() => {
     const handleAnchorClick = (e: MouseEvent) => {

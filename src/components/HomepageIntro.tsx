@@ -69,13 +69,23 @@ export function HomepageIntro() {
 
   const totalNonSpaceLetters = characters.filter((c) => c.char !== " ").length;
 
+  const handleSkip = React.useCallback(() => {
+    isFinishedRef.current = true;
+    setIsFading(true);
+    setTimeout(() => {
+      setIsFinished(true);
+    }, 400);
+  }, []);
+
   useEffect(() => {
     // 1. Accessibility: prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
-      setIsFinished(true);
       isFinishedRef.current = true;
-      return;
+      const t = setTimeout(() => {
+        setIsFinished(true);
+      }, 0);
+      return () => clearTimeout(t);
     }
 
     // 2. Session & Reload Logic
@@ -102,11 +112,13 @@ export function HomepageIntro() {
     };
 
     const play = checkShouldPlay();
-    setShouldPlay(play);
     if (!play) {
-      setIsFinished(true);
       isFinishedRef.current = true;
-      return;
+      const t = setTimeout(() => {
+        setShouldPlay(false);
+        setIsFinished(true);
+      }, 0);
+      return () => clearTimeout(t);
     }
 
     // ESC key listener for instant skip
@@ -138,7 +150,7 @@ export function HomepageIntro() {
       clearTimeout(tFade);
       clearTimeout(tFinish);
     };
-  }, []);
+  }, [handleSkip, totalNonSpaceLetters]);
 
   // 3. UNIFIED HIGH-PERFORMANCE 60/120 FPS ANIMATION LOOP
   // Uses direct DOM transform updates on refs without triggering React virtual DOM re-renders
@@ -516,14 +528,6 @@ export function HomepageIntro() {
       cancelAnimationFrame(animFrameId);
     };
   }, [shouldPlay, isFinished]);
-
-  const handleSkip = () => {
-    isFinishedRef.current = true;
-    setIsFading(true);
-    setTimeout(() => {
-      setIsFinished(true);
-    }, 400);
-  };
 
   if (isFinished || !shouldPlay) return null;
 

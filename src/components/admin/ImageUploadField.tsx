@@ -9,6 +9,7 @@ interface ImageUploadFieldProps {
   defaultValue?: string | null;
   label?: string;
   className?: string;
+  maxDimension?: number;
 }
 
 function loadHtmlImage(file: File): Promise<HTMLImageElement> {
@@ -27,7 +28,7 @@ function loadHtmlImage(file: File): Promise<HTMLImageElement> {
   });
 }
 
-async function compressImageInBrowser(file: File): Promise<File> {
+async function compressImageInBrowser(file: File, maxDimension = 1920): Promise<File> {
   const validTypes = ["image/jpeg", "image/png", "image/webp"];
   if (!validTypes.includes(file.type)) {
     return file;
@@ -53,7 +54,6 @@ async function compressImageInBrowser(file: File): Promise<File> {
     height = imageSource.height;
   }
 
-  const maxDimension = 1920;
   let targetWidth = width;
   let targetHeight = height;
 
@@ -108,6 +108,7 @@ export function ImageUploadField({
   defaultValue,
   label = "Upload Image",
   className = "",
+  maxDimension = 1920,
 }: ImageUploadFieldProps) {
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -141,6 +142,24 @@ export function ImageUploadField({
     const file = files?.[0];
     if (!file) return;
 
+    const isHeic =
+      file.type === "image/heic" ||
+      file.type === "image/heif" ||
+      file.name.toLowerCase().endsWith(".heic") ||
+      file.name.toLowerCase().endsWith(".heif");
+
+    if (isHeic) {
+      setErrorMessage(
+        "HEIC/HEIF images are not supported directly in the browser. Please convert to JPEG, PNG, or WebP before uploading."
+      );
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+      setPreview(null);
+      setSelectedFileMeta(null);
+      return;
+    }
+
     setErrorMessage(null);
     setIsOptimizing(true);
 
@@ -153,7 +172,7 @@ export function ImageUploadField({
     try {
       let finalFile: File = file;
       try {
-        finalFile = await compressImageInBrowser(file);
+        finalFile = await compressImageInBrowser(file, maxDimension);
       } catch (err) {
         console.warn("Browser compression failed, using original file:", err);
         finalFile = file;
