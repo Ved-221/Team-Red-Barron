@@ -387,7 +387,18 @@ class MorphEngine {
     this.items.forEach((item, index) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.src = item.image;
+
+      let optimizedSrc = item.image;
+      if (
+        item.image &&
+        !item.image.startsWith('data:') &&
+        !item.image.startsWith('blob:') &&
+        !item.image.startsWith('/_next/image')
+      ) {
+        optimizedSrc = `/_next/image?url=${encodeURIComponent(item.image)}&w=1920&q=75`;
+      }
+
+      img.src = optimizedSrc;
       img.onload = () => {
         const texture = new Texture(this.gl, { generateMipmaps: false });
         texture.image = img;
@@ -398,7 +409,12 @@ class MorphEngine {
           this.program.uniforms.uCurrentSize.value = this.sizes[index];
         }
       };
-      img.onerror = () => { };
+      img.onerror = () => {
+        // Fallback to raw original URL if optimization endpoint fails
+        if (img.src !== item.image) {
+          img.src = item.image;
+        }
+      };
     });
   }
 
