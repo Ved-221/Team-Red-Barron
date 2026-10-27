@@ -10,6 +10,7 @@ interface ImageUploadFieldProps {
   label?: string;
   className?: string;
   maxDimension?: number;
+  maxSizeMb?: number;
 }
 
 function loadHtmlImage(file: File): Promise<HTMLImageElement> {
@@ -109,6 +110,7 @@ export function ImageUploadField({
   label = "Upload Image",
   className = "",
   maxDimension = 1920,
+  maxSizeMb = 5,
 }: ImageUploadFieldProps) {
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -160,6 +162,18 @@ export function ImageUploadField({
       return;
     }
 
+    const RAW_MAX_BYTES = 25 * 1024 * 1024;
+    if (file.size > RAW_MAX_BYTES) {
+      const rawMb = (file.size / (1024 * 1024)).toFixed(1);
+      setErrorMessage(`Selected file is too large (${rawMb} MB). Please select an image under 25 MB.`);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+      setPreview(null);
+      setSelectedFileMeta(null);
+      return;
+    }
+
     setErrorMessage(null);
     setIsOptimizing(true);
 
@@ -178,8 +192,9 @@ export function ImageUploadField({
         finalFile = file;
       }
 
-      if (finalFile.size > 5 * 1024 * 1024) {
-        setErrorMessage("File exceeds 5 MB limit. Please select a smaller file.");
+      if (finalFile.size > maxSizeMb * 1024 * 1024) {
+        const sizeMb = (finalFile.size / (1024 * 1024)).toFixed(1);
+        setErrorMessage(`File exceeds ${maxSizeMb} MB limit (${sizeMb} MB). Please select a smaller file.`);
         if (inputRef.current) {
           inputRef.current.value = "";
         }
@@ -400,7 +415,7 @@ export function ImageUploadField({
               Click to select or drag & drop image
             </span>
             <span className="text-xs text-white/40 mt-1 font-mono-tech uppercase">
-              PNG, JPG, WEBP, AVIF (Max 5 MB • Auto-optimized)
+              PNG, JPG, WEBP, AVIF (Max {maxSizeMb} MB • Auto-optimized)
             </span>
           </div>
         )}

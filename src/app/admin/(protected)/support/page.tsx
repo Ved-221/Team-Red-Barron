@@ -3,6 +3,8 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { updateSupportSettings } from "./actions";
 import { SubmitButton } from "@/components/admin/SubmitButton";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { PdfUploadField } from "@/components/admin/PdfUploadField";
 import { QrCode, FileText, ExternalLink, Landmark } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -72,53 +74,14 @@ export default async function AdminSupportPage() {
             <h2 className="font-sora font-bold text-lg text-white">Payment QR Code</h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 items-start">
-            {/* QR Code Preview */}
-            <div className="flex-shrink-0 flex flex-col items-center">
-              <span className="text-[11px] font-mono-tech uppercase text-white/50 mb-2">Current QR Preview</span>
-              <div className="w-44 h-44 bg-white rounded-2xl p-2.5 flex items-center justify-center border-2 border-[#de1615]/40 shadow-[0_0_25px_rgba(222,22,21,0.25)] relative overflow-hidden">
-                <Image
-                  src={qrCodeUrl}
-                  alt="Team Red Baron Payment QR Code"
-                  width={160}
-                  height={160}
-                  className="w-full h-full object-contain"
-                  unoptimized
-                />
-              </div>
-            </div>
-
-            {/* QR Code Inputs */}
-            <div className="flex-1 space-y-4 w-full">
-              <div>
-                <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
-                  Upload New QR Image File
-                </label>
-                <input
-                  type="file"
-                  name="qr_code_file"
-                  accept="image/png,image/jpeg,image/webp"
-                  className="w-full text-xs text-white/70 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-sora file:font-bold file:bg-[#de1615]/20 file:text-[#de1615] hover:file:bg-[#de1615] hover:file:text-white file:transition-colors file:cursor-pointer cursor-pointer bg-black/40 border border-white/10 rounded-lg p-2"
-                />
-                <p className="text-[11px] text-white/40 mt-1.5">
-                  Uploading a file will upload to Supabase storage bucket `trb-media/support/` (Max 5 MB).
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
-                  Or Direct QR Code Image URL
-                </label>
-                <input
-                  key={qrCodeUrl}
-                  type="text"
-                  name="qr_code_direct_url"
-                  defaultValue={qrCodeUrl}
-                  placeholder="/trb_upi_qr.png or https://..."
-                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white font-mono-tech text-xs focus:outline-none focus:border-[#de1615]/50 transition-all"
-                />
-              </div>
-            </div>
+          {/* QR Code Upload Field (with client-side compression and 5 MB size limit) */}
+          <div className="w-full">
+            <ImageUploadField
+              name="qr_code_file"
+              defaultValue={qrCodeUrl}
+              label="Payment QR Code Image (Max 5 MB • Auto-optimized)"
+              maxDimension={800}
+            />
           </div>
         </div>
 
@@ -142,35 +105,13 @@ export default async function AdminSupportPage() {
             )}
           </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
-                Upload New Brochure PDF File
-              </label>
-              <input
-                type="file"
-                name="brochure_file"
-                accept="application/pdf"
-                className="w-full text-xs text-white/70 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-sora file:font-bold file:bg-[#de1615]/20 file:text-[#de1615] hover:file:bg-[#de1615] hover:file:text-white file:transition-colors file:cursor-pointer cursor-pointer bg-black/40 border border-white/10 rounded-lg p-2"
-              />
-              <p className="text-[11px] text-white/40 mt-1.5">
-                Uploading a file will upload to Supabase storage bucket `trb-media/brochures/` (Max 10 MB PDF).
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">
-                Or Direct Brochure URL / Path
-              </label>
-              <input
-                key={brochureUrl}
-                type="text"
-                name="brochure_direct_url"
-                defaultValue={brochureUrl}
-                placeholder="/TRB_BROCHURE_2027.pdf or https://..."
-                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2.5 text-white font-mono-tech text-xs focus:outline-none focus:border-[#de1615]/50 transition-all"
-              />
-            </div>
+          <div className="w-full">
+            <PdfUploadField
+              name="brochure_file"
+              defaultValue={brochureUrl}
+              label="Sponsorship Brochure (PDF • Max 10 MB)"
+              maxSizeMb={10}
+            />
           </div>
         </div>
 

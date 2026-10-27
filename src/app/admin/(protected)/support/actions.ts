@@ -8,10 +8,18 @@ export async function updateSupportSettings(formData: FormData) {
   const supabase = await createClient();
 
   const upi_id = ((formData.get("upi_id") as string) || "").trim();
-  const qrDirectUrl = ((formData.get("qr_code_direct_url") as string) || "").trim();
+  const qrDirectUrl = (
+    (formData.get("qr_code_file_direct_url") as string) ||
+    (formData.get("qr_code_direct_url") as string) ||
+    ""
+  ).trim();
   const qrFile = formData.get("qr_code_file") as File | null;
 
-  const brochureDirectUrl = ((formData.get("brochure_direct_url") as string) || "").trim();
+  const brochureDirectUrl = (
+    (formData.get("brochure_file_direct_url") as string) ||
+    (formData.get("brochure_direct_url") as string) ||
+    ""
+  ).trim();
   const brochureFile = formData.get("brochure_file") as File | null;
 
   const { data: currentSettings } = await supabase
