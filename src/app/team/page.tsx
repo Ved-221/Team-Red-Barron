@@ -7,8 +7,11 @@ import { getSharedChromeData } from "@/lib/server-data";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Team Members | Team Red Baron",
-  description: "The engineers behind the Albatross ATV.",
+  title: "Team Members",
+  description: "Meet the engineers, drivers, and technical departments behind Team Red Baron's championship All-Terrain Vehicles at PCCOE Pune.",
+  alternates: {
+    canonical: "/team",
+  },
 };
 
 export default async function TeamPage() {

@@ -6,8 +6,11 @@ import { getSharedChromeData } from "@/lib/server-data";
 export const revalidate = 3600; // 1-hour ISR cache
 
 export const metadata: Metadata = {
-  title: "Gallery | Team Red Baron",
-  description: "High resolution action gallery of Team Red Baron's ATVs in action.",
+  title: "Media Gallery",
+  description: "High resolution action gallery of Team Red Baron's All-Terrain Vehicles, track testing, and BAJA SAE competitions.",
+  alternates: {
+    canonical: "/gallery",
+  },
 };
 
 export default async function GalleryPage() {

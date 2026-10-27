@@ -7,8 +7,11 @@ import { getSharedChromeData } from "@/lib/server-data";
 export const revalidate = 3600; // 1-hour ISR cache
 
 export const metadata: Metadata = {
-  title: "Sponsors | Team Red Baron",
-  description: "Our strategic industry partners and sponsors.",
+  title: "Sponsors & Partners",
+  description: "Explore the strategic industry partners and sponsors empowering Team Red Baron's BAJA SAE racing and engineering development.",
+  alternates: {
+    canonical: "/sponsors",
+  },
 };
 
 export default async function SponsorsPage() {

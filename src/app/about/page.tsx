@@ -7,9 +7,12 @@ import { getSharedChromeData } from "@/lib/server-data";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "About Us | Team Red Baron — PCCOE Motorsport",
+  title: "About Us | PCCOE Motorsport",
   description:
     "Learn about Team Red Baron (PCCOE Pune), premier collegiate offroad ATV racing team. 12+ years of untamed endurance, in-house engineering, and podium victories.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default async function AboutPage() {

@@ -25,10 +25,54 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Team Red Baron — Elite Offroad Engineering & Motorsport",
+  metadataBase: new URL("https://teamredbaron.in"),
+  alternates: {
+    canonical: "/",
+  },
+  title: {
+    default: "Team Red Baron — Elite Offroad Engineering & Motorsport | PCCOE",
+    template: "%s | Team Red Baron",
+  },
   description:
-    "PCCOE's collegiate offroad/ATV racing team. Pushing mechanical boundaries with aerospace precision and high-octane performance.",
-  keywords: ["Team Red Baron", "BAJA SAE", "Offroad Racing", "PCCOE Motorsports", "ATV", "Albatros"],
+    "Official collegiate offroad racing team of Pimpri Chinchwad College of Engineering (PCCOE Pune). Designing, manufacturing, and competing with high-performance All-Terrain Vehicles (ATVs) in national and international BAJA SAE championships.",
+  keywords: [
+    "Team Red Baron",
+    "PCCOE Motorsports",
+    "PCCOE Pune",
+    "BAJA SAE India",
+    "eBAJA",
+    "All-Terrain Vehicle",
+    "ATV",
+    "Offroad Racing",
+    "Albatros",
+  ],
+  authors: [{ name: "Team Red Baron" }],
+  creator: "Team Red Baron",
+  publisher: "PCCOE Pune",
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://teamredbaron.in",
+    siteName: "Team Red Baron",
+    title: "Team Red Baron — Elite Offroad Engineering & Motorsport | PCCOE",
+    description:
+      "Official collegiate offroad racing team of PCCOE Pune. Designing, manufacturing, and competing with high-performance All-Terrain Vehicles in BAJA SAE.",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 800,
+        alt: "Team Red Baron Official Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Team Red Baron — Elite Offroad Engineering & Motorsport | PCCOE",
+    description:
+      "Official collegiate offroad racing team of PCCOE Pune. Designing, manufacturing, and competing with high-performance All-Terrain Vehicles in BAJA SAE.",
+    images: ["/logo.png"],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

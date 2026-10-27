@@ -5,8 +5,11 @@ import { getSharedChromeData } from "@/lib/server-data";
 export const revalidate = 3600; // 1-hour ISR cache
 
 export const metadata: Metadata = {
-  title: "Contact | Team Red Baron",
-  description: "Get in touch with Team Red Baron for sponsorship, recruitment, and media inquiries.",
+  title: "Contact Us",
+  description: "Get in touch with Team Red Baron for sponsorship, recruitment, and media inquiries at PCCOE Pune.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default async function ContactPage() {
