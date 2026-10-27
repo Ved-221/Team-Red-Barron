@@ -36,27 +36,23 @@ interface VehicleSpotlightData {
 
 function subscribeCapabilities(callback: () => void): () => void {
   if (typeof window === "undefined") return () => {};
-  const mediaQueryDesktop = window.matchMedia("(min-width: 768px)");
   const mediaQueryMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  mediaQueryDesktop.addEventListener("change", callback);
   mediaQueryMotion.addEventListener("change", callback);
 
   return () => {
-    mediaQueryDesktop.removeEventListener("change", callback);
     mediaQueryMotion.removeEventListener("change", callback);
   };
 }
 
 function getSnapshotCapabilities(): boolean {
   if (typeof window === "undefined") return false;
-  const isDesktop = window.matchMedia("(min-width: 768px)").matches;
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const nav = navigator as NavigatorWithConnection;
   const navConnection = nav.connection || nav.mozConnection || nav.webkitConnection;
   const isSaveData = navConnection?.saveData === true;
 
-  return isDesktop && !prefersReduced && !isSaveData;
+  return !prefersReduced && !isSaveData;
 }
 
 function getServerSnapshotCapabilities(): boolean {
@@ -78,6 +74,8 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
 
   useEffect(() => {
     if (videoRef.current && shouldAttachSources) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
       videoRef.current.load();
       videoRef.current.play().catch(() => {
         // Autoplay policy fallback
@@ -100,9 +98,10 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
           className="object-cover object-center"
         />
 
-        {/* Video layer: sources attached only on desktop when in view and allowed */}
+        {/* Video layer: sources attached when in view and allowed */}
         <video
           ref={videoRef}
+          autoPlay
           muted
           loop
           playsInline
