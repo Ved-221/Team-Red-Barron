@@ -1,5 +1,5 @@
-import fs from "fs/promises";
-import path from "path";
+import { createClient } from "@/lib/supabase/server";
+import { supabase as staticClient } from "@/lib/supabase";
 
 export const DEFAULT_DEPARTMENTS = [
   "TRANSMISSION",
@@ -7,21 +7,36 @@ export const DEFAULT_DEPARTMENTS = [
   "ELECTRIC POWERTRAIN",
   "ROLLCAGE",
   "VEHICLE DYNAMICS",
-  "MECHANICAL POWERTRAIN"
+  "MECHANICAL POWERTRAIN",
 ];
 
-const DEPARTMENTS_FILE = path.join(process.cwd(), "src", "data", "departments.json");
+async function getClient() {
+  try {
+    return await createClient();
+  } catch {
+    return staticClient;
+  }
+}
 
 export async function getDepartments(): Promise<string[]> {
   try {
-    const raw = await fs.readFile(DEPARTMENTS_FILE, "utf-8");
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      // Ensure all uppercase and trimmed
-      return Array.from(new Set(parsed.map((d: unknown) => String(d).trim().toUpperCase()).filter(Boolean)));
+    const client = await getClient();
+    const { data, error } = await client
+      .from("departments")
+      .select("name")
+      .order("name", { ascending: true });
+
+    if (!error && data && data.length > 0) {
+      return Array.from(
+        new Set(
+          data
+            .map((row: { name: string }) => row.name.trim().toUpperCase())
+            .filter(Boolean)
+        )
+      );
     }
-  } catch {
-    // If file doesn't exist, return defaults
+  } catch (err) {
+    console.warn("Failed to fetch departments from Supabase, using defaults:", err);
   }
   return [...DEFAULT_DEPARTMENTS];
 }
@@ -30,20 +45,48 @@ export async function saveDepartment(name: string): Promise<string[]> {
   const cleanName = name.trim().toUpperCase();
   if (!cleanName) return getDepartments();
 
-  const current = await getDepartments();
-  if (!current.includes(cleanName)) {
-    current.push(cleanName);
-    await fs.mkdir(path.dirname(DEPARTMENTS_FILE), { recursive: true });
-    await fs.writeFile(DEPARTMENTS_FILE, JSON.stringify(current, null, 2), "utf-8");
+  try {
+    const client = await getClient();
+    const { error } = await client
+      .from("departments")
+      .insert({ name: cleanName });
+
+    // 23505 is PostgreSQL unique_violation (domain already exists)
+    if (error && error.code !== "23505") {
+      console.error("Failed to insert department into Supabase:", error);
+      throw new Error(`Failed to save domain: ${error.message}`);
+    }
+  } catch (err) {
+    if (err instanceof Error && err.message.startsWith("Failed to save domain:")) {
+      throw err;
+    }
+    console.error("Error saving department:", err);
   }
-  return current;
+
+  return getDepartments();
 }
 
 export async function removeDepartment(name: string): Promise<string[]> {
   const cleanName = name.trim().toUpperCase();
-  const current = await getDepartments();
-  const filtered = current.filter(d => d !== cleanName);
-  await fs.mkdir(path.dirname(DEPARTMENTS_FILE), { recursive: true });
-  await fs.writeFile(DEPARTMENTS_FILE, JSON.stringify(filtered, null, 2), "utf-8");
-  return filtered;
+  if (!cleanName) return getDepartments();
+
+  try {
+    const client = await getClient();
+    const { error } = await client
+      .from("departments")
+      .delete()
+      .ilike("name", cleanName);
+
+    if (error) {
+      console.error("Failed to delete department from Supabase:", error);
+      throw new Error(`Failed to delete domain: ${error.message}`);
+    }
+  } catch (err) {
+    if (err instanceof Error && err.message.startsWith("Failed to delete domain:")) {
+      throw err;
+    }
+    console.error("Error removing department:", err);
+  }
+
+  return getDepartments();
 }
