@@ -22,8 +22,8 @@ export function SupportCTA({ supportSettings }: SupportCTAProps = {}) {
 
   return (
     <>
-      <section className="py-24 bg-black relative overflow-hidden">
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 relative z-10">
+      <section className="py-24 max-md:py-12 bg-black relative overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4 relative z-10">
 
           <BorderGlow
             edgeSensitivity={35}
@@ -37,7 +37,7 @@ export function SupportCTA({ supportSettings }: SupportCTAProps = {}) {
             colors={["#de1615", "#ff6534", "#ffffff"]}
             className="w-full"
           >
-            <div className="relative p-10 sm:p-16 lg:p-20 text-center overflow-hidden bg-black/60 backdrop-blur-2xl">
+            <div className="relative p-10 sm:p-16 lg:p-20 max-md:p-6 max-md:py-10 text-center overflow-hidden bg-black/60 backdrop-blur-2xl">
 
               {/* Background Layer 1: WebGL Animated Gradient Waves */}
               <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
@@ -65,8 +65,8 @@ export function SupportCTA({ supportSettings }: SupportCTAProps = {}) {
                 />
               </div>
 
-              {/* Background Layer 2: Faint Formula Student / Baja Vehicle Silhouette (5-10% Opacity) */}
-              <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.07] overflow-hidden">
+              {/* Background Layer 2: Faint Formula Student / Baja Vehicle Silhouette (Hidden on mobile) */}
+              <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.07] overflow-hidden max-md:hidden">
                 <div className="relative w-[700px] h-[500px]">
                   <SmartImage
                     src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"

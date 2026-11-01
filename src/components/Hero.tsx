@@ -18,7 +18,7 @@ export function Hero({ tagline }: { tagline?: string }) {
   const distortionRef = useRef<LogoRadialDistortionRef>(null);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden bg-black select-none">
+    <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 max-md:pt-24 max-md:pb-12 overflow-hidden bg-black select-none">
       {/* Dynamic WebGL Gradient Waves Background */}
       <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
         <GradientWaves
@@ -47,11 +47,11 @@ export function Hero({ tagline }: { tagline?: string }) {
 
       {/* Background Grid & Atmospheric Glows */}
       <div className="absolute inset-0 bg-grid opacity-60 z-0 pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(222,22,21,0.18)_0%,transparent_70%)] pointer-events-none z-0 transform-gpu" />
-      <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(255,101,52,0.12)_0%,transparent_70%)] pointer-events-none z-0 transform-gpu" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] max-md:w-[320px] max-md:h-[320px] bg-[radial-gradient(circle,rgba(222,22,21,0.18)_0%,transparent_70%)] pointer-events-none z-0 transform-gpu" />
+      <div className="absolute bottom-10 right-10 w-[400px] h-[400px] max-md:w-[240px] max-md:h-[240px] bg-[radial-gradient(circle,rgba(255,101,52,0.12)_0%,transparent_70%)] pointer-events-none z-0 transform-gpu" />
 
       {/* Content Container */}
-      <div className="relative z-20 max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 w-full flex flex-col items-center text-center">
+      <div className="relative z-20 max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4 w-full flex flex-col items-center text-center">
 
         {/* Interactive 3D Team Logo Emblem with Localized Radial Distortion */}
         <div className="relative mb-6 flex items-center justify-center">

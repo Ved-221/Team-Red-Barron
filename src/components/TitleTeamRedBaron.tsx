@@ -4,10 +4,10 @@ import DepthText from "@/components/ui/DepthText";
 
 export function TitleTeamRedBaron() {
   const fontFamily = "'Planet Kosmos', sans-serif";
-  const fontSize = "clamp(2.5rem, 6.5vw, 5.5rem)";
+  const fontSize = "clamp(1.75rem, 6.5vw, 5.5rem)";
 
   return (
-    <div className="homepage-title inline-flex flex-wrap items-center justify-center gap-3 sm:gap-6 my-4 select-none">
+    <div className="homepage-title inline-flex flex-wrap items-center justify-center gap-2 sm:gap-6 my-4 select-none max-w-full">
       <DepthText
         text="TEAM"
         faceColor="#ffffff"

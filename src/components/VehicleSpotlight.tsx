@@ -37,16 +37,20 @@ interface VehicleSpotlightData {
 function subscribeCapabilities(callback: () => void): () => void {
   if (typeof window === "undefined") return () => {};
   const mediaQueryMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const mediaQueryMobile = window.matchMedia("(min-width: 768px)");
 
   mediaQueryMotion.addEventListener("change", callback);
+  mediaQueryMobile.addEventListener("change", callback);
 
   return () => {
     mediaQueryMotion.removeEventListener("change", callback);
+    mediaQueryMobile.removeEventListener("change", callback);
   };
 }
 
 function getSnapshotCapabilities(): boolean {
   if (typeof window === "undefined") return false;
+  if (window.innerWidth < 768) return false;
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const nav = navigator as NavigatorWithConnection;
   const navConnection = nav.connection || nav.mozConnection || nav.webkitConnection;
@@ -86,7 +90,7 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
   if (!vehicleData) return null;
 
   return (
-    <section ref={containerRef} className="py-28 relative bg-[#0a0c0e] overflow-hidden min-h-[750px] flex items-center">
+    <section ref={containerRef} className="py-28 max-md:py-12 relative bg-[#0a0c0e] overflow-hidden min-h-[750px] max-md:min-h-0 flex items-center">
       {/* Layer 0: Background Video / Poster (Decorative, Full Bleed) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         {/* Poster backdrop (instant visual base, lightweight ~31KB) */}
@@ -98,7 +102,7 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
           className="object-cover object-center"
         />
 
-        {/* Video layer: sources attached when in view and allowed */}
+        {/* Video layer: sources attached when in view and allowed (hidden on mobile) */}
         <video
           ref={videoRef}
           autoPlay
@@ -109,7 +113,7 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
           poster="/videos/trb_bg_poster.webp"
           aria-hidden="true"
           tabIndex={-1}
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none max-md:hidden"
         >
           {shouldAttachSources && (
             <>
@@ -129,16 +133,16 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
       <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,rgba(222,22,21,0.25),transparent_60%)] z-[2] pointer-events-none" />
 
       {/* Layer 3: Section Content */}
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-[3] w-full">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 max-md:gap-8 items-center relative z-[3] w-full">
 
         {/* Left / Top Column: Vehicle Spotlight Header & Photo */}
         <div className="lg:col-span-6 flex flex-col">
 
-          <h2 className="font-sora font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white mb-6 tracking-tight uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+          <h2 className="font-sora font-extrabold text-4xl sm:text-5xl lg:text-6xl max-md:text-3xl text-white mb-6 max-md:mb-3 tracking-tight uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
             {vehicleData.vehicle_name || "ALBATROX XIV"}
           </h2>
 
-          <p className="font-inter text-base sm:text-lg text-white/90 mb-8 leading-relaxed max-w-xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+          <p className="font-inter text-base sm:text-lg max-md:text-sm text-white/90 mb-8 max-md:mb-6 leading-relaxed max-w-xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
             {vehicleData.description || "This is the vehicle engineered for the eBAJA India season, built with a focus on innovation, adaptability, and performance."}
           </p>
 
@@ -153,23 +157,23 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
                   src={vehicleData.image_url || "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/assets/images/albatros-xiii.png"}
                   alt={vehicleData.vehicle_name || "Flagship Offroad Vehicle"}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none z-10" />
               </div>
 
               {/* Chassis Badge */}
-              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between glass-card p-4 sm:p-5 rounded-2xl border border-white/20 backdrop-blur-md bg-black/50 shadow-xl z-20">
+              <div className="absolute bottom-5 left-5 right-5 max-md:bottom-3 max-md:left-3 max-md:right-3 flex items-center justify-between glass-card p-4 sm:p-5 max-md:p-3 rounded-2xl border border-white/20 backdrop-blur-md bg-black/50 shadow-xl z-20">
                 <div>
-                  <span className="font-mono-tech text-xs text-[#e8bdb6] block uppercase tracking-wider mb-0.5">
+                  <span className="font-mono-tech text-xs max-md:text-[10px] text-[#e8bdb6] block uppercase tracking-wider mb-0.5">
                     CHASSIS SERIAL
                   </span>
-                  <span className="font-sora font-extrabold text-lg sm:text-xl text-white">
+                  <span className="font-sora font-extrabold text-lg sm:text-xl max-md:text-base text-white">
                     {`TRB-${vehicleData.year || "2026"}`}
                   </span>
                 </div>
-                <span className="font-mono-tech text-xs font-bold text-white bg-[#de1615] px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl glow-red">
+                <span className="font-mono-tech text-xs max-md:text-[10px] font-bold text-white bg-[#de1615] px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl glow-red">
                   RACE READY
                 </span>
               </div>
@@ -178,7 +182,7 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
         </div>
 
         {/* Right / Bottom Column: Telemetry Specs & Approval Status */}
-        <div className="lg:col-span-6 flex flex-col justify-center space-y-4">
+        <div className="lg:col-span-6 flex flex-col justify-center space-y-4 max-md:grid max-md:grid-cols-2 max-md:gap-3 max-md:space-y-0">
 
           {(vehicleData.vehicle_specs || []).map((spec: VehicleSpecItem, idx: number) => {
             const icons = [Gauge, Zap, Timer, CheckCircle2];
@@ -186,17 +190,17 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
             return (
               <div
                 key={idx}
-                className="flex items-center justify-between glass-card p-4 sm:p-5 rounded-2xl border border-white/15 hover:border-[#de1615]/60 transition-all duration-300 group backdrop-blur-md bg-black/55 hover:bg-black/75 shadow-xl"
+                className="flex items-center justify-between glass-card p-4 sm:p-5 max-md:p-3 max-md:flex-col max-md:items-start max-md:gap-2 rounded-2xl border border-white/15 hover:border-[#de1615]/60 transition-all duration-300 group backdrop-blur-md bg-black/55 hover:bg-black/75 shadow-xl"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#252e39]/80 border border-white/10 flex items-center justify-center text-[#ff6534] group-hover:text-[#de1615] group-hover:border-[#de1615]/40 transition-colors shadow-inner shrink-0">
-                    <Icon className="w-6 h-6" />
+                <div className="flex items-center gap-4 max-md:gap-2.5">
+                  <div className="w-12 h-12 max-md:w-9 max-md:h-9 rounded-xl bg-[#252e39]/80 border border-white/10 flex items-center justify-center text-[#ff6534] group-hover:text-[#de1615] group-hover:border-[#de1615]/40 transition-colors shadow-inner shrink-0">
+                    <Icon className="w-6 h-6 max-md:w-4 max-md:h-4" />
                   </div>
                   <div>
-                    <span className="font-mono-tech text-xs text-[#e8bdb6] block uppercase tracking-wider mb-0.5">
+                    <span className="font-mono-tech text-xs max-md:text-[10px] text-[#e8bdb6] block uppercase tracking-wider mb-0.5">
                       {spec.label}
                     </span>
-                    <span className="font-sora font-extrabold text-2xl sm:text-3xl text-white">
+                    <span className="font-sora font-extrabold text-2xl sm:text-3xl max-md:text-lg text-white">
                       {spec.value}
                     </span>
                   </div>
@@ -225,8 +229,8 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
             );
           })}
 
-          <div className="pt-2">
-            <div className="flex items-center gap-3 text-sm text-white/90 font-mono-tech glass-card px-4 py-3 rounded-2xl border border-white/15 bg-black/50 backdrop-blur-md shadow-md w-full">
+          <div className="pt-2 max-md:col-span-2">
+            <div className="flex items-center gap-3 text-sm max-md:text-xs text-white/90 font-mono-tech glass-card px-4 py-3 rounded-2xl border border-white/15 bg-black/50 backdrop-blur-md shadow-md w-full">
               <CheckCircle2 className="w-5 h-5 text-[#de1615] shrink-0" />
               <span>SAE International Technical Inspection Approved</span>
             </div>

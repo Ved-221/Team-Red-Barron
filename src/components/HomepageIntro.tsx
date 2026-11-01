@@ -621,7 +621,7 @@ export function HomepageIntro() {
         }}
       >
         {/* Relative 1:1 Vehicle Master Box */}
-        <div className="relative w-[62vw] max-w-[290px] sm:max-w-[390px] md:max-w-[480px] lg:max-w-[580px] xl:max-w-[660px] aspect-square flex items-center justify-center">
+        <div className="relative w-[62vw] max-w-[220px] sm:max-w-[390px] md:max-w-[480px] lg:max-w-[580px] xl:max-w-[660px] aspect-square flex items-center justify-center">
 
           {/* 4a. Ground Contact Shadow (Soft grounded anchor) */}
           <div className="absolute bottom-[13.5%] left-[4%] right-[4%] h-[11%] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.85)_0%,_rgba(0,0,0,0.45)_50%,_transparent_75%)] blur-[4px] pointer-events-none z-0" />

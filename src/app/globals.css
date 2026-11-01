@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@custom-variant max-md (@media (max-width: 767px));
+@custom-variant max-sm (@media (max-width: 639px));
+
+@media (max-width: 767px) {
+  .max-md\:hidden {
+    display: none !important;
+  }
+}
+
 @font-face {
   font-family: 'Abandon';
   src: url('/fonts/AbandoN.woff2') format('woff2'),

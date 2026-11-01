@@ -22,7 +22,7 @@ export function GalleryPreview({ teamPhotos }: { teamPhotos: TeamPhotoItem[] }) 
       (p.image_url.startsWith("http://") || p.image_url.startsWith("https://")) &&
       !p.image_url.startsWith("/_next/image")
     ) {
-      optimizedUrl = `/_next/image?url=${encodeURIComponent(p.image_url)}&w=1920&q=75`;
+      optimizedUrl = `/_next/image?url=${encodeURIComponent(p.image_url)}&w=1080&q=75`;
     }
     return {
       image: optimizedUrl,
@@ -31,23 +31,23 @@ export function GalleryPreview({ teamPhotos }: { teamPhotos: TeamPhotoItem[] }) 
   });
 
   return (
-    <section ref={sectionRef} className="py-24 sm:py-28 bg-black relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 sm:py-28 max-md:py-12 bg-black relative overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#de1615]/10 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 sm:mb-12 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 sm:mb-12 max-md:mb-6 gap-4">
           <div>
-            <h2 className="font-sora font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white uppercase tracking-tight">
+            <h2 className="font-sora font-extrabold text-3xl sm:text-4xl lg:text-5xl max-md:text-3xl text-white uppercase tracking-tight">
               OFF THE <span className="text-[#de1615]">MAP</span>
             </h2>
           </div>
         </div>
 
-        {/* Morph Slider Showcase Container */}
-        <div className="w-full h-[380px] sm:h-[600px] lg:h-[680px] relative rounded-3xl overflow-hidden glass-card border border-white/10 bg-[#0a0c0e]">
+        {/* Morph Slider Showcase Container with reserved height */}
+        <div className="w-full h-[320px] sm:h-[600px] lg:h-[680px] relative rounded-3xl overflow-hidden glass-card border border-white/10 bg-[#0a0c0e]">
           {isInView ? (
             <MorphSlider
               items={teamItems}

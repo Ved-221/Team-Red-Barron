@@ -54,6 +54,28 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }) {
   const [activeIdx, setActiveIdx] = useState<number>(0);
   const [isDriving, setIsDriving] = useState<boolean>(false);
+  const touchStartX = React.useRef<number | null>(null);
+  const touchStartY = React.useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
 
   const handleNodeSelect = (index: number) => {
     if (index === activeIdx || index < 0 || index >= milestones.length) return;
@@ -97,7 +119,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
   const vehiclePercent = 10 + rawPercent * 0.8;
 
   return (
-    <section id="journey" className="py-24 bg-[#050608] text-white relative overflow-hidden select-none border-t border-white/10">
+    <section id="journey" className="py-24 max-md:py-12 bg-[#050608] text-white relative overflow-hidden select-none border-t border-white/10">
 
       {/* Background CAD Pattern */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.04]">
@@ -113,7 +135,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
         </svg>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4 relative z-10">
 
         {/* SECTION HEADER */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
@@ -134,7 +156,11 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
         </div>
 
         {/* ACTIVE MILESTONE CARD */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12">
+        <div
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12"
+        >
           <div className="lg:col-span-12 max-w-4xl mx-auto w-full">
             <AnimatePresence mode="wait">
               <motion.div
@@ -332,7 +358,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{ type: "spring", stiffness: 120, damping: 20 }}
                     onClick={() => handleNodeSelect(realIndex)}
-                    className="absolute -translate-x-1/2 flex flex-col items-center group cursor-pointer focus:outline-none"
+                    className="absolute -translate-x-1/2 flex flex-col items-center group cursor-pointer focus:outline-none min-w-[44px] min-h-[44px] justify-center p-1"
                     aria-label={`Navigate to era ${m.year}`}
                   >
                     <motion.div
@@ -372,7 +398,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
             <button
               onClick={handlePrev}
               disabled={activeIdx === 0}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === 0
+              className={`flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === 0
                   ? "opacity-30 border-white/10 text-gray-500 cursor-not-allowed"
                   : "bg-white/10 hover:bg-[#de1615] border-white/20 text-white hover:border-[#de1615] shadow-lg hover:scale-105 active:scale-95"
                 }`}
@@ -389,7 +415,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
             <button
               onClick={handleNext}
               disabled={activeIdx === milestones.length - 1}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === milestones.length - 1
+              className={`flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === milestones.length - 1
                   ? "opacity-30 border-white/10 text-gray-500 cursor-not-allowed"
                   : "bg-[#de1615] hover:bg-[#b81211] border-[#de1615] text-white shadow-[0_0_15px_rgba(222,22,21,0.4)] hover:scale-105 active:scale-95"
                 }`}

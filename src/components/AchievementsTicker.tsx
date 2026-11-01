@@ -15,11 +15,12 @@ export function AchievementsTicker() {
   ];
 
   return (
-    <section className="py-8 bg-black/80 border-y border-white/10 overflow-hidden relative">
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+    <section className="py-8 max-md:py-4 bg-black/80 border-y border-white/10 overflow-hidden relative">
+      <div className="absolute left-0 top-0 bottom-0 w-24 max-md:w-6 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 max-md:w-6 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
-      <div className="flex animate-marquee gap-8">
+      {/* Desktop Marquee (>= 768px) */}
+      <div className="flex animate-marquee gap-8 max-md:hidden">
         {[...stats, ...stats].map((stat, idx) => {
           const Icon = stat.icon;
           return (
@@ -35,6 +36,31 @@ export function AchievementsTicker() {
                   {stat.value}
                 </span>
                 <span className="font-mono-tech text-xs text-[#e8bdb6] tracking-wider uppercase font-semibold">
+                  {stat.label}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile Horizontal Scroll-Snap Strip (< 768px) */}
+      <div className="hidden max-md:flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-3 px-4 py-2">
+        {stats.map((stat, idx) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={idx}
+              className="snap-center shrink-0 glass-card px-5 py-3.5 rounded-2xl flex items-center gap-4 whitespace-nowrap min-w-[240px] border border-white/10 hover:border-[#de1615] transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-[#de1615]/20 border border-[#de1615]/40 flex items-center justify-center text-[#de1615] group-hover:bg-[#de1615] group-hover:text-white transition-colors shrink-0">
+                <Icon className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-sora font-extrabold text-xl text-white group-hover:text-[#de1615] transition-colors">
+                  {stat.value}
+                </span>
+                <span className="font-mono-tech text-[11px] text-[#e8bdb6] tracking-wider uppercase font-semibold">
                   {stat.label}
                 </span>
               </div>
