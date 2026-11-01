@@ -82,7 +82,7 @@ export default function Masonry({
   const columns = useMedia(
     ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)'],
     [5, 4, 3, 2],
-    1
+    2
   );
 
   const [containerRef, { width }] = useMeasure();
@@ -255,7 +255,7 @@ export default function Masonry({
             onMouseLeave={e => handleMouseLeave(e, item)}
           >
             <div className="item-img">
-              <SmartImage src={item.img} alt={item.title || "Gallery item"} fill className="object-cover" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" />
+              <SmartImage src={item.img} alt={item.title || "Gallery item"} fill className="object-cover" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
               {colorShiftOnHover && (
                 <div
                   className="color-overlay"
