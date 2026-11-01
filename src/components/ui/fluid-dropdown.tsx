@@ -87,7 +87,7 @@ function FluidDropdownInner({ onItemSelect, className = "", teamYears: propTeamY
     fetchYears();
   }, [propTeamYears]);
 
-  useClickAway(dropdownRef, () => setIsOpen(false));
+  // useClickAway(dropdownRef, () => setIsOpen(false));
 
   // Determine active route label and ID
   const getActiveState = () => {
@@ -184,7 +184,7 @@ function FluidDropdownInner({ onItemSelect, className = "", teamYears: propTeamY
                   mass: 1,
                 },
               }}
-              className="relative left-0 right-0 top-full mt-2 z-50 overflow-hidden"
+              className="w-full mt-2 overflow-hidden"
             >
               <div className="w-full rounded-2xl border border-white/15 bg-[#12151b] p-2 shadow-2xl backdrop-blur-2xl">
                 <div className="py-1 flex flex-col gap-1">

@@ -57,6 +57,8 @@ export function Navbar({ teamYears, supportSettings }: NavbarProps = {}) {
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
             ? "bg-[#252e39]/85 backdrop-blur-xl border-b border-white/10 shadow-2xl py-3"
+            : mobileMenuOpen
+            ? "bg-[#252e39]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl py-3"
             : "bg-transparent py-5"
         }`}
       >
@@ -109,30 +111,30 @@ export function Navbar({ teamYears, supportSettings }: NavbarProps = {}) {
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-
-        {/* Mobile Full-Height Drawer Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-black/95 backdrop-blur-2xl z-50 p-5 flex flex-col justify-between border-t border-white/10 animate-in slide-in-from-top duration-300 overflow-y-auto">
-            <div className="flex-1 w-full flex flex-col gap-4">
-              <FluidDropdown onItemSelect={() => setMobileMenuOpen(false)} teamYears={teamYears} />
-            </div>
-
-            {/* Mobile Actions Container - full-width button pinned at bottom of drawer */}
-            <div className="pt-4 pb-2 w-full mt-auto">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setDonateOpen(true);
-                }}
-                className="group relative overflow-hidden w-full min-h-[44px] bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3.5 rounded-xl font-sora font-bold text-center transition-all shadow-[0_0_15px_rgba(222,22,21,0.4)] border border-white/20 flex items-center justify-center cursor-pointer active:scale-[0.98]"
-              >
-                <span className="relative z-10">Support Us</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
-              </button>
-            </div>
-          </div>
-        )}
       </header>
+
+      {/* Mobile Full-Height Drawer Navigation */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-x-0 top-[71px] bottom-0 bg-black/95 backdrop-blur-2xl z-40 p-5 flex flex-col justify-between border-t border-white/10 animate-in slide-in-from-top duration-300 overflow-y-auto">
+          <div className="flex-1 w-full flex flex-col gap-4">
+            <FluidDropdown onItemSelect={() => setMobileMenuOpen(false)} teamYears={teamYears} />
+          </div>
+
+          {/* Mobile Actions Container - full-width button pinned at bottom of drawer */}
+          <div className="pt-4 pb-2 w-full mt-auto">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setDonateOpen(true);
+              }}
+              className="group relative overflow-hidden w-full min-h-[44px] bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3.5 rounded-xl font-sora font-bold text-center transition-all shadow-[0_0_15px_rgba(222,22,21,0.4)] border border-white/20 flex items-center justify-center cursor-pointer active:scale-[0.98]"
+            >
+              <span className="relative z-10">Support Us</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Shared Interactive Modals */}
       <DonateModal
