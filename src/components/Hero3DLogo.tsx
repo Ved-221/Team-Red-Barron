@@ -176,6 +176,11 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
       }
     };
 
+    // Low-pass filter references for gyroscope smoothing
+    let smoothedGamma = 0;
+    let smoothedBeta = 0;
+    let initializedSmoother = false;
+
     // Mobile Device Orientation / Gyroscope Tilt Parallax handler
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma === null || e.beta === null) return;
@@ -188,15 +193,40 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
       if (baseBetaRef.current === null) {
         baseBetaRef.current = e.beta;
         baseGammaRef.current = e.gamma;
+        smoothedGamma = e.gamma;
+        smoothedBeta = e.beta;
+        initializedSmoother = true;
+      }
+
+      // Smooth sensor input with exponential moving average to eliminate sensor jitter
+      if (!initializedSmoother) {
+        smoothedGamma = e.gamma;
+        smoothedBeta = e.beta;
+        initializedSmoother = true;
+      } else {
+        smoothedGamma += (e.gamma - smoothedGamma) * 0.18;
+        smoothedBeta += (e.beta - smoothedBeta) * 0.18;
       }
 
       // Delta relative to calibrated hand-held posture
-      const deltaGamma = e.gamma - (baseGammaRef.current ?? 0);
-      const deltaBeta = e.beta - (baseBetaRef.current ?? 45);
+      let deltaGamma = smoothedGamma - (baseGammaRef.current ?? 0);
+      let deltaBeta = smoothedBeta - (baseBetaRef.current ?? 45);
 
-      // Clamp to natural ±25° comfortable hand tilt range
-      const normX = Math.max(-1, Math.min(1, deltaGamma / 25));
-      const normY = Math.max(-1, Math.min(1, deltaBeta / 25));
+      // Deadzone threshold (ignore micro hand tremors under 1.5 degrees)
+      const DEADZONE = 1.5;
+      if (Math.abs(deltaGamma) < DEADZONE) deltaGamma = 0;
+      else deltaGamma -= Math.sign(deltaGamma) * DEADZONE;
+
+      if (Math.abs(deltaBeta) < DEADZONE) deltaBeta = 0;
+      else deltaBeta -= Math.sign(deltaBeta) * DEADZONE;
+
+      // Reduced sensitivity: widened range (55 deg) + 0.6 scale factor
+      // This makes the tilt feel calm, grounded, and premium rather than hyper-reactive
+      const SENSITIVITY_DIVISOR = 55;
+      const MAX_MOBILE_SCALE = 0.6;
+
+      const normX = Math.max(-MAX_MOBILE_SCALE, Math.min(MAX_MOBILE_SCALE, (deltaGamma / SENSITIVITY_DIVISOR) * MAX_MOBILE_SCALE));
+      const normY = Math.max(-MAX_MOBILE_SCALE, Math.min(MAX_MOBILE_SCALE, (deltaBeta / SENSITIVITY_DIVISOR) * MAX_MOBILE_SCALE));
 
       pointerRef.current = {
         x: normX,
@@ -205,7 +235,7 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
       };
 
       if (distortionRef?.current) {
-        const movementIntensity = (Math.abs(normX) + Math.abs(normY)) * 0.4;
+        const movementIntensity = (Math.abs(normX) + Math.abs(normY)) * 0.15;
         distortionRef.current.onMove(movementIntensity);
       }
     };
