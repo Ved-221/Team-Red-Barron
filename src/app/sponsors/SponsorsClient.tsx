@@ -147,7 +147,7 @@ export default function SponsorsClient({
       <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
 
       {/* SECTION 1 — HERO SECTION */}
-      <section className="relative min-h-[92vh] flex items-center justify-center pt-32 pb-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full overflow-hidden z-10">
+      <section className="relative min-h-[92vh] max-md:min-h-[60vh] flex items-center justify-center pt-32 pb-20 max-md:pt-24 max-md:pb-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full overflow-hidden z-10">
         <div className="absolute inset-0 z-0">
           <SmartImage
             src={heroBgUrl}
@@ -155,27 +155,27 @@ export default function SponsorsClient({
             fill
             priority
             className="object-cover object-center scale-105"
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, 1440px"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-[#000000]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(222,22,21,0.2),transparent_70%)]" />
         </div>
 
         <div className="relative z-10 text-center max-w-4xl mx-auto flex flex-col items-center">
-          <h1 className="font-sora font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight mb-6 leading-tight uppercase flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+          <h1 className="font-sora font-extrabold text-4xl sm:text-6xl lg:text-7xl max-md:text-3xl tracking-tight mb-6 leading-tight uppercase flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
             <ShinyText text="OUR" speed={2} color="#ffffff" shineColor="#ff6534" spread={120} />
             <ShinyText text="SPONSORS" speed={2} color="#de1615" shineColor="#ffffff" spread={120} />
           </h1>
 
-          <p className="font-inter text-lg sm:text-xl text-[#e8bdb6] max-w-2xl font-normal leading-relaxed mb-10">
+          <p className="font-inter text-lg sm:text-xl max-md:text-base text-[#e8bdb6] max-w-2xl font-normal leading-relaxed mb-10 max-md:mb-6">
             “Every innovation, every lap, and every achievement is made possible through the support of our partners.”
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button onClick={() => setContactModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <button onClick={() => setContactModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
               <Handshake className="w-4 h-4" /> Become a Partner
             </button>
-            <a href="#sponsor-wall" className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center gap-2">
+            <a href="#sponsor-wall" className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
               Explore Sponsor Wall <ChevronRight className="w-4 h-4 text-[#de1615]" />
             </a>
           </div>
@@ -183,20 +183,20 @@ export default function SponsorsClient({
       </section>
 
       {/* SECTION 2 — IMPACT METRICS */}
-      <section className="py-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="py-20 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full z-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-md:gap-3">
           {IMPACT_METRICS.map((st, idx) => {
             const Icon = st.icon;
             return (
-              <div key={st.label} className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-[#1e2020]/60 backdrop-blur-xl flex flex-col items-center text-center group hover:border-white/30 transition-all duration-300">
-                <div className="w-12 h-12 rounded-2xl bg-[#de1615]/20 border border-[#de1615]/50 flex items-center justify-center text-[#de1615] mb-4 group-hover:bg-[#de1615] group-hover:text-white transition-colors">
-                  <Icon className="w-6 h-6" />
+              <div key={st.label} className="glass-card p-6 sm:p-8 max-md:p-4 rounded-3xl max-md:rounded-2xl border border-white/10 bg-[#1e2020]/60 backdrop-blur-xl flex flex-col items-center text-center group hover:border-white/30 transition-all duration-300">
+                <div className="w-12 h-12 max-md:w-9 max-md:h-9 rounded-2xl bg-[#de1615]/20 border border-[#de1615]/50 flex items-center justify-center text-[#de1615] mb-4 max-md:mb-2 group-hover:bg-[#de1615] group-hover:text-white transition-colors">
+                  <Icon className="w-6 h-6 max-md:w-4 max-md:h-4" />
                 </div>
-                <span className="font-sora font-extrabold text-4xl sm:text-5xl text-white mb-2 tracking-tight">
+                <span className="font-sora font-extrabold text-4xl sm:text-5xl max-md:text-2xl text-white mb-2 max-md:mb-1 tracking-tight">
                   {counterValues[idx]}<span className="text-[#de1615]">{st.suffix}</span>
                 </span>
-                <span className="font-sora font-bold text-xs sm:text-sm text-[#ffb59f] uppercase tracking-wider mb-1">{st.label}</span>
-                <span className="font-mono-tech text-[11px] text-[#ae8882]">{st.note}</span>
+                <span className="font-sora font-bold text-xs sm:text-sm max-md:text-[11px] text-[#ffb59f] uppercase tracking-wider mb-1">{st.label}</span>
+                <span className="font-mono-tech text-[11px] max-md:text-[10px] text-[#ae8882]">{st.note}</span>
               </div>
             );
           })}
@@ -204,36 +204,44 @@ export default function SponsorsClient({
       </section>
 
       {/* SECTION 3 — SPONSOR WALL */}
-      <section id="sponsor-wall" className="py-24 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
-        <div className="space-y-24">
-          {sponsorTiers.map((tier, tierIdx) => (
+      <section id="sponsor-wall" className="py-24 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full z-10">
+        <div className="space-y-24 max-md:space-y-12">
+          {sponsorTiers.map((tier, tierIdx) => {
+            const isTopTier = tier.tier_name.toLowerCase().includes("title") || tier.tier_name.toLowerCase().includes("platinum") || tierIdx <= 0;
+            return (
             <div key={tier.id} className="flex flex-col items-center">
-              <div className="w-full flex items-center justify-between pb-4 mb-10 gap-4">
+              <div className="w-full flex items-center justify-between pb-4 mb-10 max-md:mb-4 gap-4">
                 <div>
-                  <h3 className="font-sora font-extrabold text-2xl sm:text-3xl text-white tracking-wider uppercase flex items-center gap-3">
+                  <h3 className="font-sora font-extrabold text-2xl sm:text-3xl max-md:text-lg text-white tracking-wider uppercase flex items-center gap-3">
                     <span className="w-3 h-3 rounded-full bg-[#de1615]" />
                     {tier.tier_name}
                   </h3>
                 </div>
-                <span className="font-mono-tech text-xs text-[#ae8882] bg-white/5 border border-white/10 px-3 py-1 rounded-full uppercase">
+                <span className="font-mono-tech text-xs max-md:text-[10px] text-[#ae8882] bg-white/5 border border-white/10 px-3 py-1 rounded-full uppercase">
                   {tier.sponsors.length} PARTNERS
                 </span>
               </div>
 
-              <div className={`grid w-full gap-6 ${tierIdx === 0 ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4" : tierIdx === 1 ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-6" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6"}`}>
+              <div className={`grid w-full gap-6 max-md:gap-3 ${
+                tierIdx === 0
+                  ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-md:grid-cols-2"
+                  : isTopTier
+                  ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-6 max-md:grid-cols-2"
+                  : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6 max-md:grid-cols-3"
+              }`}>
                 {tier.sponsors.map((sp: SponsorItem) => {
                   const hasWebsite = Boolean(sp.website_url && sp.website_url !== "#");
                   const CardTag = hasWebsite ? "a" : "div";
                   const cardLinkProps = hasWebsite
-                    ? { href: sp.website_url || undefined, target: "_blank", rel: "noreferrer", className: "group relative glass-card p-6 rounded-2xl border border-white/10 bg-[#121414]/90 backdrop-blur-xl flex flex-col items-center justify-center min-h-[140px] hover:border-white/30 hover:bg-[#1e2020] transition-all duration-300 cursor-pointer" }
-                    : { className: "group relative glass-card p-6 rounded-2xl border border-white/10 bg-[#121414]/90 backdrop-blur-xl flex flex-col items-center justify-center min-h-[140px] transition-all duration-300 cursor-default" };
+                    ? { href: sp.website_url || undefined, target: "_blank", rel: "noreferrer", className: "group relative glass-card p-6 max-md:p-3 rounded-2xl border border-white/10 bg-[#121414]/90 backdrop-blur-xl flex flex-col items-center justify-center min-h-[140px] max-md:min-h-[96px] hover:border-white/30 hover:bg-[#1e2020] transition-all duration-300 cursor-pointer" }
+                    : { className: "group relative glass-card p-6 max-md:p-3 rounded-2xl border border-white/10 bg-[#121414]/90 backdrop-blur-xl flex flex-col items-center justify-center min-h-[140px] max-md:min-h-[96px] transition-all duration-300 cursor-default" };
 
                   return (
                     <CardTag key={sp.id} {...cardLinkProps}>
-                      <div className="relative w-full h-16 flex items-center justify-center filter group-hover:scale-105 transition-all duration-300">
-                        <SmartImage src={sp.logo_url} alt={`${sp.name} Logo`} width={160} height={60} sizes="160px" className="object-contain max-h-14" />
+                      <div className="relative w-full h-16 max-md:h-12 flex items-center justify-center filter group-hover:scale-105 transition-all duration-300">
+                        <SmartImage src={sp.logo_url} alt={`${sp.name} Logo`} width={96} height={56} sizes="(max-width: 768px) 96px, 160px" className="object-contain max-h-14 max-md:max-h-10" />
                       </div>
-                      <span className="font-sora font-bold text-xs text-white/70 group-hover:text-white mt-3 tracking-wider uppercase transition-colors text-center">
+                      <span className="font-sora font-bold text-xs max-md:text-[10px] text-white/70 group-hover:text-white mt-3 max-md:mt-1.5 tracking-wider uppercase transition-colors text-center line-clamp-1">
                         {sp.name}
                       </span>
                     </CardTag>
@@ -241,22 +249,23 @@ export default function SponsorsClient({
                 })}
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
       </section>
 
-      {/* SECTION 5 — WHY PARTNER WITH TRB */}
-      <section className="py-16 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
-        <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10">
-          <h2 className="font-sora font-extrabold text-2xl sm:text-4xl text-white uppercase tracking-tight">WHY PARTNER WITH TEAM RED BARON?</h2>
+      {/* SECTION 5 — WHY PARTNER WITH TRB (Horizontal Snap Carousel on Mobile) */}
+      <section className="py-16 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full z-10">
+        <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10 max-md:mb-6">
+          <h2 className="font-sora font-extrabold text-2xl sm:text-4xl max-md:text-xl text-white uppercase tracking-tight">WHY PARTNER WITH TEAM RED BARON?</h2>
           <p className="font-inter text-xs sm:text-sm text-[#e8bdb6] mt-2">Measurable return on investment and engineering collaboration for industry partners.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-md:flex max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory no-scrollbar max-md:pb-3 max-md:px-1">
           {VALUE_PROPS.map((vp) => {
             const Icon = vp.icon;
             return (
-              <div key={vp.title} className="glass-card p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#1e2020]/60 backdrop-blur-xl flex flex-col justify-between group hover:border-[#de1615]/50 transition-all duration-300">
+              <div key={vp.title} className="glass-card p-5 sm:p-6 rounded-2xl border border-white/10 bg-[#1e2020]/60 backdrop-blur-xl flex flex-col justify-between group hover:border-[#de1615]/50 transition-all duration-300 max-md:shrink-0 max-md:w-[260px] max-md:snap-center">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-10 h-10 rounded-xl bg-[#de1615]/20 border border-[#de1615]/40 flex items-center justify-center text-[#de1615] group-hover:bg-[#de1615] group-hover:text-white transition-colors">
@@ -274,17 +283,17 @@ export default function SponsorsClient({
       </section>
 
       {/* SECTION 7 — TESTIMONIALS */}
-      <section className="py-24 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white uppercase tracking-tight">SPONSOR TESTIMONIALS</h2>
+      <section className="py-24 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full z-10">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 max-md:mb-8">
+          <h2 className="font-sora font-extrabold text-3xl sm:text-5xl max-md:text-2xl text-white uppercase tracking-tight">SPONSOR TESTIMONIALS</h2>
         </div>
 
         <div className="max-w-4xl mx-auto relative">
-          <div className="glass-card p-10 sm:p-14 rounded-3xl border border-white/15 bg-[#1e2020]/80 backdrop-blur-2xl text-center relative overflow-hidden">
-            <Quote className="w-16 h-16 text-[#de1615]/20 absolute top-6 left-6 pointer-events-none" />
-            <p className="font-inter text-lg sm:text-xl text-white leading-relaxed italic mb-8 relative z-10">&ldquo;{currentTestimonial.quote}&rdquo;</p>
+          <div className="glass-card p-10 sm:p-14 max-md:p-6 rounded-3xl border border-white/15 bg-[#1e2020]/80 backdrop-blur-2xl text-center relative overflow-hidden">
+            <Quote className="w-16 h-16 max-md:w-10 max-md:h-10 text-[#de1615]/20 absolute top-6 left-6 pointer-events-none" />
+            <p className="font-inter text-lg sm:text-xl max-md:text-sm text-white leading-relaxed italic mb-8 max-md:mb-6 relative z-10">&ldquo;{currentTestimonial.quote}&rdquo;</p>
             <div className="flex flex-col items-center">
-              <span className="font-sora font-extrabold text-lg text-white">{currentTestimonial.name}</span>
+              <span className="font-sora font-extrabold text-lg max-md:text-base text-white">{currentTestimonial.name}</span>
               <span className="font-mono-tech text-xs text-[#ff6534] font-semibold uppercase mt-0.5">{currentTestimonial.company}</span>
               <span className="font-mono-tech text-[10px] text-[#ae8882] uppercase mt-1">{currentTestimonial.tier}</span>
 
@@ -294,7 +303,7 @@ export default function SponsorsClient({
                   href={currentTestimonial.website_url.startsWith("http") ? currentTestimonial.website_url : `https://${currentTestimonial.website_url}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 text-xs font-mono-tech text-white bg-[#de1615] hover:bg-[#b81211] px-5 py-2 rounded-full transition-all hover:scale-105 shadow-md"
+                  className="mt-4 inline-flex items-center gap-2 text-xs font-mono-tech text-white bg-[#de1615] hover:bg-[#b81211] px-5 py-2 rounded-full transition-all hover:scale-105 shadow-md min-h-[44px]"
                 >
                   <span>Visit Sponsor Website</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -304,7 +313,7 @@ export default function SponsorsClient({
             {testimonialItems.length > 1 && (
               <div className="flex items-center justify-center gap-4 mt-8">
                 {testimonialItems.map((_, idx) => (
-                  <button key={idx} onClick={() => setActiveTestimonial(idx)} className={`w-3 h-3 rounded-full transition-all ${idx === (activeTestimonial % testimonialItems.length) ? "bg-[#de1615] w-8 shadow-[0_0_10px_#de1615]" : "bg-white/20 hover:bg-white/50"}`} />
+                  <button key={idx} onClick={() => setActiveTestimonial(idx)} className={`w-3 h-3 rounded-full transition-all min-h-[30px] p-2 flex items-center justify-center ${idx === (activeTestimonial % testimonialItems.length) ? "bg-[#de1615] w-8 shadow-[0_0_10px_#de1615]" : "bg-white/20 hover:bg-white/50"}`} />
                 ))}
               </div>
             )}
@@ -313,20 +322,20 @@ export default function SponsorsClient({
       </section>
 
       {/* SECTION 8 — BECOME A SPONSOR CTA */}
-      <section className="py-24 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full z-10">
-        <div className="glass-card rounded-[3rem] p-10 sm:p-16 lg:p-20 text-center relative overflow-hidden border border-[#de1615]/50 bg-gradient-to-br from-[#121414] via-[#1e2020] to-[#0c0f0f] shadow-[0_0_60px_rgba(222,22,21,0.25)]">
+      <section className="py-24 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full z-10">
+        <div className="glass-card rounded-[3rem] max-md:rounded-3xl p-10 sm:p-16 lg:p-20 max-md:p-6 text-center relative overflow-hidden border border-[#de1615]/50 bg-gradient-to-br from-[#121414] via-[#1e2020] to-[#0c0f0f] shadow-[0_0_60px_rgba(222,22,21,0.25)]">
           <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
             <SmartImage src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png" alt="TRB ATV Hero Background" fill sizes="100vw" className="object-cover object-center" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
-            <h2 className="font-sora font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white uppercase tracking-tight mb-6">JOIN THE <span className="text-[#de1615]">JOURNEY</span></h2>
-            <p className="font-inter text-base sm:text-lg text-[#e8bdb6] leading-relaxed mb-10">“Partner with Team Red Baron and help shape the next generation of engineering innovation.”</p>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <button onClick={() => setDonateModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center gap-2">
+            <h2 className="font-sora font-extrabold text-3xl sm:text-5xl lg:text-6xl max-md:text-2xl text-white uppercase tracking-tight mb-6 max-md:mb-3">JOIN THE <span className="text-[#de1615]">JOURNEY</span></h2>
+            <p className="font-inter text-base sm:text-lg max-md:text-sm text-[#e8bdb6] leading-relaxed mb-10 max-md:mb-6">“Partner with Team Red Baron and help shape the next generation of engineering innovation.”</p>
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+              <button onClick={() => setDonateModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
                 <Download className="w-4 h-4" /> Download Sponsorship Brochure
               </button>
-              <button onClick={() => setContactModalOpen(true)} className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center gap-2">
+              <button onClick={() => setContactModalOpen(true)} className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
                 <Mail className="w-4 h-4 text-[#de1615]" /> Contact Us
               </button>
             </div>
