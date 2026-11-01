@@ -36,6 +36,14 @@ const getLinkedinUrl = (url?: string | null) => {
 };
 
 const KNOWN_DEPARTMENTS: Record<string, { description: string; icon: React.ComponentType<{ className?: string }> }> = {
+  "FACULTY ADVISORS": {
+    description: "Academic mentors and institutional leadership guiding technical research, safety standards, and collegiate compliance.",
+    icon: ShieldAlert,
+  },
+  "FACULTY": {
+    description: "Academic mentors and institutional leadership guiding technical research, safety standards, and collegiate compliance.",
+    icon: ShieldAlert,
+  },
   "TRANSMISSION": {
     description: "Designing and optimizing the power delivery system to ensure maximum efficiency and performance on the track.",
     icon: Settings,
@@ -95,12 +103,12 @@ function TeamContent({
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
       <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
 
-      <section className="pt-32 pb-16 relative overflow-hidden">
+      <section className="pt-32 pb-16 max-md:pt-24 max-md:pb-6 relative overflow-hidden">
         <GhostCursor className="absolute inset-0 z-0 pointer-events-none" color="#de1615" bloomStrength={0.25} bloomRadius={1.2} trailLength={60} inertia={0.6} fadeDelayMs={800} fadeDurationMs={1500} />
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[450px] bg-[#de1615]/10 rounded-full blur-[160px] pointer-events-none" />
 
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 relative z-10 flex flex-col items-center">
-          <div className="w-full pb-14 flex justify-center items-center">
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4 relative z-10 flex flex-col items-center">
+          <div className="w-full pb-14 max-md:pb-6 flex justify-center items-center">
             <WarpText
               key={selectedSeason}
               text={`TEAM ${selectedSeason}`}
@@ -112,18 +120,18 @@ function TeamContent({
               pointerStrength={0.38}
               refraction={0.018}
               ripple
-              fontSize="clamp(3.5rem, 9vw, 7rem)"
+              fontSize="clamp(3rem, 9vw, 7rem)"
               fontWeight={900}
               fontFamily="Sora, sans-serif"
               letterSpacing="-0.03em"
-              style={{ height: "160px", width: "100%" }}
+              style={{ height: "140px", width: "100%" }}
             />
           </div>
         </div>
       </section>
 
-      <section className="pb-32 relative z-10 pt-16">
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 space-y-28">
+      <section className="pb-32 max-md:pb-16 relative z-10 pt-16 max-md:pt-6">
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4 space-y-28 max-md:space-y-12">
           {currentMembers.length === 0 ? (
             <div className="py-24 text-center">
               <p className="font-mono-tech text-xs tracking-widest text-[#de1615] uppercase mb-2">Season Roster</p>
@@ -140,6 +148,11 @@ function TeamContent({
 
             const knownKeys = Object.keys(KNOWN_DEPARTMENTS);
             const activeDepartments = memberDepts.sort((a, b) => {
+              const isFacultyA = a.includes("FACULTY") || a.includes("ADVISOR") || a.includes("LEADERSHIP");
+              const isFacultyB = b.includes("FACULTY") || b.includes("ADVISOR") || b.includes("LEADERSHIP");
+              if (isFacultyA && !isFacultyB) return -1;
+              if (!isFacultyA && isFacultyB) return 1;
+
               const idxA = knownKeys.indexOf(a);
               const idxB = knownKeys.indexOf(b);
               if (idxA !== -1 && idxB !== -1) return idxA - idxB;
@@ -168,25 +181,25 @@ function TeamContent({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "120px" }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="space-y-8 scroll-mt-32"
+                  className="space-y-8 max-md:space-y-4 scroll-mt-32"
                 >
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "120px" }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="text-center max-w-3xl mx-auto space-y-3"
+                    className="text-center max-w-3xl mx-auto space-y-3 max-md:space-y-1.5"
                   >
-                    <div className="inline-flex items-center justify-center gap-2 font-sora font-extrabold text-2xl sm:text-3xl text-white uppercase tracking-wider">
-                      <IconComponent className="w-6 h-6 text-[#de1615]" />
+                    <div className="inline-flex items-center justify-center gap-2 font-sora font-extrabold text-2xl sm:text-3xl max-md:text-lg text-white uppercase tracking-wider">
+                      <IconComponent className="w-6 h-6 max-md:w-4 max-md:h-4 text-[#de1615]" />
                       <span>{deptName}</span>
                     </div>
-                    <p className="text-gray-400 font-inter text-sm sm:text-base leading-relaxed">
+                    <p className="text-gray-400 font-inter text-sm sm:text-base max-md:text-xs leading-relaxed">
                       {info.description}
                     </p>
                   </motion.div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-md:grid-cols-2 gap-6 lg:gap-8 max-md:gap-3">
                     {deptMembers.map((member, idx) => (
                       <motion.div
                         key={member.id}
@@ -198,37 +211,42 @@ function TeamContent({
                           delay: (idx % 3) * 0.05,
                           ease: [0.16, 1, 0.3, 1],
                         }}
-                        className="group relative bg-[#12151b]/80 border border-white/10 rounded-2xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row items-stretch"
+                        className="group relative bg-[#12151b]/80 border border-white/10 rounded-2xl max-md:rounded-xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row max-md:flex-col items-stretch"
                       >
-                        <div className="relative w-28 sm:w-32 shrink-0 bg-black/50 overflow-hidden min-h-[110px] sm:min-h-[120px]">
+                        <div className="relative w-28 sm:w-32 max-md:w-full max-md:h-36 shrink-0 bg-black/50 overflow-hidden min-h-[110px] sm:min-h-[120px] max-md:min-h-0">
                           <SmartImage
                             src={member.photo_url || "/team_person.webp"}
                             fallbackSrc="/team_person.webp"
                             alt={member.name}
                             fill
                             priority={idx < 6}
-                            sizes="(max-width: 640px) 112px, 128px"
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 128px"
                             className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#12151b]/80" />
+                          <div className="absolute inset-0 bg-gradient-to-r max-md:bg-gradient-to-t from-transparent to-[#12151b]/80" />
                         </div>
 
-                        <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
+                        <div className="p-4 max-md:p-2.5 flex flex-col justify-between flex-1 min-w-0">
                           <div>
-                            <h3 className="font-sora font-bold text-base sm:text-lg text-white group-hover:text-[#de1615] transition-colors uppercase leading-tight">
+                            <h3 className="font-sora font-bold text-base sm:text-lg max-md:text-xs text-white group-hover:text-[#de1615] transition-colors uppercase leading-tight line-clamp-2">
                               {member.name}
                             </h3>
+                            {member.academic_year && (
+                              <span className="font-mono-tech text-xs max-md:text-[10px] text-[#ae8882] line-clamp-2 block mt-1">
+                                {member.academic_year}
+                              </span>
+                            )}
                           </div>
 
-                          <div className="pt-3 flex justify-end">
+                          <div className="pt-3 max-md:pt-1.5 flex justify-end">
                             <a
                               href={getLinkedinUrl(member.linkedin_url)}
                               target={member.linkedin_url && member.linkedin_url !== "#" ? "_blank" : undefined}
                               rel="noopener noreferrer"
-                              className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-[#de1615] hover:border-[#de1615] text-white flex items-center justify-center transition-all hover:scale-110 shadow-md"
+                              className="w-8 h-8 max-md:w-7 max-md:h-7 rounded-full bg-white/5 border border-white/10 hover:bg-[#de1615] hover:border-[#de1615] text-white flex items-center justify-center transition-all hover:scale-110 shadow-md shrink-0"
                               aria-label={`${member.name}'s LinkedIn profile`}
                             >
-                              <LinkedinIcon className="w-4 h-4 fill-current" />
+                              <LinkedinIcon className="w-4 h-4 max-md:w-3.5 max-md:h-3.5 fill-current" />
                             </a>
                           </div>
                         </div>
@@ -238,7 +256,7 @@ function TeamContent({
                     ))}
                   </div>
 
-                  <div className="pt-8">
+                  <div className="pt-8 max-md:pt-4">
                     <SparklesDivider />
                   </div>
                 </motion.div>
