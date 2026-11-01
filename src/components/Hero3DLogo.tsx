@@ -116,6 +116,11 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
   });
   const [isVisible, setIsVisible] = useState(true);
 
+  // Calibration baseline for gyroscope tilt
+  const baseBetaRef = useRef<number | null>(null);
+  const baseGammaRef = useRef<number | null>(null);
+  const hasGyroscopeRef = useRef(false);
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -128,37 +133,81 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
     );
     io.observe(el);
 
+    // Desktop mouse pointer tracking (frozen & untouched)
     const handlePointerMove = (e: PointerEvent) => {
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      const isDesktop = window.innerWidth >= 1024;
+      const isMouse = e.pointerType === "mouse";
 
-      const normX = (e.clientX - centerX) / (window.innerWidth * 0.35);
-      const normY = (e.clientY - centerY) / (window.innerHeight * 0.35);
+      if (isDesktop || isMouse || !hasGyroscopeRef.current) {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
 
-      const clampedX = Math.max(-1, Math.min(1, normX));
-      const clampedY = Math.max(-1, Math.min(1, normY));
+        const normX = (e.clientX - centerX) / (window.innerWidth * 0.35);
+        const normY = (e.clientY - centerY) / (window.innerHeight * 0.35);
 
-      pointerRef.current = {
-        x: clampedX,
-        y: clampedY,
-        active: true,
-      };
+        const clampedX = Math.max(-1, Math.min(1, normX));
+        const clampedY = Math.max(-1, Math.min(1, normY));
 
-      const isOverLogo =
-        e.clientX >= rect.left - 60 &&
-        e.clientX <= rect.right + 60 &&
-        e.clientY >= rect.top - 60 &&
-        e.clientY <= rect.bottom + 60;
+        pointerRef.current = {
+          x: clampedX,
+          y: clampedY,
+          active: true,
+        };
 
-      if (isOverLogo && distortionRef?.current) {
-        const movementIntensity = Math.abs(clampedX) + Math.abs(clampedY);
-        distortionRef.current.onMove(movementIntensity);
+        const isOverLogo =
+          e.clientX >= rect.left - 60 &&
+          e.clientX <= rect.right + 60 &&
+          e.clientY >= rect.top - 60 &&
+          e.clientY <= rect.bottom + 60;
+
+        if (isOverLogo && distortionRef?.current) {
+          const movementIntensity = Math.abs(clampedX) + Math.abs(clampedY);
+          distortionRef.current.onMove(movementIntensity);
+        }
       }
     };
 
-    const handlePointerLeave = () => {
-      pointerRef.current = { x: 0, y: 0, active: false };
+    const handlePointerLeave = (e?: Event) => {
+      const pointerType = (e as PointerEvent)?.pointerType;
+      // Only reset when pointer was a mouse or on desktop, not when mobile touch lifts while gyro is active
+      if (window.innerWidth >= 1024 || pointerType === "mouse" || !hasGyroscopeRef.current) {
+        pointerRef.current = { x: 0, y: 0, active: false };
+      }
+    };
+
+    // Mobile Device Orientation / Gyroscope Tilt Parallax handler
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma === null || e.beta === null) return;
+      hasGyroscopeRef.current = true;
+
+      // Desktop rule: keep desktop mouse-driven only
+      if (window.innerWidth >= 1024) return;
+
+      // Initialize resting baseline angle to current user hold
+      if (baseBetaRef.current === null) {
+        baseBetaRef.current = e.beta;
+        baseGammaRef.current = e.gamma;
+      }
+
+      // Delta relative to calibrated hand-held posture
+      const deltaGamma = e.gamma - (baseGammaRef.current ?? 0);
+      const deltaBeta = e.beta - (baseBetaRef.current ?? 45);
+
+      // Clamp to natural ±25° comfortable hand tilt range
+      const normX = Math.max(-1, Math.min(1, deltaGamma / 25));
+      const normY = Math.max(-1, Math.min(1, deltaBeta / 25));
+
+      pointerRef.current = {
+        x: normX,
+        y: normY,
+        active: true,
+      };
+
+      if (distortionRef?.current) {
+        const movementIntensity = (Math.abs(normX) + Math.abs(normY)) * 0.4;
+        distortionRef.current.onMove(movementIntensity);
+      }
     };
 
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
@@ -166,18 +215,41 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
     window.addEventListener("pointerup", handlePointerLeave, { passive: true });
     window.addEventListener("pointercancel", handlePointerLeave, { passive: true });
 
+    // Attach gyroscope listener (works out-of-the-box on Android / HTTPS)
+    window.addEventListener("deviceorientation", handleOrientation, { passive: true });
+
     return () => {
       io.disconnect();
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("mouseleave", handlePointerLeave);
       window.removeEventListener("pointerup", handlePointerLeave);
       window.removeEventListener("pointercancel", handlePointerLeave);
+      window.removeEventListener("deviceorientation", handleOrientation);
     };
   }, [distortionRef]);
 
-  const handlePointerDown = () => {
+  const handlePointerDown = async () => {
     if (distortionRef?.current) {
       distortionRef.current.triggerBurst();
+    }
+
+    // Re-center gyroscope baseline on tap to accommodate posture changes
+    baseBetaRef.current = null;
+    baseGammaRef.current = null;
+
+    // iOS 13+ permission request if needed
+    if (
+      typeof window !== "undefined" &&
+      typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> }).requestPermission === "function"
+    ) {
+      try {
+        const permissionState = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<string> }).requestPermission();
+        if (permissionState === "granted") {
+          // Permission granted, event listener will receive events
+        }
+      } catch {
+        // User dismissed or already granted
+      }
     }
   };
 
