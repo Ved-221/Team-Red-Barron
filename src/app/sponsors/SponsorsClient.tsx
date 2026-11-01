@@ -172,10 +172,10 @@ export default function SponsorsClient({
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <button onClick={() => setContactModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
+            <button onClick={() => setContactModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto max-md:min-h-[44px]">
               <Handshake className="w-4 h-4" /> Become a Partner
             </button>
-            <a href="#sponsor-wall" className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
+            <a href="#sponsor-wall" className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto max-md:min-h-[44px]">
               Explore Sponsor Wall <ChevronRight className="w-4 h-4 text-[#de1615]" />
             </a>
           </div>
@@ -239,9 +239,9 @@ export default function SponsorsClient({
                   return (
                     <CardTag key={sp.id} {...cardLinkProps}>
                       <div className="relative w-full h-16 max-md:h-12 flex items-center justify-center filter group-hover:scale-105 transition-all duration-300">
-                        <SmartImage src={sp.logo_url} alt={`${sp.name} Logo`} width={96} height={56} sizes="(max-width: 768px) 96px, 160px" className="object-contain max-h-14 max-md:max-h-10" />
+                        <SmartImage src={sp.logo_url} alt={`${sp.name} Logo`} width={160} height={60} sizes="(max-width: 768px) 96px, 160px" className="object-contain max-h-14 max-md:max-h-10" />
                       </div>
-                      <span className="font-sora font-bold text-xs max-md:text-[10px] text-white/70 group-hover:text-white mt-3 max-md:mt-1.5 tracking-wider uppercase transition-colors text-center line-clamp-1">
+                      <span className="font-sora font-bold text-xs max-md:text-[10px] text-white/70 group-hover:text-white mt-3 max-md:mt-1.5 tracking-wider uppercase transition-colors text-center max-md:line-clamp-1">
                         {sp.name}
                       </span>
                     </CardTag>
@@ -303,7 +303,7 @@ export default function SponsorsClient({
                   href={currentTestimonial.website_url.startsWith("http") ? currentTestimonial.website_url : `https://${currentTestimonial.website_url}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 text-xs font-mono-tech text-white bg-[#de1615] hover:bg-[#b81211] px-5 py-2 rounded-full transition-all hover:scale-105 shadow-md min-h-[44px]"
+                  className="mt-4 inline-flex items-center gap-2 text-xs font-mono-tech text-white bg-[#de1615] hover:bg-[#b81211] px-5 py-2 rounded-full transition-all hover:scale-105 shadow-md max-md:min-h-[44px]"
                 >
                   <span>Visit Sponsor Website</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -313,7 +313,7 @@ export default function SponsorsClient({
             {testimonialItems.length > 1 && (
               <div className="flex items-center justify-center gap-4 mt-8">
                 {testimonialItems.map((_, idx) => (
-                  <button key={idx} onClick={() => setActiveTestimonial(idx)} className={`w-3 h-3 rounded-full transition-all min-h-[30px] p-2 flex items-center justify-center ${idx === (activeTestimonial % testimonialItems.length) ? "bg-[#de1615] w-8 shadow-[0_0_10px_#de1615]" : "bg-white/20 hover:bg-white/50"}`} />
+                  <button key={idx} onClick={() => setActiveTestimonial(idx)} className={`w-3 h-3 rounded-full transition-all ${idx === (activeTestimonial % testimonialItems.length) ? "bg-[#de1615] w-8 shadow-[0_0_10px_#de1615]" : "bg-white/20 hover:bg-white/50"}`} />
                 ))}
               </div>
             )}
@@ -331,11 +331,11 @@ export default function SponsorsClient({
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <h2 className="font-sora font-extrabold text-3xl sm:text-5xl lg:text-6xl max-md:text-2xl text-white uppercase tracking-tight mb-6 max-md:mb-3">JOIN THE <span className="text-[#de1615]">JOURNEY</span></h2>
             <p className="font-inter text-base sm:text-lg max-md:text-sm text-[#e8bdb6] leading-relaxed mb-10 max-md:mb-6">“Partner with Team Red Baron and help shape the next generation of engineering innovation.”</p>
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <button onClick={() => setDonateModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
+            <div className="flex flex-col sm:flex-row items-center gap-4 max-md:w-full">
+              <button onClick={() => setDonateModalOpen(true)} className="bg-[#de1615] hover:bg-[#b81211] text-white px-8 py-4 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md flex items-center gap-2 max-md:w-full max-md:justify-center max-md:min-h-[44px]">
                 <Download className="w-4 h-4" /> Download Sponsorship Brochure
               </button>
-              <button onClick={() => setContactModalOpen(true)} className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px]">
+              <button onClick={() => setContactModalOpen(true)} className="glass-card text-white px-8 py-4 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all flex items-center gap-2 max-md:w-full max-md:justify-center max-md:min-h-[44px]">
                 <Mail className="w-4 h-4 text-[#de1615]" /> Contact Us
               </button>
             </div>

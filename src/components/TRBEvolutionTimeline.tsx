@@ -358,7 +358,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{ type: "spring", stiffness: 120, damping: 20 }}
                     onClick={() => handleNodeSelect(realIndex)}
-                    className="absolute -translate-x-1/2 flex flex-col items-center group cursor-pointer focus:outline-none min-w-[44px] min-h-[44px] justify-center p-1"
+                    className="absolute -translate-x-1/2 flex flex-col items-center group cursor-pointer focus:outline-none max-md:min-w-[44px] max-md:min-h-[44px] justify-center"
                     aria-label={`Navigate to era ${m.year}`}
                   >
                     <motion.div
@@ -398,7 +398,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
             <button
               onClick={handlePrev}
               disabled={activeIdx === 0}
-              className={`flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === 0
+              className={`flex items-center gap-2 px-5 py-2.5 max-md:min-h-[44px] rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === 0
                   ? "opacity-30 border-white/10 text-gray-500 cursor-not-allowed"
                   : "bg-white/10 hover:bg-[#de1615] border-white/20 text-white hover:border-[#de1615] shadow-lg hover:scale-105 active:scale-95"
                 }`}
@@ -415,7 +415,7 @@ export function TRBEvolutionTimeline({ milestones }: { milestones: Milestone[] }
             <button
               onClick={handleNext}
               disabled={activeIdx === milestones.length - 1}
-              className={`flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === milestones.length - 1
+              className={`flex items-center gap-2 px-5 py-2.5 max-md:min-h-[44px] rounded-full border font-sora font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${activeIdx === milestones.length - 1
                   ? "opacity-30 border-white/10 text-gray-500 cursor-not-allowed"
                   : "bg-[#de1615] hover:bg-[#b81211] border-[#de1615] text-white shadow-[0_0_15px_rgba(222,22,21,0.4)] hover:scale-105 active:scale-95"
                 }`}

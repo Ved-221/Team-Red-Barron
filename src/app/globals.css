@@ -63,6 +63,10 @@
     --on-surface-variant: #e8bdb6;
   }
 
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -142,7 +146,6 @@
 }
 
 .animate-marquee {
-  display: flex;
   width: max-content;
   animation: marquee-scroll 55s linear infinite;
 }

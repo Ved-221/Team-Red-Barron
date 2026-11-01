@@ -279,7 +279,7 @@ export default function ContactClient({
                     </a>
                     <button
                       onClick={() => handleCopyEmail(contactData?.managing_director_email || "teamredbaron07@gmail.com")}
-                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0 min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] transition-colors max-md:min-h-[44px] max-md:min-w-[44px] max-md:flex max-md:items-center max-md:justify-center cursor-pointer"
                       title="Copy email to clipboard"
                     >
                       {copiedEmail === (contactData?.managing_director_email || "teamredbaron07@gmail.com") ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
@@ -300,7 +300,7 @@ export default function ContactClient({
                     </a>
                     <button
                       onClick={() => handleCopyEmail(contactData?.marketing_director_email || "marketingteamredbaron@gmail.com")}
-                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0 min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
+                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] transition-colors max-md:min-h-[44px] max-md:min-w-[44px] max-md:flex max-md:items-center max-md:justify-center cursor-pointer"
                       title="Copy email to clipboard"
                     >
                       {copiedEmail === (contactData?.marketing_director_email || "marketingteamredbaron@gmail.com") ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
@@ -411,44 +411,47 @@ export default function ContactClient({
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6 max-md:space-y-4">
-                  {/* Mobile Native Select (< 768px) */}
-                  <div className="hidden max-md:block">
-                    <label className="block font-mono text-xs text-[#ffb4a9] font-medium mb-1.5">
-                      INQUIRY TYPE CATEGORY *
-                    </label>
-                    <select
-                      value={selectedType}
-                      onChange={(e) => setSelectedType(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-[#121414] border border-white/10 text-white text-[16px] focus:outline-none focus:border-[#de1615] focus:ring-1 focus:ring-[#de1615] transition-all font-inter appearance-none cursor-pointer"
-                    >
-                      {inquiryTypes.map((type) => (
-                        <option key={type.id} value={type.id} className="bg-[#121414] text-white">
-                          {type.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  {/* Category Selection Container */}
+                  <div>
+                    {/* Mobile Native Select (< 768px) */}
+                    <div className="hidden max-md:block">
+                      <label className="block font-mono text-xs text-[#ffb4a9] font-medium mb-1.5">
+                        INQUIRY TYPE CATEGORY *
+                      </label>
+                      <select
+                        value={selectedType}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl bg-[#121414] border border-white/10 text-white text-[16px] focus:outline-none focus:border-[#de1615] focus:ring-1 focus:ring-[#de1615] transition-all font-inter appearance-none cursor-pointer"
+                      >
+                        {inquiryTypes.map((type) => (
+                          <option key={type.id} value={type.id} className="bg-[#121414] text-white">
+                            {type.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                  {/* Desktop Category Buttons (>= 768px) */}
-                  <div className="max-md:hidden">
-                    <label className="block font-mono text-xs text-[#ffb4a9] font-medium mb-2.5">
-                      INQUIRY TYPE CATEGORY *
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {inquiryTypes.map((type) => (
-                        <button
-                          key={type.id}
-                          type="button"
-                          onClick={() => setSelectedType(type.id)}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-sora font-medium transition-all ${
-                            selectedType === type.id
-                              ? "bg-[#de1615] text-white font-bold shadow-[0_0_15px_rgba(222,22,21,0.4)]"
-                              : "bg-[#121414] text-[#e8bdb6] border border-white/10 hover:border-white/30"
-                          }`}
-                        >
-                          {type.label}
-                        </button>
-                      ))}
+                    {/* Desktop Category Buttons (>= 768px) */}
+                    <div className="max-md:hidden">
+                      <label className="block font-mono text-xs text-[#ffb4a9] font-medium mb-2.5">
+                        INQUIRY TYPE CATEGORY *
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        {inquiryTypes.map((type) => (
+                          <button
+                            key={type.id}
+                            type="button"
+                            onClick={() => setSelectedType(type.id)}
+                            className={`px-3.5 py-2 rounded-xl text-xs font-sora font-medium transition-all ${
+                              selectedType === type.id
+                                ? "bg-[#de1615] text-white font-bold shadow-[0_0_15px_rgba(222,22,21,0.4)]"
+                                : "bg-[#121414] text-[#e8bdb6] border border-white/10 hover:border-white/30"
+                            }`}
+                          >
+                            {type.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
