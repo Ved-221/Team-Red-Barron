@@ -30,6 +30,15 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export function AboutTimeline({ milestones }: { milestones: VehicleMilestone[] }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   const visibleMilestones = isExpanded ? milestones : milestones.slice(0, 4);
 
@@ -124,14 +133,14 @@ export function AboutTimeline({ milestones }: { milestones: VehicleMilestone[] }
                 </div>
                 {/* Photo Right */}
                 <div className="w-full pr-2 lg:pr-6">
-                  {PhotoCard}
+                  {isMobile ? null : PhotoCard}
                 </div>
               </>
             ) : (
               <>
                 {/* Photo Left */}
                 <div className="w-full pl-2 lg:pl-6">
-                  {PhotoCard}
+                  {isMobile ? null : PhotoCard}
                 </div>
                 {/* Description Right */}
                 <div className="w-full pr-2 lg:pr-6">
@@ -142,8 +151,8 @@ export function AboutTimeline({ milestones }: { milestones: VehicleMilestone[] }
           </div>
 
           {/* MOBILE STACKED LAYOUT */}
-          <div className="md:hidden flex flex-col gap-6 pl-12 pr-2">
-            {PhotoCard}
+          <div className="md:hidden flex flex-col gap-6 pl-10 pr-2 max-sm:pl-8">
+            {!isMobile ? null : PhotoCard}
             {DescriptionCard}
           </div>
         </div>
@@ -156,23 +165,23 @@ export function AboutTimeline({ milestones }: { milestones: VehicleMilestone[] }
       <Timeline data={timelineData} />
 
       {/* Explore More / Show Less Toggle Button */}
-      <div className="flex justify-center -mt-6 pb-20 relative z-30">
+      <div className="flex justify-center -mt-6 pb-20 relative z-30 px-4">
         {!isExpanded ? (
           <button
             onClick={() => setIsExpanded(true)}
-            className="group relative inline-flex items-center gap-3 bg-[#de1615] hover:bg-[#b81211] text-white px-9 py-4 rounded-full font-sora font-extrabold text-sm sm:text-base tracking-wide shadow-[0_0_25px_rgba(222,22,21,0.5)] hover:shadow-[0_0_35px_rgba(222,22,21,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer"
+            className="group relative inline-flex items-center justify-center gap-3 bg-[#de1615] hover:bg-[#b81211] text-white px-9 py-4 rounded-full font-sora font-extrabold text-sm sm:text-base tracking-wide shadow-[0_0_25px_rgba(222,22,21,0.5)] hover:shadow-[0_0_35px_rgba(222,22,21,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer w-full sm:w-auto min-h-[44px]"
           >
-            <Sparkles className="w-5 h-5 text-white animate-pulse" />
-            <span>EXPLORE FULL HANGAR HISTORY (2012 – 2021)</span>
-            <ChevronDown className="w-5 h-5 text-white group-hover:translate-y-1 transition-transform" />
+            <Sparkles className="w-5 h-5 text-white animate-pulse shrink-0" />
+            <span className="text-center">EXPLORE FULL HANGAR HISTORY</span>
+            <ChevronDown className="w-5 h-5 text-white group-hover:translate-y-1 transition-transform shrink-0" />
           </button>
         ) : (
           <button
             onClick={() => setIsExpanded(false)}
-            className="group relative inline-flex items-center gap-3 glass-card hover:bg-white/10 text-white px-8 py-3.5 rounded-full font-sora font-bold text-sm tracking-wide border border-white/20 hover:border-[#de1615] transition-all duration-300 cursor-pointer"
+            className="group relative inline-flex items-center justify-center gap-3 glass-card hover:bg-white/10 text-white px-8 py-3.5 rounded-full font-sora font-bold text-sm tracking-wide border border-white/20 hover:border-[#de1615] transition-all duration-300 cursor-pointer w-full sm:w-auto min-h-[44px]"
           >
             <span>SHOW LESS</span>
-            <ChevronUp className="w-4 h-4 text-white group-hover:-translate-y-1 transition-transform" />
+            <ChevronUp className="w-4 h-4 text-white group-hover:-translate-y-1 transition-transform shrink-0" />
           </button>
         )}
       </div>

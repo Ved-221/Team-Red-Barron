@@ -79,18 +79,18 @@ export default function AboutClient({
       <Navbar />
 
       <ScrollReveal yOffset={40}>
-        <section className="relative pt-36 pb-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full overflow-hidden">
+        <section className="relative pt-36 pb-20 max-md:pt-24 max-md:pb-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full overflow-hidden">
           <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#de1615]/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute top-32 right-1/4 w-80 h-80 bg-[#ff6534]/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
-            <h1 className="font-sora font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white mb-6 leading-tight uppercase" dangerouslySetInnerHTML={{ __html: aboutData?.intro_headline || "THE LEGACY OF <br /><span class=\"text-transparent bg-clip-text bg-gradient-to-r from-white via-[#ffb59f] to-[#de1615]\">UNTAMED ENDURANCE</span>" }} />
+            <h1 className="font-sora font-extrabold text-4xl sm:text-6xl lg:text-7xl max-md:text-3xl tracking-tight text-white mb-6 leading-tight uppercase" dangerouslySetInnerHTML={{ __html: aboutData?.intro_headline || "THE LEGACY OF <br /><span class=\"text-transparent bg-clip-text bg-gradient-to-r from-white via-[#ffb59f] to-[#de1615]\">UNTAMED ENDURANCE</span>" }} />
 
-            <p className="font-inter text-lg sm:text-xl text-[#e8bdb6] max-w-2xl font-normal leading-relaxed mb-10">
+            <p className="font-inter text-lg sm:text-xl max-md:text-base text-[#e8bdb6] max-w-2xl font-normal leading-relaxed mb-10 max-md:mb-6">
               {aboutData?.intro_summary || "Team Red Baron is Pimpri Chinchwad College of Engineering’s official collegiate offroad racing team. We design, manufacture, test, and race high-performance All-Terrain Vehicles (ATVs) for national BAJA SAE India competitions."}
             </p>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full pt-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-md:gap-3 w-full pt-4">
               {stats.map((defaultStat, idx) => {
                 const dynamicStat = aboutData?.stats_cards?.[idx];
                 const st = {
@@ -101,11 +101,11 @@ export default function AboutClient({
                 };
                 const Icon = st.icon;
                 return (
-                  <div key={st.label} className="glass-card p-5 rounded-2xl border border-white/10 bg-[#252e39]/40 backdrop-blur-xl flex flex-col items-center text-center group hover:border-[#de1615]/50 transition-all duration-300">
+                  <div key={st.label} className="glass-card p-5 max-md:p-3.5 rounded-2xl border border-white/10 bg-[#252e39]/40 backdrop-blur-xl flex flex-col items-center text-center group hover:border-[#de1615]/50 transition-all duration-300">
                     <Icon className="w-6 h-6 text-[#de1615] mb-2 group-hover:scale-110 transition-transform" />
-                    <span className="font-sora font-extrabold text-3xl sm:text-4xl text-white mb-1">{st.value}</span>
-                    <span className="font-sora font-bold text-xs text-[#ffb59f] uppercase tracking-wider">{st.label}</span>
-                    <span className="font-mono text-[11px] text-[#ae8882] mt-1">{st.note}</span>
+                    <span className="font-sora font-extrabold text-3xl sm:text-4xl max-md:text-2xl text-white mb-1">{st.value}</span>
+                    <span className="font-sora font-bold text-xs max-md:text-[11px] text-[#ffb59f] uppercase tracking-wider">{st.label}</span>
+                    <span className="font-mono text-[11px] max-md:text-[10px] text-[#ae8882] mt-1">{st.note}</span>
                   </div>
                 );
               })}
@@ -115,19 +115,19 @@ export default function AboutClient({
       </ScrollReveal>
 
       <ScrollReveal yOffset={50}>
-        <section className="py-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full border-t border-white/5">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <section className="py-20 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full border-t border-white/5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-md:gap-8 items-center">
             <div className="lg:col-span-7 flex flex-col gap-6">
-              <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-tight">
+              <h2 className="font-sora font-extrabold text-3xl sm:text-5xl max-md:text-2xl text-white tracking-tight leading-tight">
                 Innovate. Engineer. Evolve.
               </h2>
 
-              <p className="font-inter text-[#e8bdb6] text-base sm:text-lg leading-relaxed font-normal whitespace-pre-wrap">
+              <p className="font-inter text-[#e8bdb6] text-base sm:text-lg max-md:text-sm leading-relaxed font-normal whitespace-pre-wrap">
                 {aboutData?.main_body_text || "Team Red Baron is the first and official motorsports team of Pimpri Chinchwad College of Engineering (PCCOE), Pune. Founded in 2011 from a vision conceived by a group of 25 student engineers, the team began its journey by building its first Albatros ATV for BAJA SAE India. What started as a student-built off-road racing project has evolved into a decade-long legacy of engineering innovation, from combustion-powered ATVs to advanced electric and 4WD platforms. Today, Team Red Baron continues to design, manufacture, test, and race high-performance ATVs on national and international stage."}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                <div className="p-5 rounded-2xl glass-card border border-white/10 bg-[#1e2020]/60 flex items-start gap-3.5 hover:border-[#de1615]/40 transition-all">
+                <div className="p-5 max-md:p-4 rounded-2xl glass-card border border-white/10 bg-[#1e2020]/60 flex items-start gap-3.5 hover:border-[#de1615]/40 transition-all">
                   <Target className="w-5 h-5 text-[#de1615] shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-sora font-bold text-sm text-white">Our Vision</h4>
@@ -137,7 +137,7 @@ export default function AboutClient({
                   </div>
                 </div>
 
-                <div className="p-5 rounded-2xl glass-card border border-white/10 bg-[#1e2020]/60 flex items-start gap-3.5 hover:border-[#ff6534]/40 transition-all">
+                <div className="p-5 max-md:p-4 rounded-2xl glass-card border border-white/10 bg-[#1e2020]/60 flex items-start gap-3.5 hover:border-[#ff6534]/40 transition-all">
                   <ShieldCheck className="w-5 h-5 text-[#ff6534] shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-sora font-bold text-sm text-white">Our Mission</h4>
@@ -179,10 +179,10 @@ export default function AboutClient({
       </ScrollReveal>
 
       <ScrollReveal yOffset={40}>
-        <section className="py-20 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full">
-          <div className="glass-card p-10 sm:p-14 rounded-3xl border border-[#de1615]/40 bg-gradient-to-r from-[#1e2020] via-[#252e39] to-[#121414] relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-[0_0_40px_rgba(222,22,21,0.2)]">
+        <section className="py-20 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full">
+          <div className="glass-card p-10 sm:p-14 max-md:p-6 rounded-3xl border border-[#de1615]/40 bg-gradient-to-r from-[#1e2020] via-[#252e39] to-[#121414] relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-[0_0_40px_rgba(222,22,21,0.2)]">
             <div className="max-w-xl text-center md:text-left">
-              <h2 className="font-sora font-extrabold text-3xl sm:text-4xl text-white mt-2">
+              <h2 className="font-sora font-extrabold text-3xl sm:text-4xl max-md:text-2xl text-white mt-2">
                 Ready to Build the Next Albatros?
               </h2>
               <p className="font-inter text-sm sm:text-base text-[#e8bdb6] mt-3">
@@ -190,17 +190,17 @@ export default function AboutClient({
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+            <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0 w-full sm:w-auto">
               <Link
                 href="/contact"
-                className="bg-[#de1615] hover:bg-[#b81211] text-white px-7 py-3.5 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md"
+                className="bg-[#de1615] hover:bg-[#b81211] text-white px-7 py-3.5 rounded-full font-sora font-bold text-sm hover:scale-105 transition-all shadow-md w-full sm:w-auto min-h-[44px] flex items-center justify-center"
               >
                 Contact Pitwall
               </Link>
 
               <Link
                 href="#journey"
-                className="glass-card text-white px-7 py-3.5 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all"
+                className="glass-card text-white px-7 py-3.5 rounded-full font-sora font-semibold text-sm border border-white/20 hover:border-[#de1615] hover:bg-white/10 transition-all w-full sm:w-auto min-h-[44px] flex items-center justify-center"
               >
                 Explore Timeline
               </Link>
