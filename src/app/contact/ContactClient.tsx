@@ -451,22 +451,6 @@ export default function ContactClient({
                       ))}
                     </div>
                   </div>
-                      {inquiryTypes.map((type) => (
-                        <button
-                          key={type.id}
-                          type="button"
-                          onClick={() => setSelectedType(type.id)}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-sora font-medium transition-all ${
-                            selectedType === type.id
-                              ? "bg-[#de1615] text-white font-bold shadow-[0_0_15px_rgba(222,22,21,0.4)]"
-                              : "bg-[#121414] text-[#e8bdb6] border border-white/10 hover:border-white/30"
-                          }`}
-                        >
-                          {type.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
                   {/* Name & Email Row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
