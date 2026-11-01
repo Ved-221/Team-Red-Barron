@@ -89,16 +89,16 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
   const twitterUrl = hasData ? contactData.twitter_url : null;
 
   return (
-    <footer className="w-full bg-[#0a0a0a] border-t border-white/10 pt-16 pb-8 relative">
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20">
+    <footer className="w-full bg-[#0a0a0a] border-t border-white/10 pt-16 max-md:pt-8 pb-8 max-md:pb-6 relative">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-20 max-md:px-4">
 
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        {/* Main Footer Grid: 4 cols on desktop, 2 cols on mobile */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 max-md:mb-6">
 
-          {/* Brand Info */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-black border border-white/10 p-1">
+          {/* Brand Info (spans full 2 cols on mobile, 2 cols on desktop) */}
+          <div className="col-span-2 md:col-span-2">
+            <div className="flex items-center gap-3 mb-4 max-md:mb-2.5">
+              <div className="w-10 h-10 max-md:w-8 max-md:h-8 rounded-lg bg-black border border-white/10 p-1">
                 <Image
                   src="/logo.png"
                   alt="Team Red Baron Logo"
@@ -107,29 +107,29 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
                   className="object-contain"
                 />
               </div>
-              <span className="font-sora font-extrabold text-2xl text-white">
+              <span className="font-sora font-extrabold text-2xl max-md:text-xl text-white">
                 TEAM <span className="text-[#de1615]">RED BARON</span>
               </span>
             </div>
 
-            <p className="font-mono text-xs text-[#ff6534] font-semibold tracking-wider uppercase mb-3">
+            <p className="font-mono text-xs max-md:text-[11px] text-[#ff6534] font-semibold tracking-wider uppercase mb-3 max-md:mb-2">
               &quot;Inspired To Build, Determined To Win.&quot;
             </p>
 
-            <p className="font-inter text-sm text-[#e2e2e2]/70 max-w-md leading-relaxed mb-6">
+            <p className="font-inter text-sm text-[#e2e2e2]/70 max-w-md leading-relaxed mb-6 max-md:hidden">
               A high-performance motorsports team from Pimpri Chinchwad College of Engineering (PCCOE), Pune. Designing and manufacturing champion All-Terrain Vehicles (ATVs) for national and international competitions.
             </p>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 max-md:gap-2">
               {instagramUrl && (
                 <a
                   href={instagramUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
+                  className="w-10 h-10 max-md:w-8 max-md:h-8 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
                   aria-label="Instagram"
                 >
-                  <InstagramIcon className="w-4 h-4" />
+                  <InstagramIcon className="w-4 h-4 max-md:w-3.5 max-md:h-3.5" />
                 </a>
               )}
               {linkedinUrl && (
@@ -137,10 +137,10 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
                   href={linkedinUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
+                  className="w-10 h-10 max-md:w-8 max-md:h-8 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
                   aria-label="LinkedIn"
                 >
-                  <LinkedInIcon className="w-4 h-4" />
+                  <LinkedInIcon className="w-4 h-4 max-md:w-3.5 max-md:h-3.5" />
                 </a>
               )}
               {youtubeUrl && (
@@ -148,10 +148,10 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
                   href={youtubeUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
+                  className="w-10 h-10 max-md:w-8 max-md:h-8 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
                   aria-label="YouTube"
                 >
-                  <YouTubeIcon className="w-4 h-4" />
+                  <YouTubeIcon className="w-4 h-4 max-md:w-3.5 max-md:h-3.5" />
                 </a>
               )}
               {twitterUrl && (
@@ -159,16 +159,29 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
                   href={twitterUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
+                  className="w-10 h-10 max-md:w-8 max-md:h-8 glass-card rounded-full flex items-center justify-center text-white/80 hover:text-[#de1615] hover:border-[#de1615] transition-colors"
                   aria-label="Twitter / X"
                 >
-                  <TwitterIcon className="w-4 h-4" />
+                  <TwitterIcon className="w-4 h-4 max-md:w-3.5 max-md:h-3.5" />
                 </a>
               )}
             </div>
 
-            {/* Developer Credit */}
-            <div className="mt-5 space-y-1.5">
+            {/* Mobile Streamlined Developer Credit */}
+            <div className="hidden max-md:block mt-3 text-xs font-mono-tech text-[#e8bdb6]">
+              Developed by{" "}
+              <a
+                href="https://www.linkedin.com/in/veddhapodkar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-[#0A66C2] font-semibold underline"
+              >
+                Ved Dhapodkar
+              </a>
+            </div>
+
+            {/* Desktop Developer Credit */}
+            <div className="mt-5 space-y-1.5 max-md:hidden">
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="font-mono-tech text-xs text-[#e8bdb6]">
                   Developed by <span className="text-white font-semibold">Ved Dhapodkar</span>
@@ -218,12 +231,12 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
+          {/* Quick Links (Column 1 of 2 on mobile) */}
+          <div className="col-span-1 md:col-span-1">
+            <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6 max-md:mb-3">
               Navigation
             </h4>
-            <ul className="space-y-3 font-inter text-sm text-[#e2e2e2]/70">
+            <ul className="space-y-3 max-md:space-y-2 font-inter text-sm max-md:text-xs text-[#e2e2e2]/70">
               <li>
                 <Link href="/" className="hover:text-[#de1615] transition-colors">
                   Home
@@ -257,29 +270,33 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
             </ul>
           </div>
 
-          {/* Location & Workshop */}
-          <div>
-            <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6">
+          {/* Location & Workshop (Column 2 of 2 on mobile) */}
+          <div className="col-span-1 md:col-span-1">
+            <h4 className="font-mono-tech text-xs text-white uppercase tracking-widest mb-6 max-md:mb-3">
               Pitwall Headquarters
             </h4>
-            <div className="font-inter text-xs text-[#e8bdb6] space-y-2 leading-relaxed whitespace-pre-line">
+            <div className="font-inter text-xs max-md:text-[11px] text-[#e8bdb6] space-y-2 max-md:space-y-1.5 leading-relaxed whitespace-pre-line">
               <p className="font-bold text-white uppercase text-[10px] tracking-wider">Innovation Center</p>
               <div>{address}</div>
               {email && (
                 <div className="pt-1">
-                  <a href={`mailto:${email}`} className="font-mono text-[#de1615] hover:underline text-xs">
+                  <a href={`mailto:${email}`} className="font-mono text-[#de1615] hover:underline text-xs max-md:text-[11px]">
                     {email}
                   </a>
                 </div>
               )}
-              <div className="pt-4 space-y-4">
+              <div className="pt-4 max-md:pt-2 space-y-4 max-md:space-y-2.5">
                 {mdName && (
                   <div>
                     <p className="font-bold text-white uppercase text-[10px] tracking-wider">Managing Director</p>
-                    <p className="font-bold text-white text-sm">{mdName}</p>
-                    {mdPhone && <p className="text-[#e8bdb6] text-[10px]">{mdPhone}</p>}
+                    <p className="font-bold text-white text-sm max-md:text-xs">{mdName}</p>
+                    {mdPhone && (
+                      <a href={`tel:${mdPhone.replace(/\s+/g, '')}`} className="text-[#e8bdb6] text-[10px] block hover:text-white">
+                        {mdPhone}
+                      </a>
+                    )}
                     {mdEmail && (
-                      <a href={`mailto:${mdEmail}`} className="font-mono text-[#de1615] hover:underline text-[10px] block">
+                      <a href={`mailto:${mdEmail}`} className="font-mono text-[#de1615] hover:underline text-[10px] block max-md:hidden">
                         {mdEmail}
                       </a>
                     )}
@@ -288,10 +305,14 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
                 {mktName && (
                   <div>
                     <p className="font-bold text-white uppercase text-[10px] tracking-wider">Marketing Director</p>
-                    <p className="font-bold text-white text-sm">{mktName}</p>
-                    {mktPhone && <p className="text-[#e8bdb6] text-[10px]">{mktPhone}</p>}
+                    <p className="font-bold text-white text-sm max-md:text-xs">{mktName}</p>
+                    {mktPhone && (
+                      <a href={`tel:${mktPhone.replace(/\s+/g, '')}`} className="text-[#e8bdb6] text-[10px] block hover:text-white">
+                        {mktPhone}
+                      </a>
+                    )}
                     {mktEmail && (
-                      <a href={`mailto:${mktEmail}`} className="font-mono text-[#de1615] hover:underline text-[10px] block">
+                      <a href={`mailto:${mktEmail}`} className="font-mono text-[#de1615] hover:underline text-[10px] block max-md:hidden">
                         {mktEmail}
                       </a>
                     )}
@@ -304,14 +325,14 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
         </div>
 
         {/* Bottom Banner */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 font-mono-tech text-xs text-[#e8bdb6]">
+        <div className="pt-8 max-md:pt-4 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 max-md:gap-2 font-mono-tech text-xs max-md:text-[12px] text-[#e8bdb6]">
           <span>©2025 Team Red Baron. PCCOE Pune. All Rights Reserved.</span>
 
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-2 text-white/70 hover:text-[#de1615] transition-colors cursor-pointer"
+            className="flex items-center gap-2 max-md:gap-1.5 text-white/70 hover:text-[#de1615] transition-colors cursor-pointer max-md:text-[11px]"
           >
-            BACK TO TOP <ArrowUp className="w-4 h-4" />
+            BACK TO TOP <ArrowUp className="w-4 h-4 max-md:w-3.5 max-md:h-3.5" />
           </button>
         </div>
 
