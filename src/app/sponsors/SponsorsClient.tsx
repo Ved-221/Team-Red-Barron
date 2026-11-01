@@ -325,7 +325,7 @@ export default function SponsorsClient({
       <section className="py-24 max-md:py-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full z-10">
         <div className="glass-card rounded-[3rem] max-md:rounded-3xl p-10 sm:p-16 lg:p-20 max-md:p-6 text-center relative overflow-hidden border border-[#de1615]/50 bg-gradient-to-br from-[#121414] via-[#1e2020] to-[#0c0f0f] shadow-[0_0_60px_rgba(222,22,21,0.25)]">
           <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-            <SmartImage src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png" alt="TRB ATV Hero Background" fill sizes="100vw" className="object-cover object-center" />
+            <SmartImage src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png" alt="TRB ATV Hero Background" fill sizes="(max-width: 768px) 100vw, 1440px" className="object-cover object-center" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">

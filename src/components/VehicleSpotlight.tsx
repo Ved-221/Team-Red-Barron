@@ -99,6 +99,7 @@ export function VehicleSpotlight({ vehicleData }: { vehicleData: VehicleSpotligh
           alt=""
           fill
           priority={false}
+          sizes="(max-width: 768px) 100vw, 1920px"
           className="object-cover object-center"
         />
 
