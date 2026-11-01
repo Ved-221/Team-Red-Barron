@@ -31,6 +31,17 @@ export function Navbar({ teamYears, supportSettings }: NavbarProps = {}) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
@@ -65,7 +76,7 @@ export function Navbar({ teamYears, supportSettings }: NavbarProps = {}) {
               <span className="font-sora font-extrabold text-xl tracking-tight text-white">
                 TEAM <span className="text-[#de1615]">RED</span> BARON
               </span>
-              <span className="font-mono-tech text-[10px] text-[#e8bdb6] tracking-widest uppercase">
+              <span className="font-mono-tech text-[10px] text-[#e8bdb6] tracking-widest uppercase max-sm:hidden">
                 PCCOE Motorsport
               </span>
             </div>
@@ -92,26 +103,28 @@ export function Navbar({ teamYears, supportSettings }: NavbarProps = {}) {
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white p-2 glass-card rounded-lg hover:border-[#de1615] transition-colors"
+            className="md:hidden text-white p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center glass-card rounded-lg hover:border-[#de1615] transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
-        {/* Mobile Drawer Navigation */}
+        {/* Mobile Full-Height Drawer Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden glass-card mt-3 mx-4 p-5 rounded-3xl border border-white/15 flex flex-col gap-4 animate-in slide-in-from-top duration-200 bg-black/95 backdrop-blur-2xl z-50">
-            <FluidDropdown onItemSelect={() => setMobileMenuOpen(false)} teamYears={teamYears} />
+          <div className="md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-black/95 backdrop-blur-2xl z-50 p-5 flex flex-col justify-between border-t border-white/10 animate-in slide-in-from-top duration-300 overflow-y-auto">
+            <div className="flex-1 w-full flex flex-col gap-4">
+              <FluidDropdown onItemSelect={() => setMobileMenuOpen(false)} teamYears={teamYears} />
+            </div>
 
-            {/* Mobile Actions Container */}
-            <div className="pt-2 flex flex-col gap-3">
+            {/* Mobile Actions Container - full-width button pinned at bottom of drawer */}
+            <div className="pt-4 pb-2 w-full mt-auto">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setDonateOpen(true);
                 }}
-                className="group relative overflow-hidden w-full bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3.5 rounded-xl font-sora font-bold text-center transition-all shadow-[0_0_15px_rgba(222,22,21,0.4)] border border-white/20"
+                className="group relative overflow-hidden w-full min-h-[44px] bg-gradient-to-r from-[#de1615] to-[#ff6534] text-white py-3.5 rounded-xl font-sora font-bold text-center transition-all shadow-[0_0_15px_rgba(222,22,21,0.4)] border border-white/20 flex items-center justify-center cursor-pointer active:scale-[0.98]"
               >
                 <span className="relative z-10">Support Us</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />

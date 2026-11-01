@@ -10,10 +10,12 @@ export function TRBLoadingScreen() {
   useEffect(() => {
     // We do NOT wait for every asset (like heavy 3D models or Supabase videos).
     // We just want to ensure the initial DOM, CSS, and critical fonts are ready.
-    // A maximum 1500ms timeout prevents hanging if non-critical assets fail.
+    // A maximum 1500ms timeout on desktop and shortened ~1200ms on mobile prevents hanging.
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const timeoutDuration = isMobile ? 1200 : 1500;
     const maxTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, timeoutDuration);
 
     const handleLoad = () => {
       // Ensure a minimum 600ms display to prevent a jarring 1-frame flash

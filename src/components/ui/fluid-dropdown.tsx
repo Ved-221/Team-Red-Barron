@@ -137,7 +137,7 @@ function FluidDropdownInner({ onItemSelect, className = "", teamYears: propTeamY
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-[#12151b] text-white",
+            "w-full min-h-[44px] flex items-center justify-between px-4 py-3 rounded-2xl bg-[#12151b] text-white",
             "border border-white/15 hover:border-[#de1615]/50 transition-all duration-200",
             "focus:outline-none focus:ring-2 focus:ring-[#de1615]",
             isOpen && "bg-[#181c24] border-[#de1615]"
@@ -203,7 +203,7 @@ function FluidDropdownInner({ onItemSelect, className = "", teamYears: propTeamY
                           <button
                             onClick={() => setTeamOpen(!teamOpen)}
                             className={cn(
-                              "w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all",
+                              "w-full min-h-[44px] flex items-center justify-between px-4 py-2.5 rounded-xl transition-all cursor-pointer",
                               isCatActive
                                 ? "bg-[#de1615]/20 text-white border border-[#de1615]/50 font-bold"
                                 : "text-gray-300 hover:bg-white/10 hover:text-white"
@@ -245,7 +245,7 @@ function FluidDropdownInner({ onItemSelect, className = "", teamYears: propTeamY
                                         if (onItemSelect) onItemSelect();
                                       }}
                                       className={cn(
-                                        "flex items-center justify-center px-4 py-2 text-xs font-mono-tech uppercase tracking-wider rounded-xl transition-all text-center",
+                                        "flex items-center justify-center px-4 py-2.5 min-h-[44px] text-xs font-mono-tech uppercase tracking-wider rounded-xl transition-all text-center",
                                         isSubActive
                                           ? "bg-[#de1615] text-white font-bold shadow-md shadow-[#de1615]/40"
                                           : "text-gray-400 hover:text-white hover:bg-white/10"
@@ -271,7 +271,7 @@ function FluidDropdownInner({ onItemSelect, className = "", teamYears: propTeamY
                           if (onItemSelect) onItemSelect();
                         }}
                         className={cn(
-                          "w-full flex items-center justify-center px-4 py-2.5 rounded-xl transition-all text-center font-mono-tech uppercase font-bold text-sm tracking-wider gap-2",
+                          "w-full min-h-[44px] flex items-center justify-center px-4 py-2.5 rounded-xl transition-all text-center font-mono-tech uppercase font-bold text-sm tracking-wider gap-2",
                           isCatActive
                             ? "bg-[#de1615] text-white font-bold shadow-md shadow-[#de1615]/40"
                             : "text-gray-300 hover:bg-white/10 hover:text-white"
