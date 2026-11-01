@@ -234,49 +234,52 @@ export default function ContactClient({
       <Navbar teamYears={chromeData?.teamYears} supportSettings={chromeData?.siteSettings} />
 
       {/* Hero Header Section */}
-      <section className="relative pt-36 pb-16 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full overflow-hidden">
+      <section className="relative pt-36 pb-16 max-md:pt-24 max-md:pb-8 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full overflow-hidden">
         {/* Ambient Glows */}
         <div className="absolute top-10 left-1/3 w-96 h-96 bg-[#de1615]/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-32 right-1/3 w-80 h-80 bg-[#ff6534]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
-          <h1 className="font-sora font-extrabold text-4xl sm:text-6xl tracking-tight text-white mb-6 leading-tight">
+          <h1 className="font-sora font-extrabold text-4xl sm:text-6xl max-md:text-3xl tracking-tight text-white mb-6 max-md:mb-3 leading-tight">
             GET IN TOUCH WITH <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#ffb59f] to-[#de1615]">
               TEAM RED BARON
             </span>
           </h1>
 
-          <p className="font-inter text-base sm:text-lg text-[#e8bdb6] max-w-xl font-normal leading-relaxed">
+          <p className="font-inter text-base sm:text-lg max-md:text-sm text-[#e8bdb6] max-w-xl font-normal leading-relaxed">
             Whether you are interested in corporate sponsorship, engineering recruitment, media inquiries, or visiting our workshop at PCCOE Pune—reach out below.
           </p>
         </div>
       </section>
 
       {/* Interactive Contact Grid (Asymmetric Split Screen) */}
-      <section className="py-12 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <section className="py-12 max-md:py-6 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-md:gap-6">
           {/* Left Column: Transmission Hub (Info Cards) */}
-          <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+          <div className="lg:col-span-5 flex flex-col justify-between gap-6 max-md:gap-4">
             {/* Official Email Card */}
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl hover:border-[#de1615]/50 transition-all flex flex-col gap-4">
+            <div className="glass-card p-6 sm:p-8 max-md:p-4 rounded-3xl max-md:rounded-2xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl hover:border-[#de1615]/50 transition-all flex flex-col gap-4 max-md:gap-3">
               <div>
-                <h3 className="font-sora font-bold text-lg text-white mb-1">Team Leadership</h3>
+                <h3 className="font-sora font-bold text-lg max-md:text-base text-white mb-1">Team Leadership</h3>
                 <p className="font-inter text-xs text-[#ae8882]">Direct inbox for sponsorship, technical docs, and press inquiries.</p>
               </div>
 
-              <div className="flex flex-col gap-3">
-                <div className="flex flex-col p-3.5 rounded-xl bg-[#121414] border border-white/10 gap-1">
+              <div className="flex flex-col gap-3 max-md:gap-2">
+                <div className="flex flex-col p-3.5 max-md:p-3 rounded-xl bg-[#121414] border border-white/10 gap-1">
                   <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest">
                     MANAGING DIRECTOR - {contactData?.managing_director_name || "TANMAY CHASKAR"}
                   </span>
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs sm:text-sm text-[#ffb4a9] font-medium truncate">
+                    <a
+                      href={`mailto:${contactData?.managing_director_email || "teamredbaron07@gmail.com"}`}
+                      className="font-mono text-xs sm:text-sm text-[#ffb4a9] font-medium truncate hover:underline hover:text-white transition-colors"
+                    >
                       {contactData?.managing_director_email || "teamredbaron07@gmail.com"}
-                    </span>
+                    </a>
                     <button
                       onClick={() => handleCopyEmail(contactData?.managing_director_email || "teamredbaron07@gmail.com")}
-                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0"
+                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0 min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
                       title="Copy email to clipboard"
                     >
                       {copiedEmail === (contactData?.managing_director_email || "teamredbaron07@gmail.com") ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
@@ -284,17 +287,20 @@ export default function ContactClient({
                   </div>
                 </div>
 
-                <div className="flex flex-col p-3.5 rounded-xl bg-[#121414] border border-white/10 gap-1">
+                <div className="flex flex-col p-3.5 max-md:p-3 rounded-xl bg-[#121414] border border-white/10 gap-1">
                   <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest">
                     MARKETING DIRECTOR - {contactData?.marketing_director_name || "ATHARVA PATIL"}
                   </span>
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs sm:text-sm text-[#ffb4a9] font-medium truncate">
+                    <a
+                      href={`mailto:${contactData?.marketing_director_email || "marketingteamredbaron@gmail.com"}`}
+                      className="font-mono text-xs sm:text-sm text-[#ffb4a9] font-medium truncate hover:underline hover:text-white transition-colors"
+                    >
                       {contactData?.marketing_director_email || "marketingteamredbaron@gmail.com"}
-                    </span>
+                    </a>
                     <button
                       onClick={() => handleCopyEmail(contactData?.marketing_director_email || "marketingteamredbaron@gmail.com")}
-                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0"
+                      className="ml-2 p-2 rounded-lg bg-[#252e39] text-white hover:text-[#de1615] hover:bg-white/10 transition-all shrink-0 min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer"
                       title="Copy email to clipboard"
                     >
                       {copiedEmail === (contactData?.marketing_director_email || "marketingteamredbaron@gmail.com") ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
@@ -305,7 +311,7 @@ export default function ContactClient({
             </div>
 
             {/* Location & Workshop Address Card — Auto Flex Height matching Inquiry Form */}
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl hover:border-[#de1615]/50 transition-all flex flex-col justify-between gap-4 flex-1">
+            <div className="glass-card p-6 sm:p-8 max-md:p-4 rounded-3xl max-md:rounded-2xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl hover:border-[#de1615]/50 transition-all flex flex-col justify-between gap-4 max-md:gap-3 flex-1">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs text-[#ff6534] tracking-widest uppercase font-semibold">
@@ -315,7 +321,7 @@ export default function ContactClient({
                 </div>
 
                 <div>
-                  <h3 className="font-sora font-bold text-lg text-white mb-1">PCCOE Motorsport Lab</h3>
+                  <h3 className="font-sora font-bold text-lg max-md:text-base text-white mb-1">PCCOE Motorsport Lab</h3>
                   <p className="font-inter text-xs text-[#e8bdb6] leading-relaxed whitespace-pre-line">
                     {address}
                   </p>
@@ -341,10 +347,10 @@ export default function ContactClient({
 
           {/* Right Column: High-Performance Inquiry Form */}
           <div className="lg:col-span-7 flex flex-col">
-            <div className="glass-card p-6 sm:p-8 lg:p-10 rounded-3xl border border-[#de1615]/30 bg-[#252e39]/60 backdrop-blur-2xl shadow-[0_0_30px_rgba(222,22,21,0.15)] relative flex-1 flex flex-col justify-between">
-              <div className="flex items-center justify-between mb-6">
+            <div className="glass-card p-6 sm:p-8 lg:p-10 max-md:p-4 rounded-3xl max-md:rounded-2xl border border-[#de1615]/30 bg-[#252e39]/60 backdrop-blur-2xl shadow-[0_0_30px_rgba(222,22,21,0.15)] relative flex-1 flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-6 max-md:mb-4">
                 <div>
-                  <h2 className="font-sora font-bold text-2xl text-white">Transmit Message</h2>
+                  <h2 className="font-sora font-bold text-2xl max-md:text-xl text-white">Transmit Message</h2>
                   <p className="font-inter text-xs text-[#e8bdb6] mt-1">
                     Fill out your query details to connect with the team leadership.
                   </p>
@@ -376,7 +382,7 @@ export default function ContactClient({
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 w-full px-4 py-3 rounded-xl bg-[#de1615] hover:bg-[#b81211] text-white font-sora font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-all"
+                      className="flex-1 w-full px-4 py-3 rounded-xl bg-[#de1615] hover:bg-[#b81211] text-white font-sora font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-all min-h-[44px]"
                     >
                       <Mail className="w-4 h-4" />
                       Open in Gmail Web
@@ -386,7 +392,7 @@ export default function ContactClient({
                       href={`mailto:${TARGET_MARKETING_EMAIL}?subject=${encodeURIComponent(`[TRB ${lastSubmission.inquiry_type}] Transmission from ${lastSubmission.name}`)}&body=${encodeURIComponent(
                         `Hello Team Red Baron,\n\nInquiry Category: ${lastSubmission.inquiry_type}\nSender: ${lastSubmission.name} (${lastSubmission.email})\nOrganization: ${lastSubmission.organization || "N/A"}\n\nMessage Details:\n${lastSubmission.message}\n\nBest regards,\n${lastSubmission.name}`
                       )}`}
-                      className="flex-1 w-full px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-sora font-bold text-xs border border-white/20 flex items-center justify-center gap-2 hover:scale-[1.02] transition-all"
+                      className="flex-1 w-full px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-sora font-bold text-xs border border-white/20 flex items-center justify-center gap-2 hover:scale-[1.02] transition-all min-h-[44px]"
                     >
                       <ExternalLink className="w-4 h-4" />
                       Open Mail App
@@ -398,19 +404,53 @@ export default function ContactClient({
                       setSubmitted(false);
                       setFormData({ name: "", email: "", organization: "", message: "" });
                     }}
-                    className="mt-2 text-xs font-mono text-[#ae8882] hover:text-white underline transition-colors"
+                    className="mt-2 text-xs font-mono text-[#ae8882] hover:text-white underline transition-colors min-h-[44px] flex items-center"
                   >
                     Send Another Transmission
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Inquiry Type Selector */}
-                  <div>
+                <form onSubmit={handleSubmit} className="space-y-6 max-md:space-y-4">
+                  {/* Mobile Native Select (< 768px) */}
+                  <div className="hidden max-md:block">
+                    <label className="block font-mono text-xs text-[#ffb4a9] font-medium mb-1.5">
+                      INQUIRY TYPE CATEGORY *
+                    </label>
+                    <select
+                      value={selectedType}
+                      onChange={(e) => setSelectedType(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-[#121414] border border-white/10 text-white text-[16px] focus:outline-none focus:border-[#de1615] focus:ring-1 focus:ring-[#de1615] transition-all font-inter appearance-none cursor-pointer"
+                    >
+                      {inquiryTypes.map((type) => (
+                        <option key={type.id} value={type.id} className="bg-[#121414] text-white">
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Desktop Category Buttons (>= 768px) */}
+                  <div className="max-md:hidden">
                     <label className="block font-mono text-xs text-[#ffb4a9] font-medium mb-2.5">
                       INQUIRY TYPE CATEGORY *
                     </label>
                     <div className="flex flex-wrap gap-2">
+                      {inquiryTypes.map((type) => (
+                        <button
+                          key={type.id}
+                          type="button"
+                          onClick={() => setSelectedType(type.id)}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-sora font-medium transition-all ${
+                            selectedType === type.id
+                              ? "bg-[#de1615] text-white font-bold shadow-[0_0_15px_rgba(222,22,21,0.4)]"
+                              : "bg-[#121414] text-[#e8bdb6] border border-white/10 hover:border-white/30"
+                          }`}
+                        >
+                          {type.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                       {inquiryTypes.map((type) => (
                         <button
                           key={type.id}
@@ -511,17 +551,17 @@ export default function ContactClient({
       </section>
 
       {/* Social Telemetry Channels Section — Positioned at End of Page */}
-      <section className="pb-20 pt-4 px-5 sm:px-10 lg:px-20 max-w-[1440px] mx-auto w-full">
-        <div className="glass-card p-8 sm:p-10 rounded-3xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
+      <section className="pb-20 max-md:pb-12 pt-4 max-md:pt-0 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full">
+        <div className="glass-card p-8 sm:p-10 max-md:p-4 rounded-3xl max-md:rounded-2xl border border-white/10 bg-[#252e39]/50 backdrop-blur-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 max-md:mb-4 pb-6 max-md:pb-3 border-b border-white/10">
             <div>
-              <h3 className="font-sora font-extrabold text-2xl text-white uppercase">
+              <h3 className="font-sora font-extrabold text-2xl max-md:text-lg text-white uppercase">
                 Connect Across Platforms
               </h3>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 max-md:grid-cols-3 gap-6 max-md:gap-2.5">
             {socials.map((soc) => {
               const Icon = soc.icon;
               return (
@@ -530,16 +570,16 @@ export default function ContactClient({
                   href={soc.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-6 rounded-2xl bg-[#121414] border border-white/10 hover:border-[#de1615]/50 flex items-center gap-5 group transition-all hover:bg-[#1a1d22] hover:scale-[1.01] shadow-lg"
+                  className="p-6 max-md:p-3 rounded-2xl max-md:rounded-xl bg-[#121414] border border-white/10 hover:border-[#de1615]/50 flex items-center max-md:flex-col max-md:justify-center max-md:text-center gap-5 max-md:gap-2 group transition-all hover:bg-[#1a1d22] hover:scale-[1.01] shadow-lg min-h-[44px]"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-[#1e2020] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-all">
-                    <Icon className="w-6 h-6 transition-transform group-hover:scale-110" style={{ color: soc.color }} />
+                  <div className="w-12 h-12 max-md:w-9 max-md:h-9 rounded-xl bg-[#1e2020] border border-white/10 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-all">
+                    <Icon className="w-6 h-6 max-md:w-4 max-md:h-4 transition-transform group-hover:scale-110" style={{ color: soc.color }} />
                   </div>
-                  <div className="flex flex-col truncate">
-                    <span className="font-sora text-base font-bold text-white group-hover:text-[#ffb59f] transition-colors truncate">
+                  <div className="flex flex-col truncate max-w-full">
+                    <span className="font-sora text-base max-md:text-xs font-bold text-white group-hover:text-[#ffb59f] transition-colors truncate">
                       {soc.name}
                     </span>
-                    <span className="font-mono text-xs text-[#ae8882] truncate">{soc.handle}</span>
+                    <span className="font-mono text-xs max-md:text-[10px] text-[#ae8882] truncate max-md:hidden">{soc.handle}</span>
                   </div>
                 </a>
               );
