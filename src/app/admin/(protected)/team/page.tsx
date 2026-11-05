@@ -4,12 +4,14 @@ import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import Link from "next/link";
 import { Trash2, Layers, Plus } from "lucide-react";
 import { getDepartmentDetails, DepartmentItem } from "@/lib/departments";
+import { getMemberPositions } from "@/lib/team-members-meta";
 
 export const dynamic = "force-dynamic";
 
 interface TeamMemberItem {
   id: string;
   name: string;
+  position?: string;
   image_url?: string;
   department?: string;
   linkedin_url?: string;
@@ -19,15 +21,21 @@ interface TeamMemberItem {
 export default async function AdminTeamPage(props: { searchParams: Promise<{ year?: string }> }) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
-  const { data: teamYears } = await supabase.from("team_years").select("*").is("deleted_at", null).order("sort_order", { ascending: false });
-  const { data: allMembers } = await supabase.from("team_members").select("team_year_id, department").is("deleted_at", null);
+  const [memberPositions, { data: teamYears }, { data: allMembers }] = await Promise.all([
+    getMemberPositions(),
+    supabase.from("team_years").select("*").is("deleted_at", null).order("sort_order", { ascending: false }),
+    supabase.from("team_members").select("team_year_id, department").is("deleted_at", null),
+  ]);
 
   const selectedYearId = searchParams.year || (teamYears?.[0]?.id);
 
   let members: TeamMemberItem[] = [];
   if (selectedYearId) {
     const { data: m } = await supabase.from("team_members").select("*").is("deleted_at", null).eq("team_year_id", selectedYearId).order("sort_order", { ascending: true });
-    members = (m as unknown as TeamMemberItem[]) || [];
+    members = ((m as unknown as TeamMemberItem[]) || []).map(member => ({
+      ...member,
+      position: (member.position && member.position.trim()) || memberPositions[member.id] || "",
+    }));
   }
 
   const normDept = (d?: string | null) => (d || "").trim().toUpperCase() || "GENERAL";
@@ -277,6 +285,10 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                               <div className="mt-4 space-y-3 flex-1">
                                 <input type="text" name="name" defaultValue={member.name} required placeholder="Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
                                 <div>
+                                  <label className="block text-[10px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-1">Position / Role</label>
+                                  <input type="text" name="position" defaultValue={member.position || ""} placeholder="Position (e.g. Captain, Lead, Driver)" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                                </div>
+                                <div>
                                   <label className="block text-[10px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-1">Domain</label>
                                   <select
                                     name="department"
@@ -318,6 +330,10 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                   </div>
                   <div className="space-y-3">
                     <input type="text" name="name" required placeholder="Member Full Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                    <div>
+                      <label className="block text-[11px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-1">Position / Role</label>
+                      <input type="text" name="position" placeholder="Position (e.g. Captain, Lead, Driver)" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                    </div>
                     <div>
                       <label className="block text-[11px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-1">Domain / Department</label>
                       <select

@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { uploadImage, deleteImage } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
 import { saveDepartment, removeDepartment, updateDepartmentDetails } from "@/lib/departments";
+import { saveMemberPosition, isColumnMissingError } from "@/lib/team-members-meta";
 
 export async function addTeamYear(formData: FormData) {
   const supabase = await createClient();
@@ -88,6 +89,7 @@ export async function addTeamMember(formData: FormData) {
   const supabase = await createClient();
   const team_year_id = formData.get("team_year_id") as string;
   const name = formData.get("name") as string;
+  const position = ((formData.get("position") as string) || "").trim();
   const rawDept = (formData.get("department") as string) || "";
   const department = rawDept.trim().toUpperCase() || "GENERAL";
   const linkedin_url = formData.get("linkedin_url") as string;
@@ -130,13 +132,53 @@ export async function addTeamMember(formData: FormData) {
     }
   }
 
-  const { error } = await supabase.from("team_members").insert({
-    team_year_id, name, department, linkedin_url, sort_order, image_url
-  });
+  let insertedId: string | null = null;
+  // Try inserting with position
+  const { data: inserted, error } = await supabase
+    .from("team_members")
+    .insert({
+      team_year_id,
+      name,
+      department,
+      linkedin_url,
+      sort_order,
+      image_url,
+      position,
+    })
+    .select("id")
+    .single();
 
   if (error) {
-    console.error("Failed to add team member:", error);
-    throw new Error(error.message);
+    if (isColumnMissingError(error)) {
+      // Column position not yet in Supabase schema cache
+      const { data: fbInserted, error: fbError } = await supabase
+        .from("team_members")
+        .insert({
+          team_year_id,
+          name,
+          department,
+          linkedin_url,
+          sort_order,
+          image_url,
+        })
+        .select("id")
+        .single();
+
+      if (fbError) {
+        console.error("Failed to add team member (fallback):", fbError);
+        throw new Error(fbError.message);
+      }
+      insertedId = fbInserted?.id || null;
+    } else {
+      console.error("Failed to add team member:", error);
+      throw new Error(error.message);
+    }
+  } else {
+    insertedId = inserted?.id || null;
+  }
+
+  if (insertedId && position) {
+    await saveMemberPosition(insertedId, position);
   }
 
   await saveDepartment(department);
@@ -149,6 +191,7 @@ export async function addTeamMember(formData: FormData) {
 export async function updateTeamMember(id: string, formData: FormData) {
   const supabase = await createClient();
   const name = formData.get("name") as string;
+  const position = ((formData.get("position") as string) || "").trim();
   const rawDept = (formData.get("department") as string) || "";
   const department = rawDept.trim().toUpperCase() || "GENERAL";
   const linkedin_url = formData.get("linkedin_url") as string;
@@ -181,9 +224,21 @@ export async function updateTeamMember(id: string, formData: FormData) {
     finalImageUrl = directUrl;
   }
 
-  const { data: updatedRows, error } = await supabase.from("team_members").update({
-    name, department, linkedin_url, sort_order, image_url: finalImageUrl
+  // Always save position to metadata fallback immediately for durability
+  await saveMemberPosition(id, position);
+
+  let { data: updatedRows, error } = await supabase.from("team_members").update({
+    name, department, linkedin_url, sort_order, image_url: finalImageUrl, position
   }).eq("id", id).select("id");
+
+  if (error && isColumnMissingError(error)) {
+    // position column missing from Supabase schema -> update without position
+    const res = await supabase.from("team_members").update({
+      name, department, linkedin_url, sort_order, image_url: finalImageUrl
+    }).eq("id", id).select("id");
+    updatedRows = res.data;
+    error = res.error;
+  }
 
   if (error) {
     console.error("Failed to update team member:", error);

@@ -75,6 +75,7 @@ export interface TeamMemberItem {
   id: string;
   name: string;
   department: string;
+  position?: string | null;
   academic_year?: string | null;
   linkedin_url?: string | null;
   image_url?: string | null;
@@ -242,6 +243,11 @@ function TeamContent({
                             <h3 className="font-sora font-bold text-base sm:text-lg max-md:text-xs text-white group-hover:text-[#de1615] transition-colors uppercase leading-tight line-clamp-2">
                               {member.name}
                             </h3>
+                            {member.position && (
+                              <span className="font-mono-tech text-xs max-md:text-[10px] text-[#de1615] font-semibold tracking-wider block uppercase mt-1 line-clamp-1">
+                                {member.position}
+                              </span>
+                            )}
                             {member.academic_year && (
                               <span className="font-mono-tech text-xs max-md:text-[10px] text-[#ae8882] line-clamp-2 block mt-1">
                                 {member.academic_year}
