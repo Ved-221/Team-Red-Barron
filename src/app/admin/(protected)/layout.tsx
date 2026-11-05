@@ -18,7 +18,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     <div className="min-h-screen bg-[#0a0c0e] text-[#e2e2e2] flex font-inter">
       <AdminActionFeedback />
       {/* Sidebar */}
-      <aside className="w-64 border-r border-white/10 bg-[#12151b] flex flex-col hidden md:flex">
+      <aside className="w-64 border-r border-white/10 bg-[#12151b] flex flex-col shrink-0">
         <div className="p-6 border-b border-white/10 flex items-center justify-between">
           <div>
             <h2 className="font-sora font-bold text-white tracking-wider">TRB Admin</h2>
@@ -81,9 +81,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
-        <header className="h-16 border-b border-white/10 bg-[#12151b] flex items-center px-6 md:hidden">
-          <h2 className="font-sora font-bold text-white tracking-wider">TRB Admin</h2>
-        </header>
         <div className="flex-1 overflow-y-auto p-6 md:p-8">
           {children}
         </div>
