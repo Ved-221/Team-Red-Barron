@@ -29,7 +29,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         <nav className="flex-1 overflow-y-auto p-4 space-y-1">
           <Link href="/admin/home" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium">
             <Home className="w-4 h-4 text-[#de1615]" />
-            Home (Hero & Spotlight)
+            Home (Hero, Stats & Spotlight)
           </Link>
           <Link href="/admin/off-the-map" className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-sm font-medium">
             <ImageIcon className="w-4 h-4 text-[#ff6534]" />

@@ -1,0 +1,163 @@
+import { createClient } from "@/lib/supabase/server";
+import { supabase as staticClient } from "@/lib/supabase";
+import fs from "fs/promises";
+import path from "path";
+import { AchievementStat, DEFAULT_ACHIEVEMENTS } from "./achievements-types";
+
+export type { AchievementStat };
+export { DEFAULT_ACHIEVEMENTS };
+
+const ACHIEVEMENTS_FILE = path.join(process.cwd(), "src", "data", "achievements.json");
+
+async function getClient() {
+  try {
+    return await createClient();
+  } catch {
+    return staticClient;
+  }
+}
+
+function isTableMissingError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const err = error as { code?: string; message?: string };
+  const code = String(err.code || "");
+  const msg = String(err.message || "").toLowerCase();
+  return (
+    code === "42P01" ||
+    code === "PGRST205" ||
+    msg.includes("does not exist") ||
+    msg.includes("could not find") ||
+    msg.includes("schema cache")
+  );
+}
+
+async function readJsonFallback(): Promise<AchievementStat[]> {
+  try {
+    const raw = await fs.readFile(ACHIEVEMENTS_FILE, "utf-8");
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+    }
+  } catch {
+    // If not found, use default
+  }
+  return DEFAULT_ACHIEVEMENTS;
+}
+
+async function writeJsonFallback(items: AchievementStat[]): Promise<void> {
+  try {
+    await fs.mkdir(path.dirname(ACHIEVEMENTS_FILE), { recursive: true });
+    await fs.writeFile(ACHIEVEMENTS_FILE, JSON.stringify(items, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("Could not write achievements.json fallback:", err);
+  }
+}
+
+export async function getAchievements(): Promise<AchievementStat[]> {
+  try {
+    const client = await getClient();
+    const { data, error } = await client
+      .from("home_achievements")
+      .select("id, label, value, icon, detail, sort_order")
+      .is("deleted_at", null)
+      .order("sort_order", { ascending: true });
+
+    if (!error && data && data.length > 0) {
+      return data.map((row: Partial<AchievementStat>, idx: number) => ({
+        id: String(row.id || `stat-${idx}`),
+        label: row.label || "",
+        value: row.value || "",
+        icon: row.icon || "Trophy",
+        detail: row.detail || "",
+        sort_order: typeof row.sort_order === "number" ? row.sort_order : idx + 1,
+      }));
+    }
+  } catch {
+    // fall back to json file
+  }
+
+  return readJsonFallback();
+}
+
+export async function saveAchievement(data: {
+  id?: string;
+  label: string;
+  value: string;
+  icon?: string;
+  detail?: string;
+  sort_order?: number;
+}): Promise<AchievementStat[]> {
+  const current = await readJsonFallback();
+  const id = data.id || `stat-${Date.now()}`;
+  const sort_order = Number.isFinite(data.sort_order) ? Number(data.sort_order) : current.length + 1;
+
+  const record: AchievementStat = {
+    id,
+    label: (data.label || "").trim(),
+    value: (data.value || "").trim(),
+    icon: (data.icon || "Trophy").trim(),
+    detail: (data.detail || "").trim(),
+    sort_order,
+  };
+
+  const existingIdx = current.findIndex((item) => item.id === id);
+  if (existingIdx >= 0) {
+    current[existingIdx] = record;
+  } else {
+    current.push(record);
+  }
+
+  current.sort((a, b) => a.sort_order - b.sort_order);
+  await writeJsonFallback(current);
+
+  // Attempt to save to Supabase home_achievements if table exists
+  try {
+    const client = await getClient();
+    const payload = {
+      label: record.label,
+      value: record.value,
+      icon: record.icon,
+      detail: record.detail,
+      sort_order: record.sort_order,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (existingIdx >= 0 && !id.startsWith("stat-")) {
+      const { error } = await client.from("home_achievements").update(payload).eq("id", id);
+      if (error && !isTableMissingError(error)) {
+        console.warn("Supabase home_achievements update warning:", error.message);
+      }
+    } else {
+      const { error } = await client.from("home_achievements").insert(payload);
+      if (error && !isTableMissingError(error)) {
+        console.warn("Supabase home_achievements insert warning:", error.message);
+      }
+    }
+  } catch (err) {
+    console.warn("Could not sync achievement to Supabase:", err);
+  }
+
+  return current;
+}
+
+export async function deleteAchievement(id: string): Promise<AchievementStat[]> {
+  const current = await readJsonFallback();
+  const filtered = current.filter((item) => item.id !== id);
+  await writeJsonFallback(filtered);
+
+  try {
+    const client = await getClient();
+    const { error } = await client
+      .from("home_achievements")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", id);
+
+    if (error && !isTableMissingError(error)) {
+      console.warn("Supabase home_achievements delete warning:", error.message);
+    }
+  } catch (err) {
+    console.warn("Could not sync achievement deletion to Supabase:", err);
+  }
+
+  return filtered;
+}

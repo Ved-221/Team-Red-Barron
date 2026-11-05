@@ -1,18 +1,50 @@
 "use client";
 
-import { Trophy, Award, History, Car, ShieldCheck, Zap } from "lucide-react";
+import React from "react";
+import {
+  Trophy,
+  Award,
+  History,
+  Car,
+  ShieldCheck,
+  Zap,
+  Flame,
+  Gauge,
+  Medal,
+  Crown,
+  Flag,
+  Target,
+  Star,
+} from "lucide-react";
+import type { AchievementStat } from "@/lib/achievements-types";
+import { DEFAULT_ACHIEVEMENTS } from "@/lib/achievements-types";
 
-export function AchievementsTicker() {
-  const stats = [
-    { label: "Years of Legacy", value: "15 YEARS", icon: History, detail: "Active 2011 – Present" },
-    { label: "Vehicles Built", value: "14 ATVs", icon: Car, detail: "Albatros 1.0 to XIV" },
-    { label: "E-BAJA INDIA 2025", value: "1ST RANK", icon: ShieldCheck, detail: "Overall Statics" },
-    { label: "E-BAJA INDIA 2024", value: "AIR 1", icon: Trophy, detail: "Engineering Design" },
-    { label: "E-BAJA INDIA 2024", value: "AIR 2", icon: Award, detail: "Overall National Rank" },
-    { label: "E-BAJA INDIA", value: "BEST 4WD", icon: Zap, detail: "Performance Award" },
-    { label: "Baja SAE Illinois 2017", value: "9TH RANK", icon: Car, detail: "Overall Dynamics (USA)" },
-    { label: "Baja SAE Rochester 2019", value: "7TH RANK", icon: History, detail: "Hill Climbing (USA)" },
-  ];
+export const AVAILABLE_ACHIEVEMENT_ICONS: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
+  Trophy,
+  Award,
+  History,
+  Car,
+  ShieldCheck,
+  Zap,
+  Flame,
+  Gauge,
+  Medal,
+  Crown,
+  Flag,
+  Target,
+  Star,
+};
+
+function getIconComponent(iconName?: string): React.ComponentType<{ className?: string }> {
+  if (!iconName) return Trophy;
+  return AVAILABLE_ACHIEVEMENT_ICONS[iconName] || Trophy;
+}
+
+export function AchievementsTicker({ stats }: { stats?: AchievementStat[] }) {
+  const activeStats = (stats && stats.length > 0) ? stats : DEFAULT_ACHIEVEMENTS;
 
   return (
     <section className="py-8 max-md:py-4 bg-black/80 border-y border-white/10 overflow-hidden relative">
@@ -21,14 +53,14 @@ export function AchievementsTicker() {
 
       {/* Desktop Marquee (>= 768px) */}
       <div className="flex animate-marquee gap-8 max-md:hidden">
-        {[...stats, ...stats].map((stat, idx) => {
-          const Icon = stat.icon;
+        {[...activeStats, ...activeStats].map((stat, idx) => {
+          const Icon = getIconComponent(stat.icon);
           return (
             <div
-              key={idx}
+              key={`${stat.id || idx}-${idx}`}
               className="glass-card px-8 py-4 rounded-2xl flex items-center gap-5 whitespace-nowrap min-w-[290px] border border-white/10 hover:border-[#de1615] transition-colors group"
             >
-              <div className="w-12 h-12 rounded-xl bg-[#de1615]/20 border border-[#de1615]/40 flex items-center justify-center text-[#de1615] group-hover:bg-[#de1615] group-hover:text-white transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-[#de1615]/20 border border-[#de1615]/40 flex items-center justify-center text-[#de1615] group-hover:bg-[#de1615] group-hover:text-white transition-colors shrink-0">
                 <Icon className="w-6 h-6" />
               </div>
               <div className="flex flex-col">
@@ -38,6 +70,11 @@ export function AchievementsTicker() {
                 <span className="font-mono-tech text-xs text-[#e8bdb6] tracking-wider uppercase font-semibold">
                   {stat.label}
                 </span>
+                {stat.detail && (
+                  <span className="font-inter text-[11px] text-white/40 mt-0.5 max-w-[200px] truncate">
+                    {stat.detail}
+                  </span>
+                )}
               </div>
             </div>
           );
@@ -46,11 +83,11 @@ export function AchievementsTicker() {
 
       {/* Mobile Horizontal Scroll-Snap Strip (< 768px) */}
       <div className="hidden max-md:flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-3 px-4 py-2">
-        {stats.map((stat, idx) => {
-          const Icon = stat.icon;
+        {activeStats.map((stat, idx) => {
+          const Icon = getIconComponent(stat.icon);
           return (
             <div
-              key={idx}
+              key={stat.id || idx}
               className="snap-center shrink-0 glass-card px-5 py-3.5 rounded-2xl flex items-center gap-4 whitespace-nowrap min-w-[240px] border border-white/10 hover:border-[#de1615] transition-colors group"
             >
               <div className="w-10 h-10 rounded-xl bg-[#de1615]/20 border border-[#de1615]/40 flex items-center justify-center text-[#de1615] group-hover:bg-[#de1615] group-hover:text-white transition-colors shrink-0">
@@ -63,6 +100,11 @@ export function AchievementsTicker() {
                 <span className="font-mono-tech text-[11px] text-[#e8bdb6] tracking-wider uppercase font-semibold">
                   {stat.label}
                 </span>
+                {stat.detail && (
+                  <span className="font-inter text-[10px] text-white/40 mt-0.5 max-w-[180px] truncate">
+                    {stat.detail}
+                  </span>
+                )}
               </div>
             </div>
           );

@@ -11,11 +11,12 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { HomepageIntro } from "@/components/HomepageIntro";
 import { supabase } from "@/lib/supabase";
 import { getSharedChromeData } from "@/lib/server-data";
+import { getAchievements } from "@/lib/achievements";
 
 export const revalidate = 3600;
 
 export default async function Home() {
-  const [chrome, { data: settings }, { data: vehicles }, { data: sponsors }, { data: teamPhotos }] =
+  const [chrome, { data: settings }, { data: vehicles }, { data: sponsors }, { data: teamPhotos }, achievements] =
     await Promise.all([
       getSharedChromeData(),
       supabase
@@ -41,6 +42,7 @@ export default async function Home() {
         .select("id, image_url, caption, sort_order")
         .is("deleted_at", null)
         .order("sort_order", { ascending: true }),
+      getAchievements(),
     ]);
 
   const formattedVehicles = (vehicles || []).map((v) => ({
@@ -74,7 +76,7 @@ export default async function Home() {
       <Hero tagline={settings?.hero_tagline} />
 
       <ScrollReveal yOffset={30}>
-        <AchievementsTicker />
+        <AchievementsTicker stats={achievements} />
       </ScrollReveal>
 
       <ScrollReveal yOffset={50}>
