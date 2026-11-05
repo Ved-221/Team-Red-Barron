@@ -167,22 +167,9 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
               )}
             </div>
 
-            {/* Mobile Streamlined Developer Credit */}
-            <div className="hidden max-md:block mt-3 text-xs font-mono-tech text-[#e8bdb6]">
-              Developed by{" "}
-              <a
-                href="https://www.linkedin.com/in/veddhapodkar"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-[#0A66C2] font-semibold underline"
-              >
-                Ved Dhapodkar
-              </a>
-            </div>
-
-            {/* Desktop Developer Credit */}
-            <div className="mt-5 space-y-1.5 max-md:hidden">
-              <div className="flex flex-wrap items-center gap-2.5">
+            {/* Developer Credit with Social Links (Visible on Mobile & Desktop) */}
+            <div className="mt-5 max-md:mt-3 space-y-1.5">
+              <div className="flex flex-wrap items-center gap-2.5 max-md:gap-2">
                 <span className="font-mono-tech text-xs text-[#e8bdb6]">
                   Developed by <span className="text-white font-semibold">Ved Dhapodkar</span>
                 </span>
@@ -191,40 +178,40 @@ export function FooterClient({ contactData }: { contactData?: SharedContactInfo 
                     href="https://github.com/Ved-221"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all"
+                    className="w-7 h-7 max-md:w-6 max-md:h-6 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all"
                     aria-label="Ved Dhapodkar on GitHub"
                     title="Ved Dhapodkar on GitHub"
                   >
-                    <GitHubIcon className="w-3.5 h-3.5" />
+                    <GitHubIcon className="w-3.5 h-3.5 max-md:w-3 max-md:h-3" />
                   </a>
                   <a
                     href="https://www.linkedin.com/in/veddhapodkar"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-[#0A66C2] hover:border-[#0A66C2]/60 hover:bg-[#0A66C2]/10 transition-all"
+                    className="w-7 h-7 max-md:w-6 max-md:h-6 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-[#0A66C2] hover:border-[#0A66C2]/60 hover:bg-[#0A66C2]/10 transition-all"
                     aria-label="Ved Dhapodkar on LinkedIn"
                     title="Ved Dhapodkar on LinkedIn"
                   >
-                    <LinkedInIcon className="w-3.5 h-3.5" />
+                    <LinkedInIcon className="w-3.5 h-3.5 max-md:w-3 max-md:h-3" />
                   </a>
                   <a
                     href="https://www.instagram.com/ved_dh/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-[#E4405F] hover:border-[#E4405F]/60 hover:bg-[#E4405F]/10 transition-all"
+                    className="w-7 h-7 max-md:w-6 max-md:h-6 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-[#E4405F] hover:border-[#E4405F]/60 hover:bg-[#E4405F]/10 transition-all"
                     aria-label="Ved on Instagram"
                     title="Ved on Instagram"
                   >
-                    <InstagramIcon className="w-3.5 h-3.5" />
+                    <InstagramIcon className="w-3.5 h-3.5 max-md:w-3 max-md:h-3" />
                   </a>
                 </div>
               </div>
               <div>
                 <a
                   href="mailto:veddhapodkar@gmail.com"
-                  className="font-mono text-xs text-[#e8bdb6]/80 hover:text-[#de1615] transition-colors inline-flex items-center gap-1.5 hover:underline"
+                  className="font-mono text-xs max-md:text-[11px] text-[#e8bdb6]/80 hover:text-[#de1615] transition-colors inline-flex items-center gap-1.5 hover:underline"
                 >
-                  <Mail className="w-3.5 h-3.5 text-[#de1615]" />
+                  <Mail className="w-3.5 h-3.5 max-md:w-3 max-md:h-3 text-[#de1615]" />
                   <span>veddhapodkar@gmail.com</span>
                 </a>
               </div>
