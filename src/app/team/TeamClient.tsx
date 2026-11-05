@@ -213,7 +213,7 @@ function TeamContent({
                         }}
                         className="group relative bg-[#12151b]/80 border border-white/10 rounded-2xl max-md:rounded-xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row max-md:flex-col items-stretch"
                       >
-                        <div className="relative w-28 sm:w-32 max-md:w-full max-md:h-36 shrink-0 bg-black/50 overflow-hidden min-h-[110px] sm:min-h-[120px] max-md:min-h-0">
+                        <div className="relative w-28 sm:w-32 max-md:w-full max-md:h-44 shrink-0 bg-black/50 overflow-hidden min-h-[110px] sm:min-h-[120px] max-md:min-h-0">
                           <SmartImage
                             src={member.photo_url || "/team_person.webp"}
                             fallbackSrc="/team_person.webp"
@@ -221,9 +221,9 @@ function TeamContent({
                             fill
                             priority={idx < 6}
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 128px"
-                            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                            className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-r max-md:bg-gradient-to-t from-transparent to-[#12151b]/80" />
+                          <div className="absolute inset-0 bg-gradient-to-r max-md:bg-gradient-to-b from-transparent via-transparent to-[#12151b]/80" />
                         </div>
 
                         <div className="p-4 max-md:p-2.5 flex flex-col justify-between flex-1 min-w-0">
