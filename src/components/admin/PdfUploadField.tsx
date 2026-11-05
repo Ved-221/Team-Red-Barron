@@ -16,7 +16,7 @@ export function PdfUploadField({
   defaultValue,
   label = "Upload PDF Document",
   className = "",
-  maxSizeMb = 10,
+  maxSizeMb = 4,
 }: PdfUploadFieldProps) {
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);

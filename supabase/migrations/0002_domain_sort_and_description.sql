@@ -12,3 +12,4 @@ UPDATE departments SET description = 'Constructing the structural backbone of th
 UPDATE departments SET description = 'Fine-tuning suspension, steering, and aerodynamics to give our drivers complete control in every corner.', sort_order = 5 WHERE name = 'VEHICLE DYNAMICS' AND (description IS NULL OR description = '');
 UPDATE departments SET description = 'Maximizing the efficiency and reliability of internal combustion components for extreme racing conditions.', sort_order = 6 WHERE name = 'MECHANICAL POWERTRAIN' AND (description IS NULL OR description = '');
 UPDATE departments SET description = 'Operations, corporate outreach, media, logistics, and organizational excellence driving Team Red Baron.', sort_order = 7 WHERE name = 'MANAGEMENT' AND (description IS NULL OR description = '');
+

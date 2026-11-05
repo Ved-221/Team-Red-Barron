@@ -23,7 +23,7 @@ export default async function OffTheMapPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {photos?.map(photo => (
           <form key={photo.id} action={updateTeamPhoto.bind(null, photo.id)} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] flex flex-col">
-            <ImageUploadField name="image" defaultValue={photo.image_url} />
+            <ImageUploadField name="image" label="Team Photo (Max 1.5 MB)" defaultValue={photo.image_url} maxDimension={1600} maxSizeMb={1.5} />
             <div className="mt-4 space-y-4 flex-1">
               <div>
                 <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">Caption</label>
@@ -59,7 +59,7 @@ export default async function OffTheMapPage() {
       <div className="pt-8 mt-8 border-t border-white/10">
         <h2 className="font-sora font-bold text-xl text-white mb-6">Add New Photo</h2>
         <form action={addTeamPhoto} className="glass-card p-6 rounded-2xl border border-white/10 bg-[#12151b] max-w-md">
-          <ImageUploadField name="image" />
+          <ImageUploadField name="image" label="Team Photo (Max 1.5 MB)" maxDimension={1600} maxSizeMb={1.5} />
           <div className="mt-4 space-y-4">
             <div>
               <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">Caption</label>

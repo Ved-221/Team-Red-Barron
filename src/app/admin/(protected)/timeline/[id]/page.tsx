@@ -130,7 +130,7 @@ export default async function AdminTimelineFormPage(props: { params: Promise<{ i
         </div>
 
         <div className="pt-6 border-t border-white/10">
-          <ImageUploadField name="image" label="Vehicle Image" defaultValue={vehicle?.image_url} />
+          <ImageUploadField name="image" label="Vehicle Image (Max 1.5 MB • Auto-optimized)" defaultValue={vehicle?.image_url} maxDimension={1600} maxSizeMb={1.5} />
         </div>
 
         <div className="pt-8 border-t border-white/10 flex justify-end">

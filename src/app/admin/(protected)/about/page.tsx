@@ -48,8 +48,10 @@ export default async function AdminAboutPage() {
             <ImageUploadField
               key={about?.team_photo_url || "team_photo_url"}
               name="team_photo"
-              label="Team Photo"
+              label="Team Photo (Max 1.5 MB • Auto-optimized)"
               defaultValue={about?.team_photo_url}
+              maxDimension={1600}
+              maxSizeMb={1.5}
             />
             <div className="mt-4">
               <label className="block text-xs font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-2">

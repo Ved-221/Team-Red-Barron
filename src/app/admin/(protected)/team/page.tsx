@@ -273,7 +273,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           {deptMembers.map(member => (
                             <form key={member.id} action={updateTeamMember.bind(null, member.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
-                              <ImageUploadField name="image" defaultValue={member.image_url} maxDimension={800} />
+                              <ImageUploadField name="image" label="Member Photo (Max 1 MB)" defaultValue={member.image_url} maxDimension={800} maxSizeMb={1.0} />
                               <div className="mt-4 space-y-3 flex-1">
                                 <input type="text" name="name" defaultValue={member.name} required placeholder="Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
                                 <div>
@@ -314,7 +314,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                 <form action={addTeamMember} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input type="hidden" name="team_year_id" value={selectedYearId} />
                   <div>
-                    <ImageUploadField name="image" maxDimension={800} />
+                    <ImageUploadField name="image" label="Member Photo (Max 1 MB)" maxDimension={800} maxSizeMb={1.0} />
                   </div>
                   <div className="space-y-3">
                     <input type="text" name="name" required placeholder="Member Full Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />

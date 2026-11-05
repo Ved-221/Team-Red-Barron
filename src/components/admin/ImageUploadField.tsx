@@ -29,9 +29,9 @@ function loadHtmlImage(file: File): Promise<HTMLImageElement> {
   });
 }
 
-async function compressImageInBrowser(file: File, maxDimension = 1920): Promise<File> {
-  const validTypes = ["image/jpeg", "image/png", "image/webp"];
-  if (!validTypes.includes(file.type)) {
+async function compressImageInBrowser(file: File, maxDimension = 1600): Promise<File> {
+  const isImage = file.type.startsWith("image/") && !file.type.includes("svg") && !file.type.includes("gif");
+  if (!isImage) {
     return file;
   }
 
@@ -87,7 +87,7 @@ async function compressImageInBrowser(file: File, maxDimension = 1920): Promise<
   }
 
   const blob = await new Promise<Blob | null>((resolve) => {
-    canvas.toBlob(resolve, "image/webp", 0.8);
+    canvas.toBlob(resolve, "image/webp", 0.78);
   });
 
   if (!blob) {
@@ -109,8 +109,8 @@ export function ImageUploadField({
   defaultValue,
   label = "Upload Image",
   className = "",
-  maxDimension = 1920,
-  maxSizeMb = 5,
+  maxDimension = 1600,
+  maxSizeMb = 1.5,
 }: ImageUploadFieldProps) {
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -162,10 +162,10 @@ export function ImageUploadField({
       return;
     }
 
-    const RAW_MAX_BYTES = 25 * 1024 * 1024;
+    const RAW_MAX_BYTES = 20 * 1024 * 1024;
     if (file.size > RAW_MAX_BYTES) {
       const rawMb = (file.size / (1024 * 1024)).toFixed(1);
-      setErrorMessage(`Selected file is too large (${rawMb} MB). Please select an image under 25 MB.`);
+      setErrorMessage(`Selected raw file is too large (${rawMb} MB). Please select an image under 20 MB.`);
       if (inputRef.current) {
         inputRef.current.value = "";
       }
@@ -194,7 +194,7 @@ export function ImageUploadField({
 
       if (finalFile.size > maxSizeMb * 1024 * 1024) {
         const sizeMb = (finalFile.size / (1024 * 1024)).toFixed(1);
-        setErrorMessage(`File exceeds ${maxSizeMb} MB limit (${sizeMb} MB). Please select a smaller file.`);
+        setErrorMessage(`Image is too large (${sizeMb} MB) after compression. Maximum upload limit is ${maxSizeMb} MB. Please crop or choose a smaller image.`);
         if (inputRef.current) {
           inputRef.current.value = "";
         }

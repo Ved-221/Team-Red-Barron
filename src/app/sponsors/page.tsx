@@ -54,7 +54,7 @@ export default async function SponsorsPage() {
     <SponsorsClient
       sponsorTiers={cleanedTiers}
       testimonials={testimonials}
-      heroBgUrl={settingsRes.data?.sponsors_bg_url || "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"}
+      heroBgUrl={settingsRes.data?.sponsors_bg_url || "/images/sponsors_hero_bg.webp"}
       chromeData={chromeData}
     />
   );

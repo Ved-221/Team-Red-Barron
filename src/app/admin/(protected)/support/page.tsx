@@ -74,13 +74,14 @@ export default async function AdminSupportPage() {
             <h2 className="font-sora font-bold text-lg text-white">Payment QR Code</h2>
           </div>
 
-          {/* QR Code Upload Field (with client-side compression and 5 MB size limit) */}
+          {/* QR Code Upload Field (with client-side compression and 1 MB size limit) */}
           <div className="w-full">
             <ImageUploadField
               name="qr_code_file"
               defaultValue={qrCodeUrl}
-              label="Payment QR Code Image (Max 5 MB • Auto-optimized)"
+              label="Payment QR Code Image (Max 1 MB • Auto-optimized)"
               maxDimension={800}
+              maxSizeMb={1.0}
             />
           </div>
         </div>
@@ -109,8 +110,8 @@ export default async function AdminSupportPage() {
             <PdfUploadField
               name="brochure_file"
               defaultValue={brochureUrl}
-              label="Sponsorship Brochure (PDF • Max 10 MB)"
-              maxSizeMb={10}
+              label="Sponsorship Brochure (PDF • Max 4 MB)"
+              maxSizeMb={4}
             />
           </div>
         </div>

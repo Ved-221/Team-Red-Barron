@@ -75,8 +75,10 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
         <form action={updateSponsorHeroBg} className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
           <ImageUploadField
             name="hero_bg"
-            label="Sponsors Hero Wallpaper"
-            defaultValue={siteSettings?.sponsors_bg_url || "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/hero/IMG_4588.png"}
+            label="Sponsors Hero Wallpaper (Max 1.5 MB • Auto-optimized)"
+            defaultValue={siteSettings?.sponsors_bg_url || "/images/sponsors_hero_bg.webp"}
+            maxDimension={1920}
+            maxSizeMb={1.5}
           />
           <div>
             <button
@@ -337,7 +339,7 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {sponsors.map(sponsor => (
                     <form key={sponsor.id} action={updateSponsor.bind(null, sponsor.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
-                      <ImageUploadField name="logo" label="Sponsor Logo" defaultValue={sponsor.logo_url} className="mb-4" />
+                      <ImageUploadField name="logo" label="Sponsor Logo (Max 800 KB)" defaultValue={sponsor.logo_url} className="mb-4" maxDimension={500} maxSizeMb={0.8} />
                       <div className="space-y-3 flex-1">
                         <input type="text" name="name" defaultValue={sponsor.name} required placeholder="Sponsor Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
                         <input type="url" name="website_url" defaultValue={sponsor.website_url} placeholder="Website URL" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
@@ -359,7 +361,7 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
                 <form action={addSponsor} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input type="hidden" name="tier_id" value={selectedTierId} />
                   <div>
-                    <ImageUploadField name="logo" label="Sponsor Logo" />
+                    <ImageUploadField name="logo" label="Sponsor Logo (Max 800 KB)" maxDimension={500} maxSizeMb={0.8} />
                   </div>
                   <div className="space-y-3">
                     <input type="text" name="name" required placeholder="Sponsor Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
