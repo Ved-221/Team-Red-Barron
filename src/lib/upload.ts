@@ -1,7 +1,7 @@
 import { createClient } from "./supabase/server";
 
-const MAX_IMAGE_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
-const MAX_DOC_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_DOC_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 export async function uploadImage(file: File, folder: string): Promise<string | null> {
   if (!file || file.size === 0) return null;
@@ -10,7 +10,7 @@ export async function uploadImage(file: File, folder: string): Promise<string | 
   const cleanExt = (rawExt || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
   const isDoc = cleanExt === 'pdf' || file.type === 'application/pdf' || folder === 'brochures';
   const maxBytes = isDoc ? MAX_DOC_SIZE_BYTES : MAX_IMAGE_SIZE_BYTES;
-  const maxLabel = isDoc ? '5 MB' : '2 MB';
+  const maxLabel = isDoc ? '10 MB' : '5 MB';
 
   if (file.size > maxBytes) {
     const sizeMb = (file.size / (1024 * 1024)).toFixed(1);

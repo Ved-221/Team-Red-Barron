@@ -87,6 +87,21 @@ async function writeMetaFallback(meta: Record<string, { sort_order?: number; des
   }
 }
 
+function isColumnMissingError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const err = error as { code?: string; message?: string };
+  const code = String(err.code || "");
+  const msg = String(err.message || "").toLowerCase();
+  return (
+    code === "42703" ||
+    code === "PGRST204" ||
+    msg.includes("does not exist") ||
+    msg.includes("could not find") ||
+    msg.includes("schema cache") ||
+    msg.includes("column")
+  );
+}
+
 export async function getDepartmentDetails(): Promise<DepartmentItem[]> {
   const metaFallback = await readMetaFallback();
 
@@ -122,8 +137,8 @@ export async function getDepartmentDetails(): Promise<DepartmentItem[]> {
       }).sort((a, b) => a.sort_order - b.sort_order || a.name.localeCompare(b.name));
     }
 
-    // 2. If sort_order or description column doesn't exist yet (Supabase error 42703), fetch name only
-    if (error && (error.code === "42703" || error.message?.includes("does not exist"))) {
+    // 2. If sort_order or description column doesn't exist yet (PGRST204 / 42703), fetch name only
+    if (error && isColumnMissingError(error)) {
       const { data: nameData } = await client
         .from("departments")
         .select("id, name");
@@ -194,18 +209,19 @@ export async function saveDepartment(
         description: description.trim(),
       });
 
-    if (error && (error.code === "42703" || error.message?.includes("does not exist"))) {
-      // Columns don't exist yet -> insert name only
-      await client.from("departments").insert({ name: cleanName });
-    } else if (error && error.code !== "23505") {
-      console.error("Failed to insert department into Supabase:", error);
-      throw new Error(`Failed to save domain: ${error.message}`);
+    if (error) {
+      if (isColumnMissingError(error)) {
+        // Columns don't exist yet -> insert name only
+        const { error: nameErr } = await client.from("departments").insert({ name: cleanName });
+        if (nameErr && nameErr.code !== "23505") {
+          console.warn("departments name insert:", nameErr.message);
+        }
+      } else if (error.code !== "23505") {
+        console.warn("departments insert warning:", error.message);
+      }
     }
   } catch (err) {
-    if (err instanceof Error && err.message.startsWith("Failed to save domain:")) {
-      throw err;
-    }
-    console.error("Error saving department:", err);
+    console.warn("Error saving department:", err);
   }
 
   return getDepartments();
@@ -237,15 +253,15 @@ export async function updateDepartmentDetails(
       })
       .ilike("name", cleanName);
 
-    if (error && error.code !== "42703" && !error.message?.includes("does not exist")) {
-      console.error("Failed to update department details in Supabase:", error);
-      throw new Error(`Failed to update domain: ${error.message}`);
+    if (error) {
+      if (isColumnMissingError(error)) {
+        console.info(`Domain [${cleanName}] metadata saved locally (Supabase columns pending migration).`);
+      } else {
+        console.warn("Failed to update department details in Supabase:", error.message);
+      }
     }
   } catch (err) {
-    if (err instanceof Error && err.message.startsWith("Failed to update domain:")) {
-      throw err;
-    }
-    console.error("Error updating department details:", err);
+    console.warn("Error updating department details:", err);
   }
 }
 
@@ -265,14 +281,10 @@ export async function removeDepartment(name: string): Promise<string[]> {
       .ilike("name", cleanName);
 
     if (error) {
-      console.error("Failed to delete department from Supabase:", error);
-      throw new Error(`Failed to delete domain: ${error.message}`);
+      console.warn("Failed to delete department from Supabase:", error.message);
     }
   } catch (err) {
-    if (err instanceof Error && err.message.startsWith("Failed to delete domain:")) {
-      throw err;
-    }
-    console.error("Error removing department:", err);
+    console.warn("Error removing department:", err);
   }
 
   return getDepartments();
