@@ -13,7 +13,8 @@ import { supabase } from "@/lib/supabase";
 import { getSharedChromeData } from "@/lib/server-data";
 import { getAchievements } from "@/lib/achievements";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Home() {
   const [chrome, { data: settings }, { data: vehicles }, { data: sponsors }, { data: teamPhotos }, achievements] =

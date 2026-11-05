@@ -18,7 +18,10 @@ export async function updateHomeSettings(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
+  revalidatePath("/", "page");
   revalidatePath("/");
+  revalidatePath("/admin/home", "layout");
+  revalidatePath("/admin/home", "page");
   revalidatePath("/admin/home");
 }
 
@@ -39,7 +42,11 @@ export async function addAchievement(formData: FormData) {
     });
   }
 
+  revalidatePath("/", "layout");
+  revalidatePath("/", "page");
   revalidatePath("/");
+  revalidatePath("/admin/home", "layout");
+  revalidatePath("/admin/home", "page");
   revalidatePath("/admin/home");
 }
 
@@ -61,7 +68,11 @@ export async function updateAchievement(id: string, formData: FormData) {
     });
   }
 
+  revalidatePath("/", "layout");
+  revalidatePath("/", "page");
   revalidatePath("/");
+  revalidatePath("/admin/home", "layout");
+  revalidatePath("/admin/home", "page");
   revalidatePath("/admin/home");
 }
 
@@ -70,6 +81,10 @@ export async function deleteAchievementAction(id: string) {
     await deleteAchievement(id);
   }
 
+  revalidatePath("/", "layout");
+  revalidatePath("/", "page");
   revalidatePath("/");
+  revalidatePath("/admin/home", "layout");
+  revalidatePath("/admin/home", "page");
   revalidatePath("/admin/home");
 }

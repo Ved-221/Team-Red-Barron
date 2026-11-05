@@ -10,6 +10,10 @@ export { DEFAULT_ACHIEVEMENTS };
 const ACHIEVEMENTS_FILE = path.join(process.cwd(), "src", "data", "achievements.json");
 const ACHIEVEMENTS_STORAGE_PATH = "meta/achievements.json";
 
+let memoryCache: AchievementStat[] | null = null;
+let lastFetchTime = 0;
+const CACHE_TTL_MS = 1000;
+
 async function getClient() {
   try {
     return await createClient();
@@ -33,6 +37,38 @@ function isTableMissingError(error: unknown): boolean {
 }
 
 async function readJsonFallback(): Promise<AchievementStat[]> {
+  const now = Date.now();
+  if (memoryCache && now - lastFetchTime < CACHE_TTL_MS) {
+    return [...memoryCache];
+  }
+
+  // 1. Direct cache-busted fetch to bypass Cloudflare CDN cache
+  try {
+    const { data: pubData } = staticClient.storage.from("trb-media").getPublicUrl(ACHIEVEMENTS_STORAGE_PATH);
+    if (pubData?.publicUrl) {
+      const res = await fetch(`${pubData.publicUrl}?t=${now}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+        },
+      });
+      if (res.ok) {
+        const text = await res.text();
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const sorted = parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+          memoryCache = sorted;
+          lastFetchTime = now;
+          return sorted;
+        }
+      }
+    }
+  } catch {
+    // fall back to storage download
+  }
+
+  // 2. Supabase Storage download SDK fallback
   try {
     const client = await getClient();
     const { data, error } = await client.storage
@@ -42,37 +78,57 @@ async function readJsonFallback(): Promise<AchievementStat[]> {
       const text = await data.text();
       const parsed = JSON.parse(text);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+        const sorted = parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+        memoryCache = sorted;
+        lastFetchTime = now;
+        return sorted;
       }
     }
   } catch {
     // fall back to file
   }
 
+  // 3. Local file fallback
   try {
     const raw = await fs.readFile(ACHIEVEMENTS_FILE, "utf-8");
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+      const sorted = parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+      memoryCache = sorted;
+      lastFetchTime = now;
+      return sorted;
     }
   } catch {
     // If not found, use default
   }
+
+  memoryCache = DEFAULT_ACHIEVEMENTS;
+  lastFetchTime = now;
   return DEFAULT_ACHIEVEMENTS;
 }
 
 async function writeJsonFallback(items: AchievementStat[]): Promise<void> {
   const jsonStr = JSON.stringify(items, null, 2);
+  memoryCache = [...items];
+  lastFetchTime = Date.now();
+
+  const clients = [staticClient];
   try {
-    const client = await getClient();
-    await client.storage
-      .from("trb-media")
-      .upload(ACHIEVEMENTS_STORAGE_PATH, jsonStr, {
-        upsert: true,
-        contentType: "application/json",
-      });
-  } catch {
-    // ignore
+    const sc = await getClient();
+    if (sc !== staticClient) clients.unshift(sc);
+  } catch {}
+
+  for (const client of clients) {
+    try {
+      const { error } = await client.storage
+        .from("trb-media")
+        .upload(ACHIEVEMENTS_STORAGE_PATH, jsonStr, {
+          upsert: true,
+          contentType: "application/json",
+          cacheControl: "0",
+        });
+      if (!error) break;
+    } catch {}
   }
 
   try {
