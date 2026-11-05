@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { uploadImage, deleteImage } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
-import { saveDepartment, removeDepartment } from "@/lib/departments";
+import { saveDepartment, removeDepartment, updateDepartmentDetails } from "@/lib/departments";
 
 export async function addTeamYear(formData: FormData) {
   const supabase = await createClient();
@@ -216,9 +216,19 @@ export async function deleteTeamMember(id: string, imageUrl: string) {
 
 export async function addDomain(formData: FormData) {
   const domain_name = (formData.get("domain_name") as string || "").trim().toUpperCase();
+  const sort_order = parseInt((formData.get("sort_order") as string) || "0", 10);
+  const description = (formData.get("description") as string || "").trim();
   if (domain_name) {
-    await saveDepartment(domain_name);
+    await saveDepartment(domain_name, isNaN(sort_order) ? 0 : sort_order, description);
   }
+  revalidatePath("/team");
+  revalidatePath("/admin/team");
+}
+
+export async function updateDomain(domainName: string, formData: FormData) {
+  const sort_order = parseInt((formData.get("sort_order") as string) || "0", 10);
+  const description = (formData.get("description") as string || "").trim();
+  await updateDepartmentDetails(domainName, isNaN(sort_order) ? 0 : sort_order, description);
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }

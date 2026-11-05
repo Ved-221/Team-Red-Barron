@@ -11,6 +11,7 @@ import GhostCursor from "@/components/ui/GhostCursor";
 import { ShieldAlert, Cpu, Wrench, Flame, Zap, Settings } from "lucide-react";
 
 import { SmartImage } from "@/components/SmartImage";
+import type { DepartmentItem } from "@/lib/departments";
 
 function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -85,9 +86,11 @@ export interface TeamMemberItem {
 function TeamContent({
   teamData,
   chromeData,
+  departments = [],
 }: {
   teamData: Record<string, TeamMemberItem[]>;
   chromeData?: SharedChromeData;
+  departments?: DepartmentItem[];
 }) {
   const searchParams = useSearchParams();
   const yearParam = searchParams.get("year");
@@ -147,19 +150,25 @@ function TeamContent({
               );
 
             const knownKeys = Object.keys(KNOWN_DEPARTMENTS);
-            const activeDepartments = memberDepts.sort((a, b) => {
-              const isFacultyA = a.includes("FACULTY") || a.includes("ADVISOR") || a.includes("LEADERSHIP");
-              const isFacultyB = b.includes("FACULTY") || b.includes("ADVISOR") || b.includes("LEADERSHIP");
-              if (isFacultyA && !isFacultyB) return -1;
-              if (!isFacultyA && isFacultyB) return 1;
+              const deptMap = new Map((departments || []).map(d => [d.name.trim().toUpperCase(), d]));
 
-              const idxA = knownKeys.indexOf(a);
-              const idxB = knownKeys.indexOf(b);
-              if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-              if (idxA !== -1) return -1;
-              if (idxB !== -1) return 1;
-              return a.localeCompare(b);
-            });
+              const activeDepartments = memberDepts.sort((a, b) => {
+                const isFacultyA = a.includes("FACULTY") || a.includes("ADVISOR") || a.includes("LEADERSHIP");
+                const isFacultyB = b.includes("FACULTY") || b.includes("ADVISOR") || b.includes("LEADERSHIP");
+                if (isFacultyA && !isFacultyB) return -1;
+                if (!isFacultyA && isFacultyB) return 1;
+
+                const orderA = deptMap.get(a)?.sort_order ?? 999;
+                const orderB = deptMap.get(b)?.sort_order ?? 999;
+                if (orderA !== orderB) return orderA - orderB;
+
+                const idxA = knownKeys.indexOf(a);
+                const idxB = knownKeys.indexOf(b);
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                if (idxA !== -1) return -1;
+                if (idxB !== -1) return 1;
+                return a.localeCompare(b);
+              });
 
             return activeDepartments.map((deptName) => {
               const deptMembers = currentMembers.filter(
@@ -168,11 +177,13 @@ function TeamContent({
 
               if (deptMembers.length === 0) return null;
 
-              const info = KNOWN_DEPARTMENTS[deptName] || {
+              const fallbackInfo = KNOWN_DEPARTMENTS[deptName] || {
                 description: `Specialized engineering and operational domain for ${deptName}.`,
                 icon: Wrench,
               };
-              const IconComponent = info.icon;
+              const deptMeta = deptMap.get(deptName);
+              const descriptionText = deptMeta?.description?.trim() || fallbackInfo.description;
+              const IconComponent = fallbackInfo.icon;
 
               return (
                 <motion.div
@@ -195,7 +206,7 @@ function TeamContent({
                       <span>{deptName}</span>
                     </div>
                     <p className="text-gray-400 font-inter text-sm sm:text-base max-md:text-xs leading-relaxed">
-                      {info.description}
+                      {descriptionText}
                     </p>
                   </motion.div>
 
@@ -276,13 +287,15 @@ function TeamContent({
 export default function TeamClient({
   teamData,
   chromeData,
+  departments,
 }: {
   teamData: Record<string, TeamMemberItem[]>;
   chromeData?: SharedChromeData;
+  departments?: DepartmentItem[];
 }) {
   return (
     <Suspense fallback={<div className="min-h-screen bg-black" />}>
-      <TeamContent teamData={teamData} chromeData={chromeData} />
+      <TeamContent teamData={teamData} chromeData={chromeData} departments={departments} />
     </Suspense>
   );
 }

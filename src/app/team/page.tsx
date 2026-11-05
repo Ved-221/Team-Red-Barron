@@ -3,6 +3,7 @@ import TeamClient, { TeamMemberItem } from "./TeamClient";
 import { Metadata } from "next";
 
 import { getSharedChromeData } from "@/lib/server-data";
+import { getDepartmentDetails } from "@/lib/departments";
 
 export const revalidate = 3600;
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TeamPage() {
-  const [chrome, { data: years, error: yearsError }, { data: members, error: membersError }] = await Promise.all([
+  const [chrome, { data: years, error: yearsError }, { data: members, error: membersError }, departments] = await Promise.all([
     getSharedChromeData(),
     supabase
       .from("team_years")
@@ -30,6 +31,7 @@ export default async function TeamPage() {
       `)
       .is("deleted_at", null)
       .order("sort_order", { ascending: true }),
+    getDepartmentDetails(),
   ]);
 
   if (yearsError) console.error("Error fetching team_years:", yearsError);
@@ -46,5 +48,5 @@ export default async function TeamPage() {
     });
   }
 
-  return <TeamClient teamData={teamData} chromeData={chrome} />;
+  return <TeamClient teamData={teamData} chromeData={chrome} departments={departments} />;
 }

@@ -1,9 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
-import { addTeamYear, deleteTeamYear, updateTeamYear, addTeamMember, updateTeamMember, deleteTeamMember, addDomain, deleteDomain } from "./actions";
+import { addTeamYear, deleteTeamYear, updateTeamYear, addTeamMember, updateTeamMember, deleteTeamMember, addDomain, updateDomain, deleteDomain } from "./actions";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import Link from "next/link";
 import { Trash2, Layers, Plus } from "lucide-react";
-import { getDepartments } from "@/lib/departments";
+import { getDepartmentDetails, DepartmentItem } from "@/lib/departments";
 
 export const dynamic = "force-dynamic";
 
@@ -31,9 +31,21 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
   }
 
   const normDept = (d?: string | null) => (d || "").trim().toUpperCase() || "GENERAL";
-  const savedDepts = await getDepartments();
+  const savedDepts = await getDepartmentDetails();
+  const savedDeptNames = new Set(savedDepts.map(d => d.name));
+
   const existingMemberDepts = Array.from(new Set(allMembers?.map(m => normDept(m.department)) || []));
-  const allDepts = Array.from(new Set([...savedDepts, ...existingMemberDepts]));
+  const missingDepts: DepartmentItem[] = existingMemberDepts
+    .filter(d => !savedDeptNames.has(d))
+    .map((d, idx) => ({
+      name: d,
+      sort_order: savedDepts.length + idx + 1,
+      description: `Specialized engineering and operational domain for ${d}.`,
+    }));
+
+  const allDepts: DepartmentItem[] = [...savedDepts, ...missingDepts].sort(
+    (a, b) => a.sort_order - b.sort_order || a.name.localeCompare(b.name)
+  );
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-16">
@@ -45,7 +57,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
       {/* Global datalist for department suggestions */}
       <datalist id="departments-list">
         {allDepts.map(d => (
-          <option key={d} value={d} />
+          <option key={d.name} value={d.name} />
         ))}
       </datalist>
 
@@ -125,33 +137,65 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
               </span>
             </div>
             <p className="text-xs text-[#ae8882] mb-3 leading-relaxed">
-              Domains and technical departments available across all seasons.
+              Set sort order & public descriptions displayed on the team website.
             </p>
 
-            <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+            <div className="space-y-3 max-h-[460px] overflow-y-auto pr-1">
               {allDepts.map(dept => {
-                const memberCount = allMembers?.filter(m => normDept(m.department) === dept).length || 0;
+                const memberCount = allMembers?.filter(m => normDept(m.department) === dept.name).length || 0;
                 return (
-                  <div key={dept} className="flex items-center justify-between bg-black/50 px-2.5 py-1.5 rounded-lg border border-white/5 text-xs group hover:border-white/10 transition-colors">
-                    <span className="font-mono text-white/90 text-[11px] truncate mr-2" title={dept}>
-                      {dept}
-                    </span>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="font-mono text-[10px] text-white/40">
-                        {memberCount} {memberCount === 1 ? "member" : "members"}
+                  <div key={dept.name} className="bg-black/60 p-3 rounded-xl border border-white/10 space-y-2 hover:border-[#de1615]/30 transition-all">
+                    <div className="flex items-center justify-between">
+                      <span className="font-sora font-bold text-white text-xs tracking-wider uppercase truncate mr-2" title={dept.name}>
+                        {dept.name}
                       </span>
-                      {memberCount === 0 && (
-                        <form action={deleteDomain.bind(null, dept)}>
-                          <button
-                            type="submit"
-                            title={`Delete ${dept} domain`}
-                            className="text-white/30 hover:text-red-500 transition-colors p-0.5"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </form>
-                      )}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="font-mono text-[10px] text-white/50 bg-white/5 px-1.5 py-0.5 rounded">
+                          {memberCount} {memberCount === 1 ? "member" : "members"}
+                        </span>
+                        {memberCount === 0 && (
+                          <form action={deleteDomain.bind(null, dept.name)}>
+                            <button
+                              type="submit"
+                              title={`Delete ${dept.name} domain`}
+                              className="text-white/30 hover:text-red-500 transition-colors p-0.5"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </form>
+                        )}
+                      </div>
                     </div>
+
+                    <form action={updateDomain.bind(null, dept.name)} className="space-y-2 pt-1 border-t border-white/5">
+                      <div className="flex items-center gap-2">
+                        <label className="text-[10px] font-mono text-[#e8bdb6] uppercase tracking-wider shrink-0">Order:</label>
+                        <input
+                          type="number"
+                          name="sort_order"
+                          defaultValue={dept.sort_order}
+                          required
+                          className="w-16 bg-black border border-white/10 rounded px-2 py-1 text-white text-xs font-mono focus:outline-none focus:border-[#de1615]"
+                        />
+                        <button
+                          type="submit"
+                          className="ml-auto text-xs font-sora font-bold bg-[#de1615]/20 hover:bg-[#de1615] text-[#de1615] hover:text-white px-2.5 py-1 rounded transition-colors"
+                        >
+                          Save
+                        </button>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-mono text-[#e8bdb6] uppercase tracking-wider block">Description:</label>
+                        <textarea
+                          name="description"
+                          defaultValue={dept.description}
+                          rows={2}
+                          placeholder="Domain description displayed on website..."
+                          className="w-full bg-black border border-white/10 rounded p-1.5 text-white text-xs font-inter focus:outline-none focus:border-[#de1615] resize-none leading-relaxed"
+                        />
+                      </div>
+                    </form>
                   </div>
                 );
               })}
@@ -168,6 +212,22 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                 placeholder="Domain Name (e.g. TRANSMISSION)"
                 className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-[#de1615]/50 transition-all font-inter uppercase"
               />
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  name="sort_order"
+                  defaultValue={allDepts.length + 1}
+                  required
+                  placeholder="Sort Order"
+                  className="w-20 bg-black/50 border border-white/10 rounded-lg px-2.5 py-1.5 text-white text-xs font-mono focus:outline-none focus:border-[#de1615]/50 transition-all"
+                />
+                <input
+                  type="text"
+                  name="description"
+                  placeholder="Description (optional)"
+                  className="flex-1 bg-black/50 border border-white/10 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
+                />
+              </div>
               <button
                 type="submit"
                 className="w-full bg-[#de1615] hover:bg-[#b81211] text-white font-sora font-bold text-xs uppercase py-2 rounded-lg transition-all shadow-[0_0_12px_rgba(222,22,21,0.25)] flex items-center justify-center gap-1.5"
@@ -192,15 +252,23 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                 
                 <div className="space-y-12">
                   {allDepts.map(dept => {
-                    const deptMembers = members.filter(m => normDept(m.department) === dept);
+                    const deptMembers = members.filter(m => normDept(m.department) === dept.name);
                     if (deptMembers.length === 0) return null;
                     return (
-                      <div key={dept} className="space-y-4">
-                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                          <h3 className="font-sora font-bold text-lg text-[#de1615] flex items-center gap-2">
-                            <span>{dept}</span>
-                            <span className="text-xs font-mono-tech bg-white/10 text-white/80 px-2 py-0.5 rounded-full">{deptMembers.length}</span>
-                          </h3>
+                      <div key={dept.name} className="space-y-4">
+                        <div className="border-b border-white/10 pb-3">
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-sora font-bold text-lg text-[#de1615] flex items-center gap-2">
+                              <span>{dept.name}</span>
+                              <span className="text-xs font-mono-tech bg-white/10 text-white/80 px-2 py-0.5 rounded-full">{deptMembers.length}</span>
+                              <span className="text-[10px] font-mono text-white/40 border border-white/10 px-1.5 py-0.5 rounded">Order: {dept.sort_order}</span>
+                            </h3>
+                          </div>
+                          {dept.description && (
+                            <p className="text-xs text-white/60 mt-1.5 font-inter max-w-3xl leading-relaxed">
+                              {dept.description}
+                            </p>
+                          )}
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           {deptMembers.map(member => (
@@ -217,8 +285,8 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                                     className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter uppercase"
                                   >
                                     {allDepts.map(d => (
-                                      <option key={d} value={d} className="bg-[#12151b] text-white">
-                                        {d}
+                                      <option key={d.name} value={d.name} className="bg-[#12151b] text-white">
+                                        {d.name}
                                       </option>
                                     ))}
                                   </select>
@@ -254,13 +322,13 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                       <label className="block text-[11px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-1">Domain / Department</label>
                       <select
                         name="department"
-                        defaultValue={allDepts[0] || "TRANSMISSION"}
+                        defaultValue={allDepts[0]?.name || "TRANSMISSION"}
                         required
                         className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter uppercase"
                       >
                         {allDepts.map(d => (
-                          <option key={d} value={d} className="bg-[#12151b] text-white">
-                            {d}
+                          <option key={d.name} value={d.name} className="bg-[#12151b] text-white">
+                            {d.name}
                           </option>
                         ))}
                       </select>
