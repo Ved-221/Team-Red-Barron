@@ -187,6 +187,8 @@ export async function addTeamMember(formData: FormData) {
   revalidatePath("/team", "layout");
   revalidatePath("/team", "page");
   revalidatePath("/team");
+  revalidatePath("/admin/team", "layout");
+  revalidatePath("/admin/team", "page");
   revalidatePath("/admin/team");
 }
 
@@ -257,6 +259,8 @@ export async function updateTeamMember(id: string, formData: FormData) {
   revalidatePath("/team", "layout");
   revalidatePath("/team", "page");
   revalidatePath("/team");
+  revalidatePath("/admin/team", "layout");
+  revalidatePath("/admin/team", "page");
   revalidatePath("/admin/team");
 }
 
@@ -273,6 +277,9 @@ export async function deleteTeamMember(id: string, imageUrl: string) {
   revalidatePath("/team", "layout");
   revalidatePath("/team", "page");
   revalidatePath("/team");
+  revalidatePath("/admin/team", "layout");
+  revalidatePath("/admin/team", "page");
+  revalidatePath("/admin/team");
   revalidatePath("/admin/team");
 }
 

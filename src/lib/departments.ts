@@ -71,6 +71,23 @@ async function getClient() {
 }
 
 async function readMetaFallback(): Promise<Record<string, { sort_order?: number; description?: string }>> {
+  // 1. Direct cache-busted fetch to bypass Cloudflare CDN cache
+  try {
+    const { data: pubData } = staticClient.storage.from("trb-media").getPublicUrl(DEPARTMENTS_STORAGE_PATH);
+    if (pubData?.publicUrl) {
+      const res = await fetch(`${pubData.publicUrl}?t=${Date.now()}`, {
+        cache: "no-store",
+        headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" },
+      });
+      if (res.ok) {
+        const text = await res.text();
+        const parsed = JSON.parse(text);
+        if (parsed && typeof parsed === "object") return parsed;
+      }
+    }
+  } catch {}
+
+  // 2. Storage download fallback
   try {
     const client = await getClient();
     const { data, error } = await client.storage
@@ -85,6 +102,7 @@ async function readMetaFallback(): Promise<Record<string, { sort_order?: number;
     // fall back to local file
   }
 
+  // 3. Local file fallback
   try {
     const raw = await fs.readFile(DEPARTMENTS_META_FILE, "utf-8");
     return JSON.parse(raw) || {};
@@ -95,16 +113,24 @@ async function readMetaFallback(): Promise<Record<string, { sort_order?: number;
 
 async function writeMetaFallback(meta: Record<string, { sort_order?: number; description?: string }>) {
   const jsonStr = JSON.stringify(meta, null, 2);
+
+  const clients = [staticClient];
   try {
-    const client = await getClient();
-    await client.storage
-      .from("trb-media")
-      .upload(DEPARTMENTS_STORAGE_PATH, jsonStr, {
-        upsert: true,
-        contentType: "application/json",
-      });
-  } catch {
-    // ignore
+    const c = await getClient();
+    if (c !== staticClient) clients.unshift(c);
+  } catch {}
+
+  for (const client of clients) {
+    try {
+      const { error } = await client.storage
+        .from("trb-media")
+        .upload(DEPARTMENTS_STORAGE_PATH, jsonStr, {
+          upsert: true,
+          contentType: "application/json",
+          cacheControl: "0",
+        });
+      if (!error) break;
+    } catch {}
   }
 
   try {
@@ -220,9 +246,19 @@ export async function saveDepartment(
 
   // Save to meta fallback
   const metaFallback = await readMetaFallback();
+  const existing = metaFallback[cleanName] || DEFAULT_DEPARTMENT_DETAILS[cleanName];
+
+  const finalSortOrder = (typeof sortOrder === "number" && !isNaN(sortOrder) && sortOrder > 0)
+    ? sortOrder
+    : (existing?.sort_order ?? 0);
+
+  const finalDescription = (description && description.trim())
+    ? description.trim()
+    : (existing?.description || `Specialized engineering and operational domain for ${cleanName}.`);
+
   metaFallback[cleanName] = {
-    sort_order: sortOrder,
-    description: description.trim(),
+    sort_order: finalSortOrder,
+    description: finalDescription,
   };
   await writeMetaFallback(metaFallback);
 
@@ -233,8 +269,8 @@ export async function saveDepartment(
       .from("departments")
       .insert({
         name: cleanName,
-        sort_order: sortOrder,
-        description: description.trim(),
+        sort_order: finalSortOrder,
+        description: finalDescription,
       });
 
     if (error) {

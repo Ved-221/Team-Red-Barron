@@ -243,10 +243,10 @@ function TeamContent({
                             <h3 className="font-sora font-bold text-base sm:text-lg max-md:text-xs text-white group-hover:text-[#de1615] transition-colors uppercase leading-tight line-clamp-2">
                               {member.name}
                             </h3>
-                            {member.position && (
-                              <div className="mt-1 max-md:mt-0.5">
-                                <span className="inline-block font-mono-tech text-xs max-md:text-[10px] text-[#de1615] font-bold tracking-wider uppercase bg-[#de1615]/10 border border-[#de1615]/30 px-2 py-0.5 rounded shadow-sm">
-                                  {member.position}
+                            {member.position?.trim() && (
+                              <div className="mt-1.5 max-md:mt-1">
+                                <span className="inline-block font-mono-tech text-xs max-md:text-[10px] text-[#ff4d4b] font-bold tracking-wider uppercase bg-[#de1615]/15 border border-[#de1615]/40 px-2 py-0.5 rounded shadow-sm">
+                                  {member.position.trim()}
                                 </span>
                               </div>
                             )}

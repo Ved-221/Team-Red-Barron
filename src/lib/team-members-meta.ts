@@ -9,7 +9,7 @@ const STORAGE_PATH = "meta/team_members_positions.json";
 
 let memoryCache: Record<string, string> | null = null;
 let lastFetchTime = 0;
-const CACHE_TTL_MS = 2500;
+const CACHE_TTL_MS = 1000;
 
 async function getClient() {
   try {
@@ -40,7 +40,32 @@ export async function getMemberPositions(): Promise<Record<string, string>> {
     return { ...memoryCache };
   }
 
-  // 1. Try Supabase Storage (globally shared & durable across all Vercel serverless instances)
+  // 1. Direct cache-busted fetch to bypass Cloudflare CDN cache (max-age 3600 override)
+  try {
+    const { data: pubData } = staticClient.storage.from(STORAGE_BUCKET).getPublicUrl(STORAGE_PATH);
+    if (pubData?.publicUrl) {
+      const res = await fetch(`${pubData.publicUrl}?t=${now}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+        },
+      });
+      if (res.ok) {
+        const text = await res.text();
+        const parsed = JSON.parse(text);
+        if (parsed && typeof parsed === "object") {
+          memoryCache = parsed;
+          lastFetchTime = now;
+          return { ...parsed };
+        }
+      }
+    }
+  } catch {
+    // fall through to storage download
+  }
+
+  // 2. Try Supabase Storage download SDK
   try {
     const client = await getClient();
     const { data, error } = await client.storage
@@ -60,7 +85,7 @@ export async function getMemberPositions(): Promise<Record<string, string>> {
     // fall through to local fallback
   }
 
-  // 2. Local JSON fallback
+  // 3. Local JSON fallback
   try {
     const raw = await fs.readFile(MEMBERS_META_FILE, "utf-8");
     const parsed = JSON.parse(raw);
@@ -85,26 +110,44 @@ export async function getMemberPosition(memberId: string): Promise<string> {
 export async function saveMemberPosition(memberId: string, position: string): Promise<void> {
   if (!memberId) return;
   const all = await getMemberPositions();
-  all[memberId] = (position || "").trim();
+  const cleanPos = (position || "").trim();
+
+  if (cleanPos) {
+    all[memberId] = cleanPos;
+  } else {
+    delete all[memberId];
+  }
+
   memoryCache = { ...all };
   lastFetchTime = Date.now();
 
   const jsonStr = JSON.stringify(all, null, 2);
 
-  // 1. Save to Supabase Storage for immediate cloud persistence on Vercel
+  // 1. Save to Supabase Storage with cacheControl: '0'
+  // Try both getClient() and staticClient to guarantee write succeeds regardless of auth context
+  const clients = [staticClient];
   try {
-    const client = await getClient();
-    const { error } = await client.storage
-      .from(STORAGE_BUCKET)
-      .upload(STORAGE_PATH, jsonStr, {
-        upsert: true,
-        contentType: "application/json",
-      });
-    if (error) {
-      console.warn("Supabase storage position upload warning:", error.message);
+    const sc = await getClient();
+    if (sc !== staticClient) clients.unshift(sc);
+  } catch {}
+
+  for (const client of clients) {
+    try {
+      const { error } = await client.storage
+        .from(STORAGE_BUCKET)
+        .upload(STORAGE_PATH, jsonStr, {
+          upsert: true,
+          contentType: "application/json",
+          cacheControl: "0",
+        });
+      if (!error) {
+        break;
+      } else {
+        console.warn("Supabase storage position upload warning:", error.message);
+      }
+    } catch (err) {
+      console.warn("Could not sync position to Supabase storage:", err);
     }
-  } catch (err) {
-    console.warn("Could not sync position to Supabase storage:", err);
   }
 
   // 2. Local file write (for local dev environments)
@@ -126,16 +169,23 @@ export async function deleteMemberPosition(memberId: string): Promise<void> {
 
     const jsonStr = JSON.stringify(all, null, 2);
 
+    const clients = [staticClient];
     try {
-      const client = await getClient();
-      await client.storage
-        .from(STORAGE_BUCKET)
-        .upload(STORAGE_PATH, jsonStr, {
-          upsert: true,
-          contentType: "application/json",
-        });
-    } catch (err) {
-      console.warn("Could not sync deletion to Supabase storage:", err);
+      const sc = await getClient();
+      if (sc !== staticClient) clients.unshift(sc);
+    } catch {}
+
+    for (const client of clients) {
+      try {
+        const { error } = await client.storage
+          .from(STORAGE_BUCKET)
+          .upload(STORAGE_PATH, jsonStr, {
+            upsert: true,
+            contentType: "application/json",
+            cacheControl: "0",
+          });
+        if (!error) break;
+      } catch {}
     }
 
     try {

@@ -287,17 +287,21 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                                 <div>
                                   <div className="flex items-center justify-between mb-1">
                                     <label className="block text-[10px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider">Position / Role</label>
-                                    {member.position && (
-                                      <span className="text-[10px] font-mono-tech text-[#de1615] bg-[#de1615]/10 border border-[#de1615]/30 px-1.5 py-0.5 rounded uppercase font-semibold">
-                                        Current: {member.position}
+                                    {member.position?.trim() ? (
+                                      <span className="text-[10px] font-mono-tech text-[#ff4d4b] bg-[#de1615]/20 border border-[#de1615]/40 px-1.5 py-0.5 rounded uppercase font-semibold">
+                                        Current: {member.position.trim()}
+                                      </span>
+                                    ) : (
+                                      <span className="text-[10px] font-mono text-white/30 italic">
+                                        No position set
                                       </span>
                                     )}
                                   </div>
                                   <input
-                                    key={`pos-${member.id}-${member.position || "empty"}`}
+                                    key={`pos-${member.id}-${member.position?.trim() || "empty"}`}
                                     type="text"
                                     name="position"
-                                    defaultValue={member.position || ""}
+                                    defaultValue={member.position?.trim() || ""}
                                     placeholder="Position (e.g. Captain, Lead, Driver)"
                                     className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
                                   />
@@ -321,7 +325,7 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                                 <input type="number" name="sort_order" defaultValue={member.sort_order} required placeholder="Sort Order" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
                               </div>
                               <div className="mt-4 flex gap-2 pt-4 border-t border-white/5">
-                                <button type="submit" className="flex-1 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 rounded-lg transition-colors">Update</button>
+                                <button type="submit" className="flex-1 bg-[#de1615]/20 hover:bg-[#de1615] text-[#ff4d4b] hover:text-white font-sora font-semibold text-xs py-2 rounded-lg transition-all border border-[#de1615]/30 hover:border-[#de1615]">Update</button>
                                 <button formAction={deleteTeamMember.bind(null, member.id, member.image_url || "")} className="p-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-colors">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
