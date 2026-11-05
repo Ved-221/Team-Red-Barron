@@ -285,8 +285,22 @@ export default async function AdminTeamPage(props: { searchParams: Promise<{ yea
                               <div className="mt-4 space-y-3 flex-1">
                                 <input type="text" name="name" defaultValue={member.name} required placeholder="Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
                                 <div>
-                                  <label className="block text-[10px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-1">Position / Role</label>
-                                  <input type="text" name="position" defaultValue={member.position || ""} placeholder="Position (e.g. Captain, Lead, Driver)" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                                  <div className="flex items-center justify-between mb-1">
+                                    <label className="block text-[10px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider">Position / Role</label>
+                                    {member.position && (
+                                      <span className="text-[10px] font-mono-tech text-[#de1615] bg-[#de1615]/10 border border-[#de1615]/30 px-1.5 py-0.5 rounded uppercase font-semibold">
+                                        Current: {member.position}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <input
+                                    key={`pos-${member.id}-${member.position || "empty"}`}
+                                    type="text"
+                                    name="position"
+                                    defaultValue={member.position || ""}
+                                    placeholder="Position (e.g. Captain, Lead, Driver)"
+                                    className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
+                                  />
                                 </div>
                                 <div>
                                   <label className="block text-[10px] font-mono-tech text-[#e8bdb6] uppercase tracking-wider mb-1">Domain</label>

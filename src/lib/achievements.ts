@@ -8,6 +8,7 @@ export type { AchievementStat };
 export { DEFAULT_ACHIEVEMENTS };
 
 const ACHIEVEMENTS_FILE = path.join(process.cwd(), "src", "data", "achievements.json");
+const ACHIEVEMENTS_STORAGE_PATH = "meta/achievements.json";
 
 async function getClient() {
   try {
@@ -33,6 +34,22 @@ function isTableMissingError(error: unknown): boolean {
 
 async function readJsonFallback(): Promise<AchievementStat[]> {
   try {
+    const client = await getClient();
+    const { data, error } = await client.storage
+      .from("trb-media")
+      .download(ACHIEVEMENTS_STORAGE_PATH);
+    if (!error && data) {
+      const text = await data.text();
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+      }
+    }
+  } catch {
+    // fall back to file
+  }
+
+  try {
     const raw = await fs.readFile(ACHIEVEMENTS_FILE, "utf-8");
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
@@ -45,9 +62,22 @@ async function readJsonFallback(): Promise<AchievementStat[]> {
 }
 
 async function writeJsonFallback(items: AchievementStat[]): Promise<void> {
+  const jsonStr = JSON.stringify(items, null, 2);
+  try {
+    const client = await getClient();
+    await client.storage
+      .from("trb-media")
+      .upload(ACHIEVEMENTS_STORAGE_PATH, jsonStr, {
+        upsert: true,
+        contentType: "application/json",
+      });
+  } catch {
+    // ignore
+  }
+
   try {
     await fs.mkdir(path.dirname(ACHIEVEMENTS_FILE), { recursive: true });
-    await fs.writeFile(ACHIEVEMENTS_FILE, JSON.stringify(items, null, 2), "utf-8");
+    await fs.writeFile(ACHIEVEMENTS_FILE, jsonStr, "utf-8");
   } catch (err) {
     console.warn("Could not write achievements.json fallback:", err);
   }

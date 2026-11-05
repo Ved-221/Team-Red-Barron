@@ -244,9 +244,11 @@ function TeamContent({
                               {member.name}
                             </h3>
                             {member.position && (
-                              <span className="font-mono-tech text-xs max-md:text-[10px] text-[#de1615] font-semibold tracking-wider block uppercase mt-1 line-clamp-1">
-                                {member.position}
-                              </span>
+                              <div className="mt-1 max-md:mt-0.5">
+                                <span className="inline-block font-mono-tech text-xs max-md:text-[10px] text-[#de1615] font-bold tracking-wider uppercase bg-[#de1615]/10 border border-[#de1615]/30 px-2 py-0.5 rounded shadow-sm">
+                                  {member.position}
+                                </span>
+                              </div>
                             )}
                             {member.academic_year && (
                               <span className="font-mono-tech text-xs max-md:text-[10px] text-[#ae8882] line-clamp-2 block mt-1">

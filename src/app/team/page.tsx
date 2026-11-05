@@ -6,7 +6,8 @@ import { getSharedChromeData } from "@/lib/server-data";
 import { getDepartmentDetails } from "@/lib/departments";
 import { getMemberPositions, isColumnMissingError } from "@/lib/team-members-meta";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Team Members",

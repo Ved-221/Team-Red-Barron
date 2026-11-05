@@ -1,7 +1,23 @@
+import { createClient } from "@/lib/supabase/server";
+import { supabase as staticClient } from "@/lib/supabase";
 import fs from "fs/promises";
 import path from "path";
 
 const MEMBERS_META_FILE = path.join(process.cwd(), "src", "data", "team_members_meta.json");
+const STORAGE_BUCKET = "trb-media";
+const STORAGE_PATH = "meta/team_members_positions.json";
+
+let memoryCache: Record<string, string> | null = null;
+let lastFetchTime = 0;
+const CACHE_TTL_MS = 2500;
+
+async function getClient() {
+  try {
+    return await createClient();
+  } catch {
+    return staticClient;
+  }
+}
 
 export function isColumnMissingError(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;
@@ -19,12 +35,45 @@ export function isColumnMissingError(error: unknown): boolean {
 }
 
 export async function getMemberPositions(): Promise<Record<string, string>> {
+  const now = Date.now();
+  if (memoryCache && now - lastFetchTime < CACHE_TTL_MS) {
+    return { ...memoryCache };
+  }
+
+  // 1. Try Supabase Storage (globally shared & durable across all Vercel serverless instances)
+  try {
+    const client = await getClient();
+    const { data, error } = await client.storage
+      .from(STORAGE_BUCKET)
+      .download(STORAGE_PATH);
+
+    if (!error && data) {
+      const text = await data.text();
+      const parsed = JSON.parse(text);
+      if (parsed && typeof parsed === "object") {
+        memoryCache = parsed;
+        lastFetchTime = now;
+        return { ...parsed };
+      }
+    }
+  } catch {
+    // fall through to local fallback
+  }
+
+  // 2. Local JSON fallback
   try {
     const raw = await fs.readFile(MEMBERS_META_FILE, "utf-8");
-    return JSON.parse(raw) || {};
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === "object") {
+      memoryCache = parsed;
+      lastFetchTime = now;
+      return { ...parsed };
+    }
   } catch {
-    return {};
+    // empty fallback
   }
+
+  return memoryCache || {};
 }
 
 export async function getMemberPosition(memberId: string): Promise<string> {
@@ -37,11 +86,33 @@ export async function saveMemberPosition(memberId: string, position: string): Pr
   if (!memberId) return;
   const all = await getMemberPositions();
   all[memberId] = (position || "").trim();
+  memoryCache = { ...all };
+  lastFetchTime = Date.now();
+
+  const jsonStr = JSON.stringify(all, null, 2);
+
+  // 1. Save to Supabase Storage for immediate cloud persistence on Vercel
+  try {
+    const client = await getClient();
+    const { error } = await client.storage
+      .from(STORAGE_BUCKET)
+      .upload(STORAGE_PATH, jsonStr, {
+        upsert: true,
+        contentType: "application/json",
+      });
+    if (error) {
+      console.warn("Supabase storage position upload warning:", error.message);
+    }
+  } catch (err) {
+    console.warn("Could not sync position to Supabase storage:", err);
+  }
+
+  // 2. Local file write (for local dev environments)
   try {
     await fs.mkdir(path.dirname(MEMBERS_META_FILE), { recursive: true });
-    await fs.writeFile(MEMBERS_META_FILE, JSON.stringify(all, null, 2), "utf-8");
-  } catch (err) {
-    console.warn("Could not write team_members_meta.json fallback:", err);
+    await fs.writeFile(MEMBERS_META_FILE, jsonStr, "utf-8");
+  } catch {
+    // Read-only filesystem in serverless environments, safe to ignore
   }
 }
 
@@ -50,10 +121,27 @@ export async function deleteMemberPosition(memberId: string): Promise<void> {
   const all = await getMemberPositions();
   if (memberId in all) {
     delete all[memberId];
+    memoryCache = { ...all };
+    lastFetchTime = Date.now();
+
+    const jsonStr = JSON.stringify(all, null, 2);
+
     try {
-      await fs.writeFile(MEMBERS_META_FILE, JSON.stringify(all, null, 2), "utf-8");
+      const client = await getClient();
+      await client.storage
+        .from(STORAGE_BUCKET)
+        .upload(STORAGE_PATH, jsonStr, {
+          upsert: true,
+          contentType: "application/json",
+        });
     } catch (err) {
-      console.warn("Could not update team_members_meta.json fallback on delete:", err);
+      console.warn("Could not sync deletion to Supabase storage:", err);
+    }
+
+    try {
+      await fs.writeFile(MEMBERS_META_FILE, jsonStr, "utf-8");
+    } catch {
+      // Safe to ignore on read-only serverless filesystems
     }
   }
 }

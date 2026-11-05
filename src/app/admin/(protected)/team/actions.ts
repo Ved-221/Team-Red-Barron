@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { uploadImage, deleteImage } from "@/lib/upload";
 import { revalidatePath } from "next/cache";
 import { saveDepartment, removeDepartment, updateDepartmentDetails } from "@/lib/departments";
-import { saveMemberPosition, isColumnMissingError } from "@/lib/team-members-meta";
+import { saveMemberPosition, deleteMemberPosition, isColumnMissingError } from "@/lib/team-members-meta";
 
 export async function addTeamYear(formData: FormData) {
   const supabase = await createClient();
@@ -183,7 +183,9 @@ export async function addTeamMember(formData: FormData) {
 
   await saveDepartment(department);
 
-  revalidatePath("/");
+  revalidatePath("/", "layout");
+  revalidatePath("/team", "layout");
+  revalidatePath("/team", "page");
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }
@@ -251,20 +253,25 @@ export async function updateTeamMember(id: string, formData: FormData) {
 
   await saveDepartment(department);
 
-  revalidatePath("/");
+  revalidatePath("/", "layout");
+  revalidatePath("/team", "layout");
+  revalidatePath("/team", "page");
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }
 
 export async function deleteTeamMember(id: string, imageUrl: string) {
   const supabase = await createClient();
+  await deleteMemberPosition(id);
   // Do NOT delete the image from storage on soft-delete
   await supabase
     .from("team_members")
     .update({ deleted_at: new Date().toISOString(), deleted_batch_id: crypto.randomUUID() })
     .eq("id", id);
     
-  revalidatePath("/");
+  revalidatePath("/", "layout");
+  revalidatePath("/team", "layout");
+  revalidatePath("/team", "page");
   revalidatePath("/team");
   revalidatePath("/admin/team");
 }

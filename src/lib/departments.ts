@@ -60,6 +60,7 @@ export const DEFAULT_DEPARTMENTS = [
 ];
 
 const DEPARTMENTS_META_FILE = path.join(process.cwd(), "src", "data", "departments_meta.json");
+const DEPARTMENTS_STORAGE_PATH = "meta/departments_meta.json";
 
 async function getClient() {
   try {
@@ -71,6 +72,20 @@ async function getClient() {
 
 async function readMetaFallback(): Promise<Record<string, { sort_order?: number; description?: string }>> {
   try {
+    const client = await getClient();
+    const { data, error } = await client.storage
+      .from("trb-media")
+      .download(DEPARTMENTS_STORAGE_PATH);
+    if (!error && data) {
+      const text = await data.text();
+      const parsed = JSON.parse(text);
+      if (parsed && typeof parsed === "object") return parsed;
+    }
+  } catch {
+    // fall back to local file
+  }
+
+  try {
     const raw = await fs.readFile(DEPARTMENTS_META_FILE, "utf-8");
     return JSON.parse(raw) || {};
   } catch {
@@ -79,9 +94,22 @@ async function readMetaFallback(): Promise<Record<string, { sort_order?: number;
 }
 
 async function writeMetaFallback(meta: Record<string, { sort_order?: number; description?: string }>) {
+  const jsonStr = JSON.stringify(meta, null, 2);
+  try {
+    const client = await getClient();
+    await client.storage
+      .from("trb-media")
+      .upload(DEPARTMENTS_STORAGE_PATH, jsonStr, {
+        upsert: true,
+        contentType: "application/json",
+      });
+  } catch {
+    // ignore
+  }
+
   try {
     await fs.mkdir(path.dirname(DEPARTMENTS_META_FILE), { recursive: true });
-    await fs.writeFile(DEPARTMENTS_META_FILE, JSON.stringify(meta, null, 2), "utf-8");
+    await fs.writeFile(DEPARTMENTS_META_FILE, jsonStr, "utf-8");
   } catch {
     // Read-only filesystem in serverless environments, safe to ignore
   }
