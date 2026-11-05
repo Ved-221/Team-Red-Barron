@@ -51,5 +51,6 @@ photos:vids/
 *.mp4
 !public/videos/*.mp4
 *.glb
+!public/*.glb
 *.mov
 *.zip

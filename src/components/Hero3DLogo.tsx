@@ -8,7 +8,47 @@ import type { LogoRadialDistortionRef } from "./LogoRadialDistortion";
 
 const GLB_PATH = "/logo_3d_emblem_website_colours.glb";
 
-useGLTF.preload(GLB_PATH);
+// Safe preload that won't throw unhandled rejections
+if (typeof window !== "undefined") {
+  try {
+    useGLTF.preload(GLB_PATH);
+  } catch (err) {
+    console.warn("Failed to preload 3D logo GLB:", err);
+  }
+}
+
+class Logo3DErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.warn("Hero3DLogo canvas error, falling back to 2D logo:", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="w-full h-full flex items-center justify-center p-6">
+          <img
+            src="/logo.png"
+            alt="Team Red Baron Logo"
+            className="w-full h-full object-contain filter drop-shadow-[0_0_25px_rgba(222,22,21,0.4)]"
+          />
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const MAX_ROT_Y = (35 * Math.PI) / 180; // ±35°
 const MAX_ROT_X = (20 * Math.PI) / 180; // ±20°
@@ -290,19 +330,21 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
       className="relative z-30 w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[340px] md:h-[340px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none"
     >
       {isVisible && (
-        <Canvas
-          dpr={[1, 1.5]}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-          camera={{ fov: 35, position: [0, 0, 4.2] }}
-          className="w-full h-full"
-        >
-          <Suspense fallback={null}>
-            <SoftLighting />
-            <Bounds fit clip margin={1.05}>
-              <EmblemModel pointerRef={pointerRef} />
-            </Bounds>
-          </Suspense>
-        </Canvas>
+        <Logo3DErrorBoundary>
+          <Canvas
+            dpr={[1, 1.5]}
+            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+            camera={{ fov: 35, position: [0, 0, 4.2] }}
+            className="w-full h-full"
+          >
+            <Suspense fallback={null}>
+              <SoftLighting />
+              <Bounds fit clip margin={1.05}>
+                <EmblemModel pointerRef={pointerRef} />
+              </Bounds>
+            </Suspense>
+          </Canvas>
+        </Logo3DErrorBoundary>
       )}
     </div>
   );
