@@ -57,7 +57,10 @@ export default async function SponsorsPage() {
       })),
   }));
 
-  const heroBg = toLocalMediaUrl(settingsRes.data?.sponsors_bg_url) || "/images/sponsors_hero_bg.webp";
+  let heroBg = toLocalMediaUrl(settingsRes.data?.sponsors_bg_url);
+  if (!heroBg || heroBg.includes("IMG_4588")) {
+    heroBg = "/media/hero/sponsors_hero_bg.webp";
+  }
 
   return (
     <SponsorsClient

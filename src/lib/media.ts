@@ -36,6 +36,13 @@ export function toLocalMediaUrl(url: string | null | undefined): string {
     if (rawPath.startsWith("gallery/") && !rawPath.endsWith(".webp")) {
       rawPath = rawPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
     }
+    if (rawPath.startsWith("hero/") && rawPath.includes("IMG_4588")) {
+      rawPath = "hero/sponsors_hero_bg.webp";
+    }
+    // In hero, ensure sponsors_hero_bg is resolved
+    if (rawPath.startsWith("hero/") && rawPath.includes("IMG_4588")) {
+      rawPath = "hero/sponsors_hero_bg.webp";
+    }
     return `/media/${rawPath}`;
   }
 
@@ -45,6 +52,9 @@ export function toLocalMediaUrl(url: string | null | undefined): string {
     let rawPath = safeDecode(url.split(marker)[1].split("?")[0]);
     if (rawPath.startsWith("gallery/") && !rawPath.endsWith(".webp")) {
       rawPath = rawPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
+    }
+    if (rawPath.startsWith("hero/") && rawPath.includes("IMG_4588")) {
+      rawPath = "hero/sponsors_hero_bg.webp";
     }
     return `/media/${rawPath}`;
   }

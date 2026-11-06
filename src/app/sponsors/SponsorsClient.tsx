@@ -107,7 +107,7 @@ export interface SponsorTierItem {
 export default function SponsorsClient({
   sponsorTiers,
   testimonials = [],
-  heroBgUrl = "/images/sponsors_hero_bg.webp",
+  heroBgUrl = "/media/hero/sponsors_hero_bg.webp",
   chromeData,
 }: {
   sponsorTiers: SponsorTierItem[];
@@ -150,14 +150,14 @@ export default function SponsorsClient({
       <section className="relative min-h-[92vh] max-md:min-h-[60vh] flex items-center justify-center pt-32 pb-20 max-md:pt-24 max-md:pb-12 px-5 sm:px-10 lg:px-20 max-md:px-4 max-w-[1440px] mx-auto w-full overflow-hidden z-10">
         <div className="absolute inset-0 z-0">
           <SmartImage
-            src={heroBgUrl}
+            src={heroBgUrl || "/media/hero/sponsors_hero_bg.webp"}
             alt="Team Red Baron Championship ATV Hero Shot"
             fill
             priority
             className="object-cover object-center scale-105"
             sizes="(max-width: 768px) 100vw, 1440px"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-[#000000]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-[#000000]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(222,22,21,0.2),transparent_70%)]" />
         </div>
 
