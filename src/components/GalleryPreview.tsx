@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import MorphSlider from "@/components/ui/MorphSlider";
 import { useInView } from "framer-motion";
+import { toLocalMediaUrl } from "@/lib/media";
 
 interface TeamPhotoItem {
   image_url: string;
@@ -16,13 +17,13 @@ export function GalleryPreview({ teamPhotos }: { teamPhotos: TeamPhotoItem[] }) 
   if (!teamPhotos || teamPhotos.length === 0) return null;
 
   const teamItems = teamPhotos.map((p) => {
-    let optimizedUrl = p.image_url;
+    const localUrl = toLocalMediaUrl(p.image_url);
+    let optimizedUrl = localUrl;
     if (
-      p.image_url &&
-      (p.image_url.startsWith("http://") || p.image_url.startsWith("https://")) &&
-      !p.image_url.startsWith("/_next/image")
+      localUrl &&
+      !localUrl.startsWith("/_next/image")
     ) {
-      optimizedUrl = `/_next/image?url=${encodeURIComponent(p.image_url)}&w=1080&q=75`;
+      optimizedUrl = `/_next/image?url=${encodeURIComponent(localUrl)}&w=1080&q=75`;
     }
     return {
       image: optimizedUrl,

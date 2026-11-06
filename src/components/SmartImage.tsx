@@ -1,4 +1,5 @@
 import Image, { type ImageProps, type StaticImageData } from "next/image";
+import { toLocalMediaUrl } from "@/lib/media";
 
 // Allowed hosts from next.config.ts remotePatterns
 const ALLOWED_REMOTE_HOSTS = new Set([
@@ -97,8 +98,8 @@ export function SmartImage({
   ...rest
 }: SmartImageProps) {
   const rawStringSrc = typeof src === "string" ? src : (src as StaticImageData | undefined)?.src || "";
-  const effectiveRaw = rawStringSrc.trim() || fallbackSrc;
-  const normalized = normalizeSrc(effectiveRaw);
+  const resolvedSrc = toLocalMediaUrl(rawStringSrc.trim() || fallbackSrc);
+  const normalized = normalizeSrc(resolvedSrc);
 
   const forceUnoptimized = unoptimized ?? shouldForceUnoptimized(normalized);
 

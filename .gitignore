@@ -24,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+scripts/*.json
 
 # debug
 npm-debug.log*
@@ -42,15 +43,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/public/media/
-VEHICLE PHOTOS FOR WEBSITE/
-TRB SPONSOR LOGO/
-photos:vids/
-
 # Large Media Assets
 *.mp4
 !public/videos/*.mp4
 *.glb
 !public/*.glb
+!public/**/*.glb
 *.mov
 *.zip

@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 import Link from "next/link";
-import { LogOut, Home, Users, Image as ImageIcon, Briefcase, Phone, Anchor, Trash2, QrCode } from "lucide-react";
+import { LogOut, Home, Users, Image as ImageIcon, Briefcase, Phone, Anchor, Trash2, QrCode, ShieldAlert } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { USE_LOCAL_MEDIA_CACHE } from "@/lib/media";
 
 import { AdminActionFeedback } from "@/components/admin/AdminActionFeedback";
 
@@ -81,6 +82,16 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        {USE_LOCAL_MEDIA_CACHE && (
+          <div className="bg-gradient-to-r from-amber-950/80 via-amber-900/40 to-amber-950/80 border-b border-amber-500/30 px-6 py-2.5 flex items-center gap-3 text-xs text-amber-200">
+            <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
+            <div className="flex-1">
+              <span className="font-semibold text-amber-300">Nov 8 Public Launch Mode Active:</span>{" "}
+              Assets are served directly from Vercel Edge CDN for 0 Supabase Egress. The full CMS backup is preserved on branch{" "}
+              <code className="bg-black/40 px-1.5 py-0.5 rounded text-amber-300 font-mono text-[11px]">admin_powered_website</code>.
+            </div>
+          </div>
+        )}
         <div className="flex-1 overflow-y-auto p-6 md:p-8">
           {children}
         </div>

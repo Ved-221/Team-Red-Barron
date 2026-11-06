@@ -1,0 +1,58 @@
+[
+  {
+    "id": "stat-legacy",
+    "label": "Years of Legacy",
+    "value": "15+ YEARS",
+    "icon": "History",
+    "detail": "Active 2011 – Present",
+    "sort_order": 1
+  },
+  {
+    "id": "stat-atvs",
+    "label": "Vehicles Built",
+    "value": "14 ATVs",
+    "icon": "Car",
+    "detail": "Albatros 1.0 to XIV",
+    "sort_order": 2
+  },
+  {
+    "id": "stat-ebaja2025-1",
+    "label": "COMBUSTION ERA",
+    "value": "2012- 2022",
+    "icon": "ShieldCheck",
+    "detail": "Alabtros 1  to Albatros  XR",
+    "sort_order": 3
+  },
+  {
+    "id": "stat-ebaja2024-air1",
+    "label": "ELECTRIC ERA",
+    "value": "2023 - PRESENT",
+    "icon": "Trophy",
+    "detail": "Albatros XI - Present",
+    "sort_order": 4
+  },
+  {
+    "id": "stat-ebaja2024-air2",
+    "label": "E-BAJA INDIA 2024",
+    "value": "AIR 2",
+    "icon": "Award",
+    "detail": "Overall National Rank",
+    "sort_order": 5
+  },
+  {
+    "id": "stat-ebaja-4wd",
+    "label": "E-BAJA 2025",
+    "value": "AIR 1 OVERALL STATICS",
+    "icon": "Zap",
+    "detail": "STATICS AWARD",
+    "sort_order": 6
+  },
+  {
+    "id": "stat-illinois2017",
+    "label": "Baja SAE Illinois 2017",
+    "value": "9TH RANK",
+    "icon": "Car",
+    "detail": "Overall Dynamics (USA)",
+    "sort_order": 7
+  }
+]

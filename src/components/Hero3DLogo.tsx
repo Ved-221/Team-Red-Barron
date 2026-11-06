@@ -5,8 +5,10 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Center, Bounds } from "@react-three/drei";
 import type { LogoRadialDistortionRef } from "./LogoRadialDistortion";
+import { toLocalMediaUrl } from "@/lib/media";
 
-const GLB_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/logo_3d_emblem_website_colours.glb";
+const REMOTE_GLB_PATH = "https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/logo_3d_emblem_website_colours.glb";
+const GLB_PATH = toLocalMediaUrl(REMOTE_GLB_PATH);
 
 // Safe preload that won't throw unhandled rejections
 if (typeof window !== "undefined") {

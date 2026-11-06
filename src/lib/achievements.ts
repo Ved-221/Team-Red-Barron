@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { supabase as staticClient } from "@/lib/supabase";
+import { USE_LOCAL_MEDIA_CACHE } from "@/lib/media";
 import fs from "fs/promises";
 import path from "path";
 import { AchievementStat, DEFAULT_ACHIEVEMENTS } from "./achievements-types";
@@ -40,6 +41,23 @@ async function readJsonFallback(): Promise<AchievementStat[]> {
   const now = Date.now();
   if (memoryCache && now - lastFetchTime < CACHE_TTL_MS) {
     return [...memoryCache];
+  }
+
+  // 0. High-performance zero-egress local cache for public launch
+  if (USE_LOCAL_MEDIA_CACHE) {
+    try {
+      const localMetaPath = path.join(process.cwd(), "public", "media", "meta", "achievements.json");
+      const raw = await fs.readFile(localMetaPath, "utf-8");
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const sorted = parsed.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+        memoryCache = sorted;
+        lastFetchTime = now;
+        return sorted;
+      }
+    } catch {
+      // Fall through to remote if local read fails
+    }
   }
 
   // 1. Direct cache-busted fetch to bypass Cloudflare CDN cache

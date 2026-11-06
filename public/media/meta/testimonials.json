@@ -1,0 +1,29 @@
+[
+  {
+    "id": "testimonial-varroc",
+    "quote": "Kudos to the team for this exceptional accomplishment and their commitment to advancing innovation.",
+    "name": "Varroc Engineering",
+    "company": "Varroc Engineering Limited",
+    "tier": "",
+    "website_url": "https://www.linkedin.com/posts/engineeringexcellence-innovation-saeebaja2026-share-7467060308981846016-BiRR/",
+    "sort_order": 0
+  },
+  {
+    "id": "testimonial-altium",
+    "quote": "Providing Altium PCB design tools to the team  has proven how fast young engineers can innovate when backed by industry-standard EDA software. Keep pushing forward.",
+    "name": "UNIVERSITY PROGRAM LEAD",
+    "company": "Altium LLC",
+    "tier": "",
+    "website_url": "https://www.altium.com/education/sponsorships/team-stories/team-red-baron",
+    "sort_order": 1
+  },
+  {
+    "id": "testimonial-1793983901791",
+    "quote": "We are truly proud to support Team Red Baron in their pursuit of engineering excellence. It is inspiring to see young minds pushing boundaries in science and technology — this is where the future of our nation is shaped.",
+    "name": "MANAGING DIRECTOR",
+    "company": "COMPOSITES TOMORROW",
+    "tier": "",
+    "website_url": "https://lnkd.in/p/dkEzReAh",
+    "sort_order": 2
+  }
+]

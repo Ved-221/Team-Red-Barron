@@ -1,0 +1,30 @@
+{
+  "ACCUMULATOR": {
+    "sort_order": 3,
+    "description": "Designing and building custom battery packs based on vehicle power requirements and competition regulations, with a focus on thermal management and safety."
+  },
+  "ELECTRIC POWERTRAIN": {
+    "sort_order": 2,
+    "description": "Integrating and optimizing high-voltage electrical systems, battery management, and motor control to deliver reliable and efficient electric propulsion under extreme racing conditions."
+  },
+  "ROLLCAGE": {
+    "sort_order": 5,
+    "description": "Constructing the structural backbone of the vehicle , ensuring driver safety and maximizing torsional rigidity."
+  },
+  "VEHICLE DYNAMICS": {
+    "sort_order": 4,
+    "description": "Optimizing suspension, steering, and vehicle handling to deliver superior stability, traction, and driver control across challenging off-road terrain."
+  },
+  "MECHANICAL POWERTRAIN": {
+    "sort_order": 6,
+    "description": "Engineering robust mechanical drivetrain and transmission systems to maximize torque delivery, efficiency, and reliability across challenging off-road terrain."
+  },
+  "DIRECTORS": {
+    "sort_order": 1,
+    "description": "Driving team operations, strategic planning, finance, and communication beyond engineering."
+  },
+  "NON - TECH EXECUTIVES": {
+    "sort_order": 7,
+    "description": "Specialized engineering and operational domain for NON - TECH EXECUTIVES."
+  }
+}

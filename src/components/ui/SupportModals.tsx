@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, Mail, Send, CheckCircle2, Download, Copy, Check, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { toLocalMediaUrl } from "@/lib/media";
 
 interface ModalProps {
   isOpen: boolean;
@@ -147,7 +148,7 @@ export function DonateModal({
                 <div className="w-52 h-52 sm:w-56 sm:h-56 bg-white rounded-2xl p-3 flex flex-col items-center justify-center shadow-[0_0_35px_rgba(222,22,21,0.45)] border border-[#de1615]/30 overflow-hidden">
                   <div className="relative w-full h-full">
                     <Image
-                      src={qrCodeUrl}
+                      src={toLocalMediaUrl(qrCodeUrl)}
                       alt="TRB UPI Payment QR Code"
                       fill
                       unoptimized
@@ -179,7 +180,7 @@ export function DonateModal({
                     Modify Amount
                   </button>
                   <a
-                    href={brochureUrl}
+                    href={toLocalMediaUrl(brochureUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 glass-card py-3 rounded-xl border border-white/20 text-white font-sora text-xs font-semibold hover:border-[#de1615] transition-colors flex items-center justify-center gap-2"
@@ -243,7 +244,7 @@ export function DonateModal({
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
                   </button>
                   <a
-                    href={brochureUrl}
+                    href={toLocalMediaUrl(brochureUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="glass-card px-5 py-3 rounded-xl border border-white/20 text-white font-sora text-sm font-semibold hover:border-[#de1615] transition-colors flex items-center justify-center gap-2"
