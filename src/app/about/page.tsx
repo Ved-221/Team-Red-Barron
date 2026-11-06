@@ -3,6 +3,7 @@ import AboutClient from "./AboutClient";
 import { Metadata } from "next";
 
 import { getSharedChromeData } from "@/lib/server-data";
+import { toLocalMediaUrl } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -41,7 +42,7 @@ export default async function AboutPage() {
     subtitle: v.subtitle,
     badge: v.badge_text,
     icon: v.icon_key || "Trophy",
-    imageSrc: v.image_url,
+    imageSrc: toLocalMediaUrl(v.image_url),
     description: v.description,
     specs: (v.vehicle_specs || []).map((s: { label: string; value: string }) => ({
       label: s.label,
@@ -49,5 +50,10 @@ export default async function AboutPage() {
     })),
   }));
 
-  return <AboutClient aboutData={aboutData} vehiclesData={formattedVehicles} chromeData={chrome} />;
+  const localAboutData = aboutData ? {
+    ...aboutData,
+    team_photo_url: toLocalMediaUrl(aboutData.team_photo_url),
+  } : null;
+
+  return <AboutClient aboutData={localAboutData} vehiclesData={formattedVehicles} chromeData={chrome} />;
 }

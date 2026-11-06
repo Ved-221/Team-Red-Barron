@@ -3,6 +3,7 @@ import SponsorsClient from "./SponsorsClient";
 import { getTestimonials } from "@/lib/testimonials";
 import { Metadata } from "next";
 import { getSharedChromeData } from "@/lib/server-data";
+import { toLocalMediaUrl } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -48,14 +49,21 @@ export default async function SponsorsPage() {
 
   const cleanedTiers = (sponsorTiersRes.data || []).map((tier) => ({
     ...tier,
-    sponsors: (tier.sponsors || []).filter((s: { deleted_at?: string | null }) => !s.deleted_at),
+    sponsors: (tier.sponsors || [])
+      .filter((s: { deleted_at?: string | null }) => !s.deleted_at)
+      .map((s: { id: string; tier_id: string; name: string; logo_url: string; website_url?: string; sort_order: number }) => ({
+        ...s,
+        logo_url: toLocalMediaUrl(s.logo_url),
+      })),
   }));
+
+  const heroBg = toLocalMediaUrl(settingsRes.data?.sponsors_bg_url) || "/images/sponsors_hero_bg.webp";
 
   return (
     <SponsorsClient
       sponsorTiers={cleanedTiers}
       testimonials={testimonials}
-      heroBgUrl={settingsRes.data?.sponsors_bg_url || "/images/sponsors_hero_bg.webp"}
+      heroBgUrl={heroBg}
       chromeData={chromeData}
     />
   );

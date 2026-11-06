@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { getSharedChromeData } from "@/lib/server-data";
 import { getDepartmentDetails } from "@/lib/departments";
 import { getMemberPositions, isColumnMissingError } from "@/lib/team-members-meta";
+import { toLocalMediaUrl } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -82,8 +83,8 @@ export default async function TeamPage() {
           department: m.department,
           position: (m.position && m.position.trim()) || memberPositions[m.id] || "",
           linkedin_url: m.linkedin_url,
-          image_url: m.image_url,
-          photo_url: m.image_url,
+          image_url: toLocalMediaUrl(m.image_url),
+          photo_url: toLocalMediaUrl(m.image_url),
           team_year_id: m.team_year_id,
           sort_order: m.sort_order,
         }));

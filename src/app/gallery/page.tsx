@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import GalleryClient from "./GalleryClient";
 import { Metadata } from "next";
 import { getSharedChromeData } from "@/lib/server-data";
+import { toLocalMediaUrl } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -24,5 +25,10 @@ export default async function GalleryPage() {
     getSharedChromeData(),
   ]);
 
-  return <GalleryClient galleryData={galleryRes.data || []} chromeData={chromeData} />;
+  const galleryItems = (galleryRes.data || []).map((item) => ({
+    ...item,
+    image_url: toLocalMediaUrl(item.image_url),
+  }));
+
+  return <GalleryClient galleryData={galleryItems} chromeData={chromeData} />;
 }

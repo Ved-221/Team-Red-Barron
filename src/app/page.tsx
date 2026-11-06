@@ -12,6 +12,7 @@ import { HomepageIntro } from "@/components/HomepageIntro";
 import { supabase } from "@/lib/supabase";
 import { getSharedChromeData } from "@/lib/server-data";
 import { getAchievements } from "@/lib/achievements";
+import { toLocalMediaUrl } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -56,7 +57,7 @@ export default async function Home() {
     subtitle: v.subtitle,
     badge: v.badge_text,
     icon: v.icon_key || "Trophy",
-    imageSrc: v.image_url,
+    imageSrc: toLocalMediaUrl(v.image_url),
     description: v.description,
     specs: (v.vehicle_specs || []).map((s: { label: string; value: string }) => ({
       label: s.label,
@@ -65,10 +66,25 @@ export default async function Home() {
     eraLabel: `${v.year} — ${v.vehicle_name}`,
   }));
 
-  const flagshipVehicle = 
+  const rawFlagship = 
     (vehicles && settings?.flagship_vehicle_id) 
       ? vehicles.find(v => v.id === settings.flagship_vehicle_id) || vehicles[0]
       : (vehicles && vehicles.length > 0) ? vehicles[0] : null;
+
+  const flagshipVehicle = rawFlagship ? {
+    ...rawFlagship,
+    image_url: toLocalMediaUrl(rawFlagship.image_url),
+  } : null;
+
+  const localSponsors = (sponsors || []).map((s) => ({
+    ...s,
+    logo_url: toLocalMediaUrl(s.logo_url),
+  }));
+
+  const localTeamPhotos = (teamPhotos || []).map((p) => ({
+    ...p,
+    image_url: toLocalMediaUrl(p.image_url),
+  }));
 
   return (
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
@@ -90,11 +106,11 @@ export default async function Home() {
       </ScrollReveal>
 
       <ScrollReveal yOffset={40}>
-        <SponsorsMarquee sponsors={sponsors || []} />
+        <SponsorsMarquee sponsors={localSponsors} />
       </ScrollReveal>
 
       <ScrollReveal yOffset={50}>
-        <GalleryPreview teamPhotos={teamPhotos || []} />
+        <GalleryPreview teamPhotos={localTeamPhotos} />
       </ScrollReveal>
 
       <ScrollReveal yOffset={40}>
