@@ -4,6 +4,7 @@ import { AgentationDevTools } from "@/components/AgentationDevTools";
 import { NavigationProgress } from "@/components/NavigationProgress";
 import { TRBLoadingScreen } from "@/components/TRBLoadingScreen";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const sora = Sora({
@@ -112,6 +113,7 @@ export default function RootLayout({
         <Toaster position="bottom-right" toastOptions={{ className: "font-inter text-sm", style: { background: "#1e2020", color: "#fff", border: "1px solid rgba(255,255,255,0.1)" } }} />
         {children}
         <AgentationDevTools />
+        <Analytics />
       </body>
     </html>
   );
