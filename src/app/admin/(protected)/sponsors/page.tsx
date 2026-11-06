@@ -207,7 +207,7 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
 
               <button
                 type="submit"
-                className="w-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 rounded-lg transition-colors mt-2"
+                className="w-full bg-[#de1615]/20 hover:bg-[#de1615] text-[#ff4d4b] hover:text-white font-sora font-semibold text-xs py-2 rounded-lg transition-all border border-[#de1615]/30 hover:border-[#de1615] mt-2 cursor-pointer"
               >
                 Save Changes
               </button>

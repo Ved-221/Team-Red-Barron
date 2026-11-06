@@ -215,47 +215,71 @@ export async function updateSponsorHeroBg(formData: FormData) {
 }
 
 export async function addSponsorTestimonial(formData: FormData) {
-  const quote = (formData.get("quote") as string || "").trim();
-  const name = (formData.get("name") as string || "").trim();
-  const company = (formData.get("company") as string || "").trim();
-  const tier = (formData.get("tier") as string || "").trim();
-  const website_url = (formData.get("website_url") as string || "").trim();
-  const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
+  try {
+    const quote = (formData.get("quote") as string || "").trim();
+    const name = (formData.get("name") as string || "").trim();
+    const company = (formData.get("company") as string || "").trim();
+    const tier = (formData.get("tier") as string || "").trim();
+    const website_url = (formData.get("website_url") as string || "").trim();
+    const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
 
-  if (!quote || !company) {
-    throw new Error("Quote and company name are required.");
+    if (!quote || !company) {
+      throw new Error("Quote and company name are required.");
+    }
+
+    const { saveTestimonial } = await import("@/lib/testimonials");
+    await saveTestimonial({ quote, name, company, tier, website_url, sort_order });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/sponsors", "layout");
+    revalidatePath("/sponsors", "page");
+    revalidatePath("/admin/sponsors", "layout");
+    revalidatePath("/admin/sponsors", "page");
+  } catch (error) {
+    console.error("Failed to add sponsor testimonial:", error);
+    throw error;
   }
-
-  const { saveTestimonial } = await import("@/lib/testimonials");
-  await saveTestimonial({ quote, name, company, tier, website_url, sort_order });
-
-  revalidatePath("/sponsors");
-  revalidatePath("/admin/sponsors");
 }
 
 export async function updateSponsorTestimonial(id: string, formData: FormData) {
-  const quote = (formData.get("quote") as string || "").trim();
-  const name = (formData.get("name") as string || "").trim();
-  const company = (formData.get("company") as string || "").trim();
-  const tier = (formData.get("tier") as string || "").trim();
-  const website_url = (formData.get("website_url") as string || "").trim();
-  const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
+  try {
+    const quote = (formData.get("quote") as string || "").trim();
+    const name = (formData.get("name") as string || "").trim();
+    const company = (formData.get("company") as string || "").trim();
+    const tier = (formData.get("tier") as string || "").trim();
+    const website_url = (formData.get("website_url") as string || "").trim();
+    const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
 
-  if (!quote || !company) {
-    throw new Error("Quote and company name are required.");
+    if (!quote || !company) {
+      throw new Error("Quote and company name are required.");
+    }
+
+    const { saveTestimonial } = await import("@/lib/testimonials");
+    await saveTestimonial({ id, quote, name, company, tier, website_url, sort_order });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/sponsors", "layout");
+    revalidatePath("/sponsors", "page");
+    revalidatePath("/admin/sponsors", "layout");
+    revalidatePath("/admin/sponsors", "page");
+  } catch (error) {
+    console.error("Failed to update sponsor testimonial:", error);
+    throw error;
   }
-
-  const { saveTestimonial } = await import("@/lib/testimonials");
-  await saveTestimonial({ id, quote, name, company, tier, website_url, sort_order });
-
-  revalidatePath("/sponsors");
-  revalidatePath("/admin/sponsors");
 }
 
 export async function deleteSponsorTestimonial(id: string) {
-  const { removeTestimonial } = await import("@/lib/testimonials");
-  await removeTestimonial(id);
-  revalidatePath("/sponsors");
-  revalidatePath("/admin/sponsors");
+  try {
+    const { removeTestimonial } = await import("@/lib/testimonials");
+    await removeTestimonial(id);
+    revalidatePath("/", "layout");
+    revalidatePath("/sponsors", "layout");
+    revalidatePath("/sponsors", "page");
+    revalidatePath("/admin/sponsors", "layout");
+    revalidatePath("/admin/sponsors", "page");
+  } catch (error) {
+    console.error("Failed to delete sponsor testimonial:", error);
+    throw error;
+  }
 }
 
