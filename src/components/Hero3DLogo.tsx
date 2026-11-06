@@ -240,35 +240,34 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
         initializedSmoother = true;
       }
 
-      // Smooth sensor input with exponential moving average to eliminate sensor jitter
+      // Smooth sensor input with exponential moving average to eliminate sensor jitter while maintaining quick response
       if (!initializedSmoother) {
         smoothedGamma = e.gamma;
         smoothedBeta = e.beta;
         initializedSmoother = true;
       } else {
-        smoothedGamma += (e.gamma - smoothedGamma) * 0.18;
-        smoothedBeta += (e.beta - smoothedBeta) * 0.18;
+        smoothedGamma += (e.gamma - smoothedGamma) * 0.28;
+        smoothedBeta += (e.beta - smoothedBeta) * 0.28;
       }
 
       // Delta relative to calibrated hand-held posture
       let deltaGamma = smoothedGamma - (baseGammaRef.current ?? 0);
       let deltaBeta = smoothedBeta - (baseBetaRef.current ?? 45);
 
-      // Deadzone threshold (ignore micro hand tremors under 1.5 degrees)
-      const DEADZONE = 1.5;
+      // Deadzone threshold (filters micro finger vibrations under 0.8 degrees)
+      const DEADZONE = 0.8;
       if (Math.abs(deltaGamma) < DEADZONE) deltaGamma = 0;
       else deltaGamma -= Math.sign(deltaGamma) * DEADZONE;
 
       if (Math.abs(deltaBeta) < DEADZONE) deltaBeta = 0;
       else deltaBeta -= Math.sign(deltaBeta) * DEADZONE;
 
-      // Reduced sensitivity: widened range (55 deg) + 0.6 scale factor
-      // This makes the tilt feel calm, grounded, and premium rather than hyper-reactive
-      const SENSITIVITY_DIVISOR = 55;
-      const MAX_MOBILE_SCALE = 0.6;
+      // Enhanced sensitivity: a natural ~25 degree wrist tilt produces full dynamic 3D range
+      const SENSITIVITY_DIVISOR = 26;
+      const MAX_MOBILE_SCALE = 0.95;
 
-      const normX = Math.max(-MAX_MOBILE_SCALE, Math.min(MAX_MOBILE_SCALE, (deltaGamma / SENSITIVITY_DIVISOR) * MAX_MOBILE_SCALE));
-      const normY = Math.max(-MAX_MOBILE_SCALE, Math.min(MAX_MOBILE_SCALE, (deltaBeta / SENSITIVITY_DIVISOR) * MAX_MOBILE_SCALE));
+      const normX = Math.max(-MAX_MOBILE_SCALE, Math.min(MAX_MOBILE_SCALE, deltaGamma / SENSITIVITY_DIVISOR));
+      const normY = Math.max(-MAX_MOBILE_SCALE, Math.min(MAX_MOBILE_SCALE, deltaBeta / SENSITIVITY_DIVISOR));
 
       pointerRef.current = {
         x: normX,
@@ -277,7 +276,7 @@ export function Hero3DLogo({ distortionRef }: Hero3DLogoProps) {
       };
 
       if (distortionRef?.current) {
-        const movementIntensity = (Math.abs(normX) + Math.abs(normY)) * 0.15;
+        const movementIntensity = (Math.abs(normX) + Math.abs(normY)) * 0.25;
         distortionRef.current.onMove(movementIntensity);
       }
     };
