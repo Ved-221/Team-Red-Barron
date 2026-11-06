@@ -37,6 +37,7 @@ export default async function Home() {
         .from("sponsors")
         .select("id, name, logo_url, sort_order")
         .is("deleted_at", null)
+        .not("tier_id", "is", null)
         .order("sort_order", { ascending: true }),
       supabase
         .from("team_photos")

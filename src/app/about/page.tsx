@@ -4,7 +4,8 @@ import { Metadata } from "next";
 
 import { getSharedChromeData } from "@/lib/server-data";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "About Us | PCCOE Motorsport",
@@ -20,7 +21,7 @@ export default async function AboutPage() {
     getSharedChromeData(),
     supabase
       .from("about_content")
-      .select("id, intro_headline, intro_summary, main_body_text, vision_text, mission_text, team_photo_url, team_photo_caption")
+      .select("id, intro_headline, intro_summary, main_body_text, vision_text, mission_text, team_photo_url, team_photo_caption, stats_cards")
       .eq("id", 1)
       .maybeSingle(),
     supabase

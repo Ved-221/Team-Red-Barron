@@ -101,7 +101,7 @@ export default function AboutClient({
                 };
                 const Icon = st.icon;
                 return (
-                  <div key={st.label} className="glass-card p-5 max-md:p-3.5 rounded-2xl border border-white/10 bg-[#252e39]/40 backdrop-blur-xl flex flex-col items-center text-center group hover:border-[#de1615]/50 transition-all duration-300">
+                  <div key={`${st.label}-${idx}`} className="glass-card p-5 max-md:p-3.5 rounded-2xl border border-white/10 bg-[#252e39]/40 backdrop-blur-xl flex flex-col items-center text-center group hover:border-[#de1615]/50 transition-all duration-300">
                     <Icon className="w-6 h-6 text-[#de1615] mb-2 group-hover:scale-110 transition-transform" />
                     <span className="font-sora font-extrabold text-3xl sm:text-4xl max-md:text-2xl text-white mb-1">{st.value}</span>
                     <span className="font-sora font-bold text-xs max-md:text-[11px] text-[#ffb59f] uppercase tracking-wider">{st.label}</span>

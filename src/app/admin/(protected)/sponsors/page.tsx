@@ -24,6 +24,7 @@ interface SponsorItem {
   logo_url: string;
   website_url?: string;
   sort_order: number;
+  tier_id?: string;
 }
 
 export default async function AdminSponsorsPage(props: { searchParams: Promise<{ tier?: string }> }) {
@@ -43,10 +44,24 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
 
   const testimonials = await getTestimonials();
 
+  const { count: orphanedCount } = await supabase
+    .from("sponsors")
+    .select("id", { count: "exact", head: true })
+    .is("deleted_at", null)
+    .is("tier_id", null);
+
   const selectedTierId = searchParams.tier || (sponsorTiers?.[0]?.id);
 
   let sponsors: SponsorItem[] = [];
-  if (selectedTierId) {
+  if (selectedTierId === "unassigned") {
+    const { data: s } = await supabase
+      .from("sponsors")
+      .select("*")
+      .is("deleted_at", null)
+      .is("tier_id", null)
+      .order("sort_order", { ascending: true });
+    sponsors = (s as unknown as SponsorItem[]) || [];
+  } else if (selectedTierId) {
     const { data: s } = await supabase
       .from("sponsors")
       .select("*")
@@ -304,6 +319,23 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
                   </form>
                 </div>
               ))}
+              {typeof orphanedCount === "number" && orphanedCount > 0 && (
+                <div className="pt-2">
+                  <Link
+                    href="/admin/sponsors?tier=unassigned"
+                    className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-mono font-semibold transition-all border ${
+                      selectedTierId === "unassigned"
+                        ? "bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.2)]"
+                        : "text-amber-400/80 hover:text-amber-300 bg-amber-500/10 border-amber-500/20 hover:border-amber-500/40"
+                    }`}
+                  >
+                    <span>⚠️ Unassigned ({orphanedCount})</span>
+                    <span className="bg-amber-500/30 px-1.5 py-0.5 rounded text-[10px] text-amber-200">
+                      Fix
+                    </span>
+                  </Link>
+                </div>
+              )}
             </div>
 
             <form action={addSponsorTier} className="mt-6 pt-6 border-t border-white/10 space-y-3">
@@ -334,20 +366,57 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
           {selectedTierId ? (
             <>
               <div className="bg-[#12151b] border border-white/10 rounded-2xl p-6">
-                <h2 className="font-sora font-bold text-xl text-white mb-6">Sponsors</h2>
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="font-sora font-bold text-xl text-white">
+                      {selectedTierId === "unassigned" ? "Unassigned Sponsors" : "Sponsors"}
+                    </h2>
+                    {selectedTierId === "unassigned" && (
+                      <p className="text-xs text-amber-400/90 mt-1">
+                        These sponsors are not linked to any tier. Select a Sponsor Tier from their dropdown and click &quot;Update&quot; to assign them, or click the trash icon to remove.
+                      </p>
+                    )}
+                  </div>
+                  <span className="font-mono text-xs text-[#ae8882] bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+                    {sponsors.length} Sponsors
+                  </span>
+                </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {sponsors.map(sponsor => (
                     <form key={sponsor.id} action={updateSponsor.bind(null, sponsor.id)} className="glass-card p-4 rounded-xl border border-white/5 bg-black/40 flex flex-col">
                       <ImageUploadField name="logo" label="Sponsor Logo (Max 800 KB)" defaultValue={sponsor.logo_url} className="mb-4" maxDimension={500} maxSizeMb={0.8} />
                       <div className="space-y-3 flex-1">
-                        <input type="text" name="name" defaultValue={sponsor.name} required placeholder="Sponsor Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
-                        <input type="url" name="website_url" defaultValue={sponsor.website_url} placeholder="Website URL" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
-                        <input type="number" name="sort_order" defaultValue={sponsor.sort_order} required placeholder="Sort Order" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                        <div>
+                          <label className="block text-[11px] font-mono text-[#ae8882] uppercase mb-1">Sponsor Tier</label>
+                          <select
+                            name="tier_id"
+                            defaultValue={sponsor.tier_id || selectedTierId}
+                            className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter"
+                          >
+                            {(sponsorTiers || []).map((t) => (
+                              <option key={t.id} value={t.id} className="bg-[#12151b] text-white">
+                                {t.tier_name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-mono text-[#ae8882] uppercase mb-1">Sponsor Name</label>
+                          <input type="text" name="name" defaultValue={sponsor.name} required placeholder="Sponsor Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-mono text-[#ae8882] uppercase mb-1">Website URL</label>
+                          <input type="url" name="website_url" defaultValue={sponsor.website_url} placeholder="Website URL" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-mono text-[#ae8882] uppercase mb-1">Sort Order</label>
+                          <input type="number" name="sort_order" defaultValue={sponsor.sort_order} required placeholder="Sort Order" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                        </div>
                       </div>
                       <div className="mt-4 flex gap-2 pt-4 border-t border-white/5">
-                        <button type="submit" className="flex-1 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2 rounded-lg transition-colors">Update</button>
-                        <button formAction={deleteSponsor.bind(null, sponsor.id, sponsor.logo_url)} className="p-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-colors">
+                        <button type="submit" className="flex-1 bg-[#de1615]/20 hover:bg-[#de1615] text-[#ff4d4b] hover:text-white font-sora font-semibold text-xs py-2 rounded-lg transition-all border border-[#de1615]/30 hover:border-[#de1615]">Update</button>
+                        <button formAction={deleteSponsor.bind(null, sponsor.id, sponsor.logo_url)} className="p-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-colors" title="Delete Sponsor">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -356,23 +425,25 @@ export default async function AdminSponsorsPage(props: { searchParams: Promise<{
                 </div>
               </div>
 
-              <div className="bg-[#12151b] border border-white/10 rounded-2xl p-6">
-                <h2 className="font-sora font-bold text-xl text-white mb-6">Add New Sponsor</h2>
-                <form action={addSponsor} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input type="hidden" name="tier_id" value={selectedTierId} />
-                  <div>
-                    <ImageUploadField name="logo" label="Sponsor Logo (Max 800 KB)" maxDimension={500} maxSizeMb={0.8} />
-                  </div>
-                  <div className="space-y-3">
-                    <input type="text" name="name" required placeholder="Sponsor Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
-                    <input type="url" name="website_url" placeholder="Website URL" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
-                    <input type="number" name="sort_order" defaultValue={0} required placeholder="Sort Order" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
-                    <button type="submit" className="w-full bg-[#de1615] hover:bg-[#b81211] text-white font-sora font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg transition-all shadow-[0_0_15px_rgba(222,22,21,0.3)] mt-2">
-                      Add Sponsor
-                    </button>
-                  </div>
-                </form>
-              </div>
+              {selectedTierId !== "unassigned" && (
+                <div className="bg-[#12151b] border border-white/10 rounded-2xl p-6">
+                  <h2 className="font-sora font-bold text-xl text-white mb-6">Add New Sponsor</h2>
+                  <form action={addSponsor} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="hidden" name="tier_id" value={selectedTierId} />
+                    <div>
+                      <ImageUploadField name="logo" label="Sponsor Logo (Max 800 KB)" maxDimension={500} maxSizeMb={0.8} />
+                    </div>
+                    <div className="space-y-3">
+                      <input type="text" name="name" required placeholder="Sponsor Name" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                      <input type="url" name="website_url" placeholder="Website URL" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                      <input type="number" name="sort_order" defaultValue={0} required placeholder="Sort Order" className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-[#de1615]/50 transition-all font-inter" />
+                      <button type="submit" className="w-full bg-[#de1615] hover:bg-[#b81211] text-white font-sora font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg transition-all shadow-[0_0_15px_rgba(222,22,21,0.3)] mt-2">
+                        Add Sponsor
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
             </>
           ) : (
             <div className="flex items-center justify-center h-64 bg-[#12151b] border border-white/10 rounded-2xl text-white/40 font-inter">

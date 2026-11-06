@@ -80,7 +80,7 @@ export async function addSponsor(formData: FormData) {
 
 export async function updateSponsor(id: string, formData: FormData) {
   const supabase = await createClient();
-  const tier_id = formData.get("tier_id") as string;
+  const rawTierId = (formData.get("tier_id") as string || "").trim();
   const name = formData.get("name") as string;
   const website_url = formData.get("website_url") as string;
   const sort_order = parseInt(formData.get("sort_order") as string || "0", 10);
@@ -92,7 +92,7 @@ export async function updateSponsor(id: string, formData: FormData) {
   // Fetch actual existing logo URL directly from database row
   const { data: currentRecord, error: fetchError } = await supabase
     .from("sponsors")
-    .select("logo_url")
+    .select("logo_url, tier_id")
     .eq("id", id)
     .single();
 
@@ -114,11 +114,21 @@ export async function updateSponsor(id: string, formData: FormData) {
     finalLogoUrl = directUrl;
   }
 
+  const updatePayload: Record<string, unknown> = {
+    name,
+    website_url,
+    sort_order,
+    logo_url: finalLogoUrl,
+  };
+
+  // Only update tier_id if a valid non-empty value was explicitly provided, otherwise retain current tier_id
+  if (rawTierId) {
+    updatePayload.tier_id = rawTierId;
+  }
+
   const { data: updatedRows, error } = await supabase
     .from("sponsors")
-    .update({
-      tier_id, name, website_url, sort_order, logo_url: finalLogoUrl
-    })
+    .update(updatePayload)
     .eq("id", id)
     .select();
 
@@ -131,9 +141,11 @@ export async function updateSponsor(id: string, formData: FormData) {
     await deleteImage(realExistingUrl);
   }
 
-  revalidatePath("/");
-  revalidatePath("/sponsors");
-  revalidatePath("/admin/sponsors");
+  revalidatePath("/", "layout");
+  revalidatePath("/sponsors", "layout");
+  revalidatePath("/sponsors", "page");
+  revalidatePath("/admin/sponsors", "layout");
+  revalidatePath("/admin/sponsors", "page");
 }
 
 export async function deleteSponsor(id: string, logoUrl: string) {

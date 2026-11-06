@@ -3,7 +3,8 @@ import GalleryClient from "./GalleryClient";
 import { Metadata } from "next";
 import { getSharedChromeData } from "@/lib/server-data";
 
-export const revalidate = 3600; // 1-hour ISR cache
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Media Gallery",

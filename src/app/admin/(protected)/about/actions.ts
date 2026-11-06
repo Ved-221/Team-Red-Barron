@@ -56,7 +56,9 @@ export async function updateAboutContent(formData: FormData) {
     await deleteImage(existingImageUrl);
   }
 
-  revalidatePath("/");
-  revalidatePath("/about");
-  revalidatePath("/admin/about");
+  revalidatePath("/", "layout");
+  revalidatePath("/about", "layout");
+  revalidatePath("/about", "page");
+  revalidatePath("/admin/about", "layout");
+  revalidatePath("/admin/about", "page");
 }
