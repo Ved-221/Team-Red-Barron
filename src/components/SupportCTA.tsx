@@ -65,19 +65,6 @@ export function SupportCTA({ supportSettings }: SupportCTAProps = {}) {
                 />
               </div>
 
-              {/* Background Layer 2: Faint Formula Student / Baja Vehicle Silhouette (Hidden on mobile) */}
-              <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.07] overflow-hidden max-md:hidden">
-                <div className="relative w-[700px] h-[500px]">
-                  <SmartImage
-                    src="https://axzwucvnrjtenvvrxfew.supabase.co/storage/v1/object/public/trb-media/buggyy.png"
-                    alt="Formula Student Vehicle Background Silhouette"
-                    fill
-                    sizes="(max-width: 640px) 100vw, 640px"
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-
               {/* Background Layer 3: Faint Motorsport Racing-Line SVG Graphic */}
               <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
                 <svg className="w-full h-full stroke-[#de1615]/40 fill-none" xmlns="http://www.w3.org/2000/svg">
