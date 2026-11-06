@@ -19,16 +19,33 @@ export async function uploadImage(file: File, folder: string): Promise<string | 
 
   try {
     const supabase = await createClient();
-    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${cleanExt}`;
-    const filePath = `${folder}/${fileName}`;
-
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    let buffer = Buffer.from(arrayBuffer);
+    let finalExt = cleanExt;
+    let contentType = file.type || (cleanExt === 'pdf' ? 'application/pdf' : cleanExt === 'png' ? 'image/png' : cleanExt === 'webp' ? 'image/webp' : 'image/jpeg');
+
+    // Automatically optimize images to high-performance WebP before storing
+    if (!isDoc && !cleanExt.includes('svg') && !cleanExt.includes('gif')) {
+      try {
+        const sharp = (await import('sharp')).default;
+        buffer = await sharp(buffer)
+          .resize({ width: 1920, height: 1440, fit: 'inside', withoutEnlargement: true })
+          .webp({ quality: 82, effort: 4 })
+          .toBuffer();
+        finalExt = 'webp';
+        contentType = 'image/webp';
+      } catch (sharpErr) {
+        console.warn('Server-side image compression fallback to original buffer:', sharpErr);
+      }
+    }
+
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${finalExt}`;
+    const filePath = `${folder}/${fileName}`;
 
     const { error } = await supabase.storage
       .from('trb-media')
       .upload(filePath, buffer, {
-        contentType: file.type || (cleanExt === 'pdf' ? 'application/pdf' : cleanExt === 'png' ? 'image/png' : cleanExt === 'webp' ? 'image/webp' : 'image/jpeg'),
+        contentType,
         cacheControl: '31536000',
         upsert: true
       });
