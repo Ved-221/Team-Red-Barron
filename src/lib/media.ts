@@ -20,13 +20,20 @@ function safeDecode(val: string): string {
   }
 }
 
+function withCacheBuster(path: string): string {
+  if (path.includes("IMG_6840") || path.includes("20230405_171839")) {
+    return path.includes("?") ? `${path}&v=2` : `${path}?v=2`;
+  }
+  return path;
+}
+
 export function toLocalMediaUrl(url: string | null | undefined): string {
   if (!url) return "";
   if (!USE_LOCAL_MEDIA_CACHE) return url;
 
   // Already local
   if (url.startsWith("/media/")) {
-    return url;
+    return withCacheBuster(url);
   }
 
   // Full Supabase Storage public URL
@@ -36,14 +43,11 @@ export function toLocalMediaUrl(url: string | null | undefined): string {
     if (rawPath.startsWith("gallery/") && !rawPath.endsWith(".webp")) {
       rawPath = rawPath.replace(/\.(jpg|jpeg|png)$/i, ".webp");
     }
-    if (rawPath.startsWith("hero/") && rawPath.includes("IMG_4588")) {
-      rawPath = "hero/sponsors_hero_bg.webp";
-    }
     // In hero, ensure sponsors_hero_bg is resolved
     if (rawPath.startsWith("hero/") && rawPath.includes("IMG_4588")) {
       rawPath = "hero/sponsors_hero_bg.webp";
     }
-    return `/media/${rawPath}`;
+    return withCacheBuster(`/media/${rawPath}`);
   }
 
   // Any trb-media bucket reference (e.g. transform/render URLs)
@@ -56,7 +60,7 @@ export function toLocalMediaUrl(url: string | null | undefined): string {
     if (rawPath.startsWith("hero/") && rawPath.includes("IMG_4588")) {
       rawPath = "hero/sponsors_hero_bg.webp";
     }
-    return `/media/${rawPath}`;
+    return withCacheBuster(`/media/${rawPath}`);
   }
 
   return url;
