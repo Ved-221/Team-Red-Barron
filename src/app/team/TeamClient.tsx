@@ -231,26 +231,54 @@ function TeamContent({
                           delay: (idx % 3) * 0.05,
                           ease: [0.16, 1, 0.3, 1],
                         }}
-                        className={`group relative bg-[#12151b]/80 border border-white/10 rounded-2xl max-md:rounded-xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row max-md:flex-col items-stretch ${
-                          deptMembers.length === 1 ? "w-full max-w-md" : ""
+                        className={`group relative bg-[#12151b]/80 border border-white/10 rounded-2xl max-md:rounded-xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex items-stretch ${
+                          deptMembers.length === 1
+                            ? "flex-row w-full max-w-md mx-auto"
+                            : "flex-row max-md:flex-col"
                         }`}
                       >
-                        <div className="relative w-28 sm:w-32 max-md:w-full max-md:h-44 shrink-0 bg-black/50 overflow-hidden min-h-[110px] sm:min-h-[120px] max-md:min-h-0">
+                        <div
+                          className={`relative shrink-0 bg-black/50 overflow-hidden ${
+                            deptMembers.length === 1
+                              ? "w-28 sm:w-36 aspect-[4/5] min-h-[140px] sm:min-h-[160px]"
+                              : "w-28 sm:w-32 max-md:w-full max-md:aspect-[4/5] min-h-[110px] sm:min-h-[120px] max-md:min-h-0"
+                          }`}
+                        >
                           <SmartImage
                             src={member.photo_url || "/team_person.webp"}
                             fallbackSrc="/team_person.webp"
                             alt={member.name}
                             fill
                             priority={idx < 6}
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 128px"
+                            sizes={
+                              deptMembers.length === 1
+                                ? "(max-width: 640px) 120px, 144px"
+                                : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 128px"
+                            }
                             className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-r max-md:bg-gradient-to-b from-transparent via-transparent to-[#12151b]/80" />
+                          <div
+                            className={`absolute inset-0 ${
+                              deptMembers.length === 1
+                                ? "bg-gradient-to-r from-transparent via-transparent to-[#12151b]/80"
+                                : "bg-gradient-to-r max-md:bg-gradient-to-b from-transparent via-transparent to-[#12151b]/80"
+                            }`}
+                          />
                         </div>
 
-                        <div className="p-4 max-md:p-2.5 flex flex-col justify-between flex-1 min-w-0">
+                        <div
+                          className={`p-4 flex flex-col justify-between flex-1 min-w-0 ${
+                            deptMembers.length === 1 ? "max-md:p-3" : "max-md:p-2.5"
+                          }`}
+                        >
                           <div>
-                            <h3 className="font-sora font-bold text-base sm:text-lg max-md:text-xs text-white group-hover:text-[#de1615] transition-colors uppercase leading-tight line-clamp-2">
+                            <h3
+                              className={`font-sora font-bold text-white group-hover:text-[#de1615] transition-colors uppercase leading-tight line-clamp-2 ${
+                                deptMembers.length === 1
+                                  ? "text-base sm:text-lg max-md:text-sm"
+                                  : "text-base sm:text-lg max-md:text-xs"
+                              }`}
+                            >
                               {member.name}
                             </h3>
                             {member.position?.trim() && (
