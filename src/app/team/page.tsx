@@ -81,7 +81,7 @@ export default async function TeamPage() {
           let photoUrl = toLocalMediaUrl(m.image_url);
           // If Nimisha Pandey, link her newly provided photo
           if (m.name.toLowerCase().includes("nimisha") && (!photoUrl || photoUrl === "/team_person.webp")) {
-            photoUrl = "/media/team/nimisha_pandey.webp";
+            photoUrl = "/media/team/nimisha_pandey_v2.webp";
           }
           return {
             id: m.id,
@@ -107,8 +107,8 @@ export default async function TeamPage() {
           department: "FACULTY ADVISOR",
           position: "Faculty Advisor",
           linkedin_url: "https://www.linkedin.com/in/dr-ummid-shaikh-55886467/",
-          image_url: "/media/team/dr_ummid_shaikh.webp",
-          photo_url: "/media/team/dr_ummid_shaikh.webp",
+          image_url: "/media/team/dr_ummid_shaikh_v2.webp",
+          photo_url: "/media/team/dr_ummid_shaikh_v2.webp",
           team_year_id: y.id,
           sort_order: 0,
         });
