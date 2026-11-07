@@ -16,7 +16,9 @@ export function GalleryPreview({ teamPhotos }: { teamPhotos: TeamPhotoItem[] }) 
 
   if (!teamPhotos || teamPhotos.length === 0) return null;
 
-  const teamItems = teamPhotos.map((p) => {
+  const teamItems = (teamPhotos || [])
+    .filter((p) => Boolean(p.image_url && !p.image_url.includes("IMG_9368")))
+    .map((p) => {
     const localUrl = toLocalMediaUrl(p.image_url);
     let optimizedUrl = localUrl;
     if (

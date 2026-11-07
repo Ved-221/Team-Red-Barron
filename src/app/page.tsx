@@ -13,6 +13,8 @@ import { supabase } from "@/lib/supabase";
 import { getSharedChromeData } from "@/lib/server-data";
 import { getAchievements } from "@/lib/achievements";
 import { toLocalMediaUrl } from "@/lib/media";
+import fs from "fs";
+import path from "path";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -81,10 +83,20 @@ export default async function Home() {
     logo_url: toLocalMediaUrl(s.logo_url),
   }));
 
-  const localTeamPhotos = (teamPhotos || []).map((p) => ({
-    ...p,
-    image_url: toLocalMediaUrl(p.image_url),
-  }));
+  const localTeamPhotos = (teamPhotos || [])
+    .filter((p) => {
+      if (!p.image_url || p.image_url.includes("IMG_9368")) return false;
+      const localUrl = toLocalMediaUrl(p.image_url);
+      if (localUrl && localUrl.startsWith("/media/")) {
+        const fullPath = path.join(process.cwd(), "public", localUrl);
+        return fs.existsSync(fullPath);
+      }
+      return Boolean(localUrl);
+    })
+    .map((p) => ({
+      ...p,
+      image_url: toLocalMediaUrl(p.image_url),
+    }));
 
   return (
     <main className="min-h-screen bg-black text-[#e2e2e2] flex flex-col selection:bg-[#de1615] selection:text-white">
