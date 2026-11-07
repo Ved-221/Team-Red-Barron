@@ -21,9 +21,6 @@ function safeDecode(val: string): string {
 }
 
 function withCacheBuster(path: string): string {
-  if (path.includes("IMG_6840") || path.includes("20230405_171839")) {
-    return path.includes("?") ? `${path}&v=2` : `${path}?v=2`;
-  }
   return path;
 }
 

@@ -27,10 +27,11 @@ function normalizeSrc(src: string): string {
 
   // Local relative paths
   if (src.startsWith("/")) {
-    if (src.includes(" ")) {
-      return encodeURI(src);
+    const cleanPath = src.split("?")[0].split("#")[0];
+    if (cleanPath.includes(" ")) {
+      return encodeURI(cleanPath);
     }
-    return src;
+    return cleanPath;
   }
 
   // Absolute http/https URLs
