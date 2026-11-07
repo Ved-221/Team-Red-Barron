@@ -75,19 +75,46 @@ export default async function TeamPage() {
 
   if (years && members) {
     years.forEach((y) => {
-      teamData[y.year_label] = members
+      const yearMembers: TeamMemberItem[] = members
         .filter((m) => m.team_year_id === y.id)
-        .map((m) => ({
-          id: m.id,
-          name: m.name,
-          department: m.department,
-          position: (m.position && m.position.trim()) || memberPositions[m.id] || "",
-          linkedin_url: m.linkedin_url,
-          image_url: toLocalMediaUrl(m.image_url),
-          photo_url: toLocalMediaUrl(m.image_url),
-          team_year_id: m.team_year_id,
-          sort_order: m.sort_order,
-        }));
+        .map((m) => {
+          let photoUrl = toLocalMediaUrl(m.image_url);
+          // If Nimisha Pandey, link her newly provided photo
+          if (m.name.toLowerCase().includes("nimisha") && (!photoUrl || photoUrl === "/team_person.webp")) {
+            photoUrl = "/media/team/nimisha_pandey.webp";
+          }
+          return {
+            id: m.id,
+            name: m.name,
+            department: m.department,
+            position: (m.position && m.position.trim()) || memberPositions[m.id] || "",
+            linkedin_url: m.linkedin_url,
+            image_url: photoUrl,
+            photo_url: photoUrl,
+            team_year_id: m.team_year_id,
+            sort_order: m.sort_order,
+          };
+        });
+
+      // Ensure Faculty Advisor Dr. Ummid Shaikh is included at the top above Directors
+      const hasFaculty = yearMembers.some(
+        (m) => m.name.toLowerCase().includes("ummid") || m.name.toLowerCase().includes("shaikh")
+      );
+      if (!hasFaculty) {
+        yearMembers.unshift({
+          id: "faculty-advisor-dr-ummid-shaikh",
+          name: "Dr. Ummid Shaikh",
+          department: "FACULTY ADVISOR",
+          position: "Faculty Advisor",
+          linkedin_url: "https://www.linkedin.com/in/dr-ummid-shaikh-55886467/",
+          image_url: "/media/team/dr_ummid_shaikh.webp",
+          photo_url: "/media/team/dr_ummid_shaikh.webp",
+          team_year_id: y.id,
+          sort_order: 0,
+        });
+      }
+
+      teamData[y.year_label] = yearMembers;
     });
   }
 

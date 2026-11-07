@@ -8,7 +8,7 @@ import { Footer } from "@/components/Footer";
 import { SparklesDivider } from "@/components/ui/SparklesDivider";
 import { WarpText } from "@/components/ui/WarpText";
 import GhostCursor from "@/components/ui/GhostCursor";
-import { ShieldAlert, Cpu, Wrench, Flame, Zap, Settings } from "lucide-react";
+import { ShieldAlert, Cpu, Wrench, Flame, Zap, Settings, GraduationCap } from "lucide-react";
 
 import { SmartImage } from "@/components/SmartImage";
 import type { DepartmentItem } from "@/lib/departments";
@@ -37,13 +37,17 @@ const getLinkedinUrl = (url?: string | null) => {
 };
 
 const KNOWN_DEPARTMENTS: Record<string, { description: string; icon: React.ComponentType<{ className?: string }> }> = {
+  "FACULTY ADVISOR": {
+    description: "Academic mentorship and institutional leadership guiding technical research, safety standards, and collegiate compliance.",
+    icon: GraduationCap,
+  },
   "FACULTY ADVISORS": {
     description: "Academic mentors and institutional leadership guiding technical research, safety standards, and collegiate compliance.",
-    icon: ShieldAlert,
+    icon: GraduationCap,
   },
   "FACULTY": {
     description: "Academic mentors and institutional leadership guiding technical research, safety standards, and collegiate compliance.",
-    icon: ShieldAlert,
+    icon: GraduationCap,
   },
   "TRANSMISSION": {
     description: "Designing and optimizing the power delivery system to ensure maximum efficiency and performance on the track.",
@@ -211,7 +215,11 @@ function TeamContent({
                     </p>
                   </motion.div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-md:grid-cols-2 gap-6 lg:gap-8 max-md:gap-3">
+                  <div className={
+                    deptMembers.length === 1
+                      ? "flex justify-center"
+                      : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-md:grid-cols-2 gap-6 lg:gap-8 max-md:gap-3"
+                  }>
                     {deptMembers.map((member, idx) => (
                       <motion.div
                         key={member.id}
@@ -223,7 +231,9 @@ function TeamContent({
                           delay: (idx % 3) * 0.05,
                           ease: [0.16, 1, 0.3, 1],
                         }}
-                        className="group relative bg-[#12151b]/80 border border-white/10 rounded-2xl max-md:rounded-xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row max-md:flex-col items-stretch"
+                        className={`group relative bg-[#12151b]/80 border border-white/10 rounded-2xl max-md:rounded-xl overflow-hidden hover:border-[#de1615]/70 hover:shadow-[0_0_30px_rgba(222,22,21,0.25)] transition-all duration-300 flex flex-row max-md:flex-col items-stretch ${
+                          deptMembers.length === 1 ? "w-full max-w-md" : ""
+                        }`}
                       >
                         <div className="relative w-28 sm:w-32 max-md:w-full max-md:h-44 shrink-0 bg-black/50 overflow-hidden min-h-[110px] sm:min-h-[120px] max-md:min-h-0">
                           <SmartImage

@@ -12,6 +12,10 @@ export interface DepartmentItem {
 }
 
 export const DEFAULT_DEPARTMENT_DETAILS: Record<string, { description: string; sort_order: number }> = {
+  "FACULTY ADVISOR": {
+    description: "Academic mentorship and institutional leadership guiding technical research, safety standards, and collegiate compliance.",
+    sort_order: 0,
+  },
   "FACULTY ADVISORS": {
     description: "Academic mentors and institutional leadership guiding technical research, safety standards, and collegiate compliance.",
     sort_order: 0,
