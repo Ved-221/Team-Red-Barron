@@ -119,7 +119,7 @@ export function DonateModal({
             </div>
 
             <p className="font-inter text-sm text-[#e2e2e2]/80 mb-5 leading-relaxed">
-              Your contribution directly powers the research, fabrication, composite bodywork, and IoT telemetry of our next-gen Formula Student race car.
+              Your contribution directly powers the research, fabrication, composite bodywork, and IoT telemetry of our next-gen ATV.
             </p>
 
             {/* Direct UPI ID Quick Support Box */}

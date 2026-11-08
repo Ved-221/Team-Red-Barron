@@ -101,7 +101,7 @@ export function SupportCTA({ supportSettings }: SupportCTAProps = {}) {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="font-inter text-base sm:text-lg text-[#e2e2e2]/90 mb-10 leading-relaxed max-w-2xl font-normal"
                 >
-                  Team Red Baron is driven by innovation, engineering excellence, and relentless motorsport passion. Connect with us, collaborate, sponsor our journey, or contribute towards building the next generation Formula Student race car.
+                  Team Red Baron is driven by innovation, engineering excellence, and relentless motorsport passion. Connect with us, collaborate, sponsor our journey, or contribute towards building the next generation ATV.
                 </motion.p>
 
                 {/* Centered CTA Buttons & Partnership Badge */}
